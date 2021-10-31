@@ -9,9 +9,10 @@ import com.mirandasidney.pdv.api.service.interfaces.UserService;
 import com.mirandasidney.pdv.api.util.Util;
 import lombok.AllArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
-import java.util.NoSuchElementException;
+import java.util.Optional;
 
 @Service
 @AllArgsConstructor(onConstructor = @__(@Autowired))
@@ -33,10 +34,15 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public UserResponse findUserById(Long id) {
-        User user = userRepository.findById(id)
-                .orElseThrow(() -> new NoSuchElementException("Usuário não localizado com o ID: !" + id));
-        return mapper.toUserResponse(user);
+    public ResponseEntity<UserResponse> findUserById(Long id) {
+        Optional<User> user = userRepository.findById(id);
+        return user.isPresent() ? ResponseEntity.ok(mapper.toUserResponse(user.get())) : ResponseEntity.notFound().build();
+    }
+
+    @Override
+    public void removeUser(Long id) {
+        Optional<User> user = userRepository.findById(id);
+        if (user.isPresent()) userRepository.delete(user.get());
     }
 
 
