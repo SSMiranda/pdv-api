@@ -5,7 +5,7 @@ import com.mirandasidney.pdv.api.dto.response.UserResponse;
 import org.springframework.http.ResponseEntity;
 
 public interface UserService {
-    UserResponse save(UserPostRequestBody user);
+    ResponseEntity<UserResponse> save(UserPostRequestBody user);
     ResponseEntity<UserResponse> findUserById(Long id);
-    void removeUser(Long id);
+    ResponseEntity<?> removeUser(Long id);
 }

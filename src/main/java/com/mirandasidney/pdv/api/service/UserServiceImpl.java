@@ -11,7 +11,9 @@ import lombok.AllArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
+import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
+import java.net.URI;
 import java.util.Optional;
 
 @Service
@@ -23,14 +25,15 @@ public class UserServiceImpl implements UserService {
 
     private UserRepository userRepository;
 
-
     @Override
-    public UserResponse save(UserPostRequestBody userPostRequestBody) {
+    public ResponseEntity<UserResponse> save(UserPostRequestBody userPostRequestBody) {
+        final URI uri = ServletUriComponentsBuilder.fromCurrentRequest().build().toUri();
+
         User user = mapper.toUser(userPostRequestBody);
         user.setProfile(PROFILE);
         user.setCreatedAt(Util.formatDate());
         User savedUser = userRepository.save(user);
-        return mapper.toUserResponse(savedUser);
+        return ResponseEntity.created(uri).body(mapper.toUserResponse(savedUser));
     }
 
     @Override
@@ -40,9 +43,14 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public void removeUser(Long id) {
+    public ResponseEntity<?> removeUser(Long id) {
         Optional<User> user = userRepository.findById(id);
-        if (user.isPresent()) userRepository.delete(user.get());
+        if (user.isPresent()) {
+            userRepository.delete(user.get());
+            return ResponseEntity.noContent().build();
+        }
+        else
+           return ResponseEntity.badRequest().build();
     }
 
 
