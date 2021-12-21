@@ -1,16 +1,14 @@
-package com.mirandasidney.pdv.api.dto.response;
+package com.mirandasidney.pdv.api.controller.dto.response;
 
 import lombok.AllArgsConstructor;
-import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
 @AllArgsConstructor
 @NoArgsConstructor
 @Data
-@Builder
 public class UserResponse {
-    private Long id;
+    private Long userId;
     private String firstname;
     private String lastname;
     private String username;

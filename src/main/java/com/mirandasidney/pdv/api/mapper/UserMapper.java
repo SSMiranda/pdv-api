@@ -1,8 +1,8 @@
 package com.mirandasidney.pdv.api.mapper;
 
 import com.mirandasidney.pdv.api.domain.User;
-import com.mirandasidney.pdv.api.dto.request.UserPostRequestBody;
-import com.mirandasidney.pdv.api.dto.response.UserResponse;
+import com.mirandasidney.pdv.api.controller.dto.request.UserPostRequestBody;
+import com.mirandasidney.pdv.api.controller.dto.response.UserResponse;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 import org.mapstruct.factory.Mappers;
@@ -13,8 +13,6 @@ public abstract class UserMapper {
 
     public abstract User toUser(UserPostRequestBody userPostRequestBody);
 
-//    @Mapping(source = "id", target = "id")
-//    @Mapping(source = "profile", target = "profile")
     @Mapping(source = "createdAt", target = "createdAt")
     public abstract UserResponse toUserResponse(User user);
 }

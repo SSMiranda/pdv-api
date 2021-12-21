@@ -1,19 +1,18 @@
 package com.mirandasidney.pdv.api.service;
 
+import com.mirandasidney.pdv.api.controller.dto.request.UserPostRequestBody;
+import com.mirandasidney.pdv.api.controller.dto.request.UserPutRequestByUser;
+import com.mirandasidney.pdv.api.controller.dto.response.UserResponse;
 import com.mirandasidney.pdv.api.domain.User;
-import com.mirandasidney.pdv.api.dto.request.UserPostRequestBody;
-import com.mirandasidney.pdv.api.dto.response.UserResponse;
 import com.mirandasidney.pdv.api.mapper.UserMapper;
 import com.mirandasidney.pdv.api.repository.UserRepository;
 import com.mirandasidney.pdv.api.service.interfaces.UserService;
 import com.mirandasidney.pdv.api.util.Util;
 import lombok.AllArgsConstructor;
+import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
-import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
-import java.net.URI;
 import java.util.Optional;
 
 @Service
@@ -25,33 +24,43 @@ public class UserServiceImpl implements UserService {
 
     private UserRepository userRepository;
 
-    @Override
-    public ResponseEntity<UserResponse> save(UserPostRequestBody userPostRequestBody) {
-        final URI uri = ServletUriComponentsBuilder.fromCurrentRequest().build().toUri();
+    private User findById(Long id) {
+        Optional<User> user = userRepository.findById(id);
+        return user.orElse(null);
+    }
 
+    @Override
+    public UserResponse save(UserPostRequestBody userPostRequestBody) {
         User user = mapper.toUser(userPostRequestBody);
         user.setProfile(PROFILE);
         user.setCreatedAt(Util.formatDate());
         User savedUser = userRepository.save(user);
-        return ResponseEntity.created(uri).body(mapper.toUserResponse(savedUser));
-    }
-
-    @Override
-    public ResponseEntity<UserResponse> findUserById(Long id) {
-        Optional<User> user = userRepository.findById(id);
-        return user.isPresent() ? ResponseEntity.ok(mapper.toUserResponse(user.get())) : ResponseEntity.notFound().build();
-    }
-
-    @Override
-    public ResponseEntity<?> removeUser(Long id) {
-        Optional<User> user = userRepository.findById(id);
-        if (user.isPresent()) {
-            userRepository.delete(user.get());
-            return ResponseEntity.noContent().build();
+        return mapper.toUserResponse(savedUser);
         }
-        else
-           return ResponseEntity.badRequest().build();
+
+        @Override
+    public UserResponse findUserById(Long id) {
+        User user = findById(id);
+        return mapper.toUserResponse(user);
+
     }
 
+    @Override
+    public boolean removeUser(Long id) {
+        User user = findById(id);
+        if (user != null) {
+            userRepository.delete(user);
+            return true;
+        }
+           return false;
+    }
+
+    @Override
+    public UserResponse update(UserPutRequestByUser userUpdate, Long id) {
+        User user = findById(id);
+        BeanUtils.copyProperties(userUpdate, user);
+        User save = userRepository.save(user);
+        return mapper.toUserResponse(save);
+    }
 
 }
