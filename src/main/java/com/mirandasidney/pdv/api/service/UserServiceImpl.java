@@ -11,8 +11,10 @@ import com.mirandasidney.pdv.api.util.Util;
 import lombok.AllArgsConstructor;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -33,16 +35,25 @@ public class UserServiceImpl implements UserService {
     public UserResponse save(UserPostRequestBody userPostRequestBody) {
         User user = mapper.toUser(userPostRequestBody);
         user.setProfile(PROFILE);
-        user.setCreatedAt(Util.formatDate());
+        setTime(user);
         User savedUser = userRepository.save(user);
         return mapper.toUserResponse(savedUser);
-        }
+    }
 
-        @Override
+    private void setTime(User user) {
+        user.setCreatedAt(Util.formatDate());
+    }
+
+    @Override
     public UserResponse findUserById(Long id) {
         User user = findById(id);
         return mapper.toUserResponse(user);
 
+    }
+
+    @Override
+    public List<UserResponse> findAll() {
+        return mapper.toUserResponse(userRepository.findAll());
     }
 
     @Override

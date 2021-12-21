@@ -23,6 +23,7 @@ import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import javax.validation.Valid;
 import java.net.URI;
+import java.util.List;
 
 @CrossOrigin(origins = "*")
 @RestController
@@ -34,15 +35,18 @@ public class UserController {
     private final UserServiceImpl userService;
 
     @ApiOperation(value = "Cadastra um usuário")
-    @PostMapping(consumes =  MediaType.APPLICATION_JSON_VALUE, produces =  MediaType.APPLICATION_JSON_VALUE)
+    @PostMapping(consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<UserResponse> save(@Valid @RequestBody final UserPostRequestBody user) {
         final URI uri = ServletUriComponentsBuilder
-                .fromCurrentRequest().path("/{username}").buildAndExpand(user.getUsername()).toUri();
+                .fromCurrentRequest()
+                .path("/api/v1/{username}")
+                .buildAndExpand(user.getUsername())
+                .toUri();
         return ResponseEntity.created(uri).body(userService.save(user));
     }
 
     @ApiOperation(value = "Busca um usuário pelo ID")
-    @GetMapping(value = "/{id}", produces =  MediaType.APPLICATION_JSON_VALUE)
+    @GetMapping(value = "/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<UserResponse> findUserById(@PathVariable final Long id) {
         final UserResponse user = userService.findUserById(id);
         if (user == null)
@@ -50,6 +54,12 @@ public class UserController {
         else {
             return ResponseEntity.ok(user);
         }
+    }
+
+    @ApiOperation(value = "Retorna a lista de usuários cadastrados")
+    @GetMapping(produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<List<UserResponse>> findAll() {
+        return ResponseEntity.ok(userService.findAll());
     }
 
     @ApiOperation(value = "Remove um usuário")
@@ -60,17 +70,9 @@ public class UserController {
 
     @ApiOperation(value = "Atualiza os dados do usuário")
     @PutMapping(value = "/{id}",
-            consumes =  MediaType.APPLICATION_JSON_VALUE,
-            produces =  MediaType.APPLICATION_JSON_VALUE)
+            consumes = MediaType.APPLICATION_JSON_VALUE,
+            produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<UserResponse> update(@PathVariable("id") final Long id, @RequestBody final UserPutRequestByUser userUpdate) {
         return ResponseEntity.ok(userService.update(userUpdate, id));
     }
-
-//    @ApiOperation(value = "Atualiza os dados do usuário a partir de um Admin")
-//    @PutMapping(value = "/{id}",
-//            consumes =  MediaType.APPLICATION_JSON_VALUE,
-//            produces =  MediaType.APPLICATION_JSON_VALUE)
-//    public ResponseEntity<UserResponse> update(@PathVariable final Long id, @RequestBody final UserPutRequestByAdmin userUpdate) {
-//        return ResponseEntity.ok(userService.update(userUpdate, id));
-//    }
 }
