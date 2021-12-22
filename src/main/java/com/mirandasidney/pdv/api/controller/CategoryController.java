@@ -27,7 +27,7 @@ import java.net.URI;
 @RestController
 @Api("REST API SISTEMA PDV")
 @AllArgsConstructor(onConstructor = @__(@Autowired))
-@RequestMapping("/api/v1/category")
+@RequestMapping("/api/v1/categories")
 public class CategoryController {
 
     private CategoryServiceImpl service;
@@ -37,7 +37,7 @@ public class CategoryController {
     public ResponseEntity<CategoryResponse> save(@Valid @RequestBody final CategoryRequestBody category) {
         final URI uri = ServletUriComponentsBuilder
                 .fromCurrentRequest()
-                .path("/api/v1/category/{id}")
+                .path("/api/v1/categories/{id}")
                 .buildAndExpand(category)
                 .toUri();
         return ResponseEntity.created(uri).body(service.save(category));
