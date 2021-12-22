@@ -1,4 +1,4 @@
-package com.mirandasidney.pdv.api.controller.dto.response;
+package com.mirandasidney.pdv.api.controller.dto.response.user;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;

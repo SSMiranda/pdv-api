@@ -1,17 +1,17 @@
 package com.mirandasidney.pdv.api.service;
 
-import com.mirandasidney.pdv.api.controller.dto.request.UserPostRequestBody;
-import com.mirandasidney.pdv.api.controller.dto.request.UserPutRequestByUser;
-import com.mirandasidney.pdv.api.controller.dto.response.UserResponse;
+import com.mirandasidney.pdv.api.controller.dto.request.user.UserPostRequestBody;
+import com.mirandasidney.pdv.api.controller.dto.request.user.UserPutRequestByUser;
+import com.mirandasidney.pdv.api.controller.dto.response.user.UserResponse;
 import com.mirandasidney.pdv.api.domain.User;
 import com.mirandasidney.pdv.api.mapper.UserMapper;
 import com.mirandasidney.pdv.api.repository.UserRepository;
 import com.mirandasidney.pdv.api.service.interfaces.UserService;
 import com.mirandasidney.pdv.api.util.Util;
 import lombok.AllArgsConstructor;
+import lombok.RequiredArgsConstructor;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import java.util.List;

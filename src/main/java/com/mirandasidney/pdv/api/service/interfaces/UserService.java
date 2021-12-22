@@ -1,8 +1,8 @@
 package com.mirandasidney.pdv.api.service.interfaces;
 
-import com.mirandasidney.pdv.api.controller.dto.request.UserPostRequestBody;
-import com.mirandasidney.pdv.api.controller.dto.request.UserPutRequestByUser;
-import com.mirandasidney.pdv.api.controller.dto.response.UserResponse;
+import com.mirandasidney.pdv.api.controller.dto.request.user.UserPostRequestBody;
+import com.mirandasidney.pdv.api.controller.dto.request.user.UserPutRequestByUser;
+import com.mirandasidney.pdv.api.controller.dto.response.user.UserResponse;
 
 import java.util.List;
 

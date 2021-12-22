@@ -1,5 +1,7 @@
 package com.mirandasidney.pdv.api.util;
 
+import com.mirandasidney.pdv.api.domain.User;
+
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 
