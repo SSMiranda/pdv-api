@@ -11,5 +11,5 @@ public class CategoryResponse {
 
     private Long categoryId;
 
-    private String category;
+    private String name;
 }

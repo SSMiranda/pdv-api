@@ -1,13 +1,14 @@
 package com.mirandasidney.pdv.api.domain;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.AllArgsConstructor;
-import lombok.Data;
+import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -18,17 +19,20 @@ import java.util.List;
 @Entity
 @AllArgsConstructor
 @NoArgsConstructor
-@Data
 public class Category implements Serializable {
     private static final long serialVersionUID = 1L;
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Getter
     private Long categoryId;
 
-    private String category;
+    @Getter @Setter
+    private String name;
 
-    @OneToMany(mappedBy = "category", cascade = CascadeType.ALL)
+    @Getter @Setter
+    @JsonIgnore
+    @OneToMany(mappedBy = "category")
     private List<Product> products;
 
 }

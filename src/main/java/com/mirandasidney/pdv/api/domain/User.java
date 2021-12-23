@@ -1,8 +1,10 @@
 package com.mirandasidney.pdv.api.domain;
 
 import lombok.AllArgsConstructor;
-import lombok.Data;
+import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.Setter;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -14,7 +16,6 @@ import java.io.Serializable;
 @Entity
 @AllArgsConstructor
 @NoArgsConstructor
-@Data
 @Table(name = "USER")
 public class User implements Serializable {
 
@@ -23,26 +24,34 @@ public class User implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "USER_ID")
+    @Getter
     private Long userId ;
 
+    @Getter @Setter
     @Column(name = "FIRSTNAME")
     private String firstname;
 
+    @Getter @Setter
     @Column(name = "LASTNAME")
     private String lastname;
 
+    @Getter @Setter
     @Column(name = "USER_NAME")
     private String username;
 
+    @Getter @Setter
     @Column(name = "PASSWORD")
     private String password;
 
+    @Getter @Setter
     @Column(name = "PHONE")
     private String phone;
 
+    @Getter @Setter
     @Column(name = "PROFILE")
     private String profile;
 
+    @Getter @Setter
     @Column(name = "CREATED_AT")
     private String createdAt;
 

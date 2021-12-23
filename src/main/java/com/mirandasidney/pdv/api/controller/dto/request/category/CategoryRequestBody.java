@@ -12,5 +12,5 @@ import javax.validation.constraints.NotNull;
 public class CategoryRequestBody {
 
     @NotNull
-    private String category;
+    private String name;
 }
