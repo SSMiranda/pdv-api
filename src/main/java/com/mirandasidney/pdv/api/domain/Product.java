@@ -4,6 +4,8 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import org.hibernate.annotations.Fetch;
+import org.hibernate.annotations.FetchMode;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Entity;
@@ -26,13 +28,17 @@ public class Product implements Serializable {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long productId;
 
-    @Getter @Setter
+    @Getter
+    @Setter
     private String productName;
 
-    @Getter @Setter
+    @Getter
+    @Setter
     private String createdAt;
 
-    @Getter @Setter
+    @Getter
+    @Setter
+    @Fetch(FetchMode.JOIN)
     @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     @JoinColumn(name = "category_id")
     private Category category;

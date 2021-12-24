@@ -8,8 +8,12 @@ import java.util.List;
 
 public interface UserService {
     UserResponse save(UserPostRequestBody user);
+
     UserResponse findUserById(Long id);
+
     List<UserResponse> findAll();
+
     boolean removeUser(Long id);
+
     UserResponse update(UserPutRequestByUser user, Long id);
 }

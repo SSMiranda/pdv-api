@@ -3,7 +3,6 @@ package com.mirandasidney.pdv.api.mapper;
 import com.mirandasidney.pdv.api.controller.dto.request.user.UserPostRequestBody;
 import com.mirandasidney.pdv.api.controller.dto.response.user.UserResponse;
 import com.mirandasidney.pdv.api.domain.User;
-import org.mapstruct.InheritInverseConfiguration;
 import org.mapstruct.Mapper;
 import org.mapstruct.factory.Mappers;
 
@@ -15,7 +14,6 @@ public interface UserMapper {
 
     User toUser(UserPostRequestBody userPostRequestBody);
 
-    @InheritInverseConfiguration
     UserResponse toUserResponse(User user);
 
     List<UserResponse> toUserResponse(List<User> users);

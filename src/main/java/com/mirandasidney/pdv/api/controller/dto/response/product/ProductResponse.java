@@ -1,7 +1,6 @@
 package com.mirandasidney.pdv.api.controller.dto.response.product;
 
 import com.mirandasidney.pdv.api.controller.dto.response.category.CategoryResponse;
-import com.mirandasidney.pdv.api.domain.Category;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;

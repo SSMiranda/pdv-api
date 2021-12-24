@@ -5,16 +5,18 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import org.hibernate.annotations.Fetch;
+import org.hibernate.annotations.FetchMode;
 
 import javax.persistence.CascadeType;
-import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.OneToMany;
 import java.io.Serializable;
-import java.util.List;
+import java.util.Set;
 
 @Entity
 @AllArgsConstructor
@@ -27,12 +29,15 @@ public class Category implements Serializable {
     @Getter
     private Long categoryId;
 
-    @Getter @Setter
+    @Getter
+    @Setter
     private String name;
 
-    @Getter @Setter
+    @Getter
+    @Setter
     @JsonIgnore
-    @OneToMany(mappedBy = "category")
-    private List<Product> products;
+    @Fetch(FetchMode.JOIN)
+    @OneToMany(mappedBy = "category", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    private Set<Product> products;
 
 }

@@ -15,8 +15,8 @@ import org.springframework.stereotype.Service;
 @AllArgsConstructor(onConstructor = @__(@Autowired))
 public class ProductServiceImpl implements ProductService {
 
-    private ProductRepository repository;
     private static final ProductMapper mapper = ProductMapper.INSTANCE;
+    private ProductRepository repository;
 
     private void setTime(Product product) {
         product.setCreatedAt(Util.formatDate());
