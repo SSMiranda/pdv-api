@@ -6,7 +6,7 @@ import com.mirandasidney.pdv.api.controller.dto.response.category.CategoryWithLi
 import com.mirandasidney.pdv.api.domain.Category;
 import com.mirandasidney.pdv.api.mapper.CategoryMapper;
 import com.mirandasidney.pdv.api.repository.CategoryRepository;
-import com.mirandasidney.pdv.api.service.interfaces.CategoryService;
+import com.mirandasidney.pdv.api.service.interfaces.ICategoryService;
 import lombok.AllArgsConstructor;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,7 +20,7 @@ import java.util.Set;
 
 @Service
 @AllArgsConstructor(onConstructor = @__(@Autowired))
-public class CategoryServiceImpl implements CategoryService {
+public class CategoryServiceImpl implements ICategoryService {
 
     private static final CategoryMapper mapper = CategoryMapper.INSTANCE;
     private final CategoryRepository repository;
@@ -39,7 +39,7 @@ public class CategoryServiceImpl implements CategoryService {
     }
 
     @Override
-    public  ResponseEntity<Set<CategoryWithListProductResponse>> findAll() {
+    public ResponseEntity<Set<CategoryWithListProductResponse>> findAll() {
         return ResponseEntity.ok().body(mapper.toCategoryListDto(repository.findAllSet()));
     }
 
@@ -69,6 +69,4 @@ public class CategoryServiceImpl implements CategoryService {
                     return ResponseEntity.ok().body(mapper.toDto(category));
                 }).orElse(ResponseEntity.badRequest().build());
     }
-
-
 }

@@ -6,72 +6,68 @@ import com.mirandasidney.pdv.api.controller.dto.response.user.UserResponse;
 import com.mirandasidney.pdv.api.domain.User;
 import com.mirandasidney.pdv.api.mapper.UserMapper;
 import com.mirandasidney.pdv.api.repository.UserRepository;
-import com.mirandasidney.pdv.api.service.interfaces.UserService;
-import com.mirandasidney.pdv.api.util.Util;
+import com.mirandasidney.pdv.api.service.interfaces.IUserService;
 import lombok.AllArgsConstructor;
-import lombok.RequiredArgsConstructor;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
+import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
-import java.util.List;
+import java.net.URI;
 import java.util.Optional;
+import java.util.Set;
 
 @Service
 @AllArgsConstructor(onConstructor = @__(@Autowired))
-public class UserServiceImpl implements UserService {
+public class UserServiceImpl implements IUserService {
 
-    private static final String PROFILE = "user";
     private static UserMapper mapper = UserMapper.INSTANCE;
 
-    private UserRepository userRepository;
+    private UserRepository repository;
 
-    private User findById(Long id) {
-        Optional<User> user = userRepository.findById(id);
-        return user.orElse(null);
+    @Override
+    public ResponseEntity<UserResponse> save(UserPostRequestBody user) {
+        final URI uri = ServletUriComponentsBuilder
+                .fromCurrentRequest()
+                .path("/api/v1/{username}")
+                .buildAndExpand(user.getUsername())
+                .toUri();
+        User savedUser = repository.save(mapper.toUser(user));
+
+        return ResponseEntity.created(uri).body(mapper.toUserResponse(repository.save(savedUser)));
     }
 
     @Override
-    public UserResponse save(UserPostRequestBody userPostRequestBody) {
-        User user = mapper.toUser(userPostRequestBody);
-        user.setProfile(PROFILE);
-        setTime(user);
-        User savedUser = userRepository.save(user);
-        return mapper.toUserResponse(savedUser);
-    }
-
-    private void setTime(User user) {
-        user.setCreatedAt(Util.formatDate());
+    public ResponseEntity<UserResponse> findUserById(Long id) {
+        return repository.findById(id)
+                .map(user -> ResponseEntity.ok().body(mapper.toUserResponse(user)))
+                .orElse(ResponseEntity.notFound().build());
     }
 
     @Override
-    public UserResponse findUserById(Long id) {
-        User user = findById(id);
-        return mapper.toUserResponse(user);
-
+    public ResponseEntity<Set<UserResponse>> findAll() {
+        return ResponseEntity.ok().body(mapper.toUserResponse(repository.findAllSet()));
     }
 
     @Override
-    public List<UserResponse> findAll() {
-        return mapper.toUserResponse(userRepository.findAll());
-    }
-
-    @Override
-    public boolean removeUser(Long id) {
-        User user = findById(id);
-        if (user != null) {
-            userRepository.delete(user);
-            return true;
+    public ResponseEntity<Void> removeUser(Long id) {
+        Optional<User> user = repository.findById(id);
+        if (user.isPresent()) {
+            repository.delete(user.get());
+            return ResponseEntity.noContent().build();
         }
-           return false;
+        return ResponseEntity.badRequest().build();
     }
 
     @Override
-    public UserResponse update(UserPutRequestByUser userUpdate, Long id) {
-        User user = findById(id);
-        BeanUtils.copyProperties(userUpdate, user);
-        User save = userRepository.save(user);
-        return mapper.toUserResponse(save);
+    public ResponseEntity<UserResponse> update(UserPutRequestByUser userUpdate, Long id) {
+        return repository.findById(id)
+                .map(user -> {
+                    BeanUtils.copyProperties(userUpdate, user);
+                    repository.save(user);
+                    return ResponseEntity.ok().body(mapper.toUserResponse(user));
+                }).orElse(ResponseEntity.badRequest().build());
     }
 
 }

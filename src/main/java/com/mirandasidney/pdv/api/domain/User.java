@@ -1,5 +1,6 @@
 package com.mirandasidney.pdv.api.domain;
 
+import com.mirandasidney.pdv.api.util.Util;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -20,39 +21,47 @@ import java.io.Serializable;
 public class User implements Serializable {
 
     private static final long serialVersionUID = 1L;
+    private static final String PROFILE = "USER";
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "USER_ID")
     @Getter
-    private Long userId ;
+    private Long userId;
 
-    @Getter @Setter
+    @Getter
+    @Setter
     @Column(name = "FIRSTNAME")
     private String firstname;
 
-    @Getter @Setter
+    @Getter
+    @Setter
     @Column(name = "LASTNAME")
     private String lastname;
 
-    @Getter @Setter
+    @Getter
+    @Setter
     @Column(name = "USER_NAME")
     private String username;
 
-    @Getter @Setter
+    @Getter
+    @Setter
     @Column(name = "PASSWORD")
     private String password;
 
-    @Getter @Setter
+    @Getter
+    @Setter
     @Column(name = "PHONE")
     private String phone;
 
-    @Getter @Setter
+    @Getter
+    @Setter
     @Column(name = "PROFILE")
-    private String profile;
+    private String profile = PROFILE;
 
-    @Getter @Setter
+    @Getter
+    @Setter
     @Column(name = "CREATED_AT")
-    private String createdAt;
+    private String createdAt = Util.formatDate();
 
 }

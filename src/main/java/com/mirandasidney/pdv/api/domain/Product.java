@@ -1,5 +1,6 @@
 package com.mirandasidney.pdv.api.domain;
 
+import com.mirandasidney.pdv.api.util.Util;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -34,7 +35,7 @@ public class Product implements Serializable {
 
     @Getter
     @Setter
-    private String createdAt;
+    private String createdAt = Util.formatDate();
 
     @Getter
     @Setter

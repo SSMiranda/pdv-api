@@ -3,7 +3,7 @@ package com.mirandasidney.pdv.api.controller;
 import com.mirandasidney.pdv.api.controller.dto.request.user.UserPostRequestBody;
 import com.mirandasidney.pdv.api.controller.dto.request.user.UserPutRequestByUser;
 import com.mirandasidney.pdv.api.controller.dto.response.user.UserResponse;
-import com.mirandasidney.pdv.api.service.UserServiceImpl;
+import com.mirandasidney.pdv.api.service.interfaces.IUserService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import lombok.AllArgsConstructor;
@@ -19,11 +19,9 @@ import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
-import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import javax.validation.Valid;
-import java.net.URI;
-import java.util.List;
+import java.util.Set;
 
 @CrossOrigin(origins = "*")
 @RestController
@@ -32,40 +30,31 @@ import java.util.List;
 @RequestMapping("/api/v1/users")
 public class UserController {
 
-    private final UserServiceImpl userService;
+    private final IUserService service;
 
     @ApiOperation(value = "Cadastra um usuário")
     @PostMapping(consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<UserResponse> save(@Valid @RequestBody final UserPostRequestBody user) {
-        final URI uri = ServletUriComponentsBuilder
-                .fromCurrentRequest()
-                .path("/api/v1/{username}")
-                .buildAndExpand(user.getUsername())
-                .toUri();
-        return ResponseEntity.created(uri).body(userService.save(user));
+
+        return service.save(user);
     }
 
     @ApiOperation(value = "Busca um usuário pelo ID")
     @GetMapping(value = "/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<UserResponse> findUserById(@PathVariable final Long id) {
-        final UserResponse user = userService.findUserById(id);
-        if (user == null)
-            return ResponseEntity.notFound().build();
-        else {
-            return ResponseEntity.ok(user);
-        }
+        return service.findUserById(id);
     }
 
     @ApiOperation(value = "Retorna a lista de usuários cadastrados")
     @GetMapping(produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<List<UserResponse>> findAll() {
-        return ResponseEntity.ok(userService.findAll());
+    public ResponseEntity<Set<UserResponse>> findAll() {
+        return service.findAll();
     }
 
     @ApiOperation(value = "Remove um usuário")
     @DeleteMapping("/{id}")
-    public ResponseEntity<?> remove(@PathVariable final Long id) {
-        return userService.removeUser(id) ? ResponseEntity.noContent().build() : ResponseEntity.badRequest().build();
+    public ResponseEntity<Void> remove(@PathVariable final Long id) {
+        return service.removeUser(id);
     }
 
     @ApiOperation(value = "Atualiza os dados do usuário")
@@ -73,6 +62,6 @@ public class UserController {
             consumes = MediaType.APPLICATION_JSON_VALUE,
             produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<UserResponse> update(@PathVariable("id") final Long id, @RequestBody final UserPutRequestByUser userUpdate) {
-        return ResponseEntity.ok(userService.update(userUpdate, id));
+        return service.update(userUpdate, id);
     }
 }

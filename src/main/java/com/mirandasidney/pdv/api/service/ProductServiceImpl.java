@@ -5,28 +5,31 @@ import com.mirandasidney.pdv.api.controller.dto.response.product.ProductResponse
 import com.mirandasidney.pdv.api.domain.Product;
 import com.mirandasidney.pdv.api.mapper.ProductMapper;
 import com.mirandasidney.pdv.api.repository.ProductRepository;
-import com.mirandasidney.pdv.api.service.interfaces.ProductService;
-import com.mirandasidney.pdv.api.util.Util;
+import com.mirandasidney.pdv.api.service.interfaces.IProductService;
 import lombok.AllArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
+import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
+
+import java.net.URI;
 
 @Service
 @AllArgsConstructor(onConstructor = @__(@Autowired))
-public class ProductServiceImpl implements ProductService {
+public class ProductServiceImpl implements IProductService {
 
     private static final ProductMapper mapper = ProductMapper.INSTANCE;
     private ProductRepository repository;
 
-    private void setTime(Product product) {
-        product.setCreatedAt(Util.formatDate());
-    }
-
     @Override
-    public ProductResponse save(ProductRequestBody product) {
-        Product newProduct = mapper.toModel(product);
-        setTime(newProduct);
-        Product savedProduct = repository.save(newProduct);
-        return mapper.toDto(savedProduct);
+    public ResponseEntity<ProductResponse> save(ProductRequestBody product) {
+        final URI uri = ServletUriComponentsBuilder
+                .fromCurrentRequest()
+                .path("/api/v1/products/{id}")
+                .buildAndExpand(product)
+                .toUri();
+        Product savedProduct = repository.save(mapper.toModel(product));
+
+        return ResponseEntity.created(uri).body(mapper.toDto(repository.save(savedProduct)));
     }
 }

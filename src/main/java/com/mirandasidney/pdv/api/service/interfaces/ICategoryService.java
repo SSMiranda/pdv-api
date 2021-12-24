@@ -7,7 +7,7 @@ import org.springframework.http.ResponseEntity;
 
 import java.util.Set;
 
-public interface CategoryService {
+public interface ICategoryService {
 
     ResponseEntity<CategoryResponse> save(CategoryRequestBody category);
 

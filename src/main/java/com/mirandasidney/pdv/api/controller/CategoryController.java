@@ -4,7 +4,7 @@ package com.mirandasidney.pdv.api.controller;
 import com.mirandasidney.pdv.api.controller.dto.request.category.CategoryRequestBody;
 import com.mirandasidney.pdv.api.controller.dto.response.category.CategoryResponse;
 import com.mirandasidney.pdv.api.controller.dto.response.category.CategoryWithListProductResponse;
-import com.mirandasidney.pdv.api.service.interfaces.CategoryService;
+import com.mirandasidney.pdv.api.service.interfaces.ICategoryService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import lombok.AllArgsConstructor;
@@ -31,7 +31,7 @@ import java.util.Set;
 @RequestMapping("/api/v1/categories")
 public class CategoryController {
 
-    private CategoryService service;
+    private ICategoryService service;
 
     @ApiOperation(value = "Cadastra a categoria de um produto")
     @PostMapping(consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)

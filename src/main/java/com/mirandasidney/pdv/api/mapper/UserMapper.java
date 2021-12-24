@@ -6,7 +6,7 @@ import com.mirandasidney.pdv.api.domain.User;
 import org.mapstruct.Mapper;
 import org.mapstruct.factory.Mappers;
 
-import java.util.List;
+import java.util.Set;
 
 @Mapper(componentModel = "spring")
 public interface UserMapper {
@@ -16,5 +16,5 @@ public interface UserMapper {
 
     UserResponse toUserResponse(User user);
 
-    List<UserResponse> toUserResponse(List<User> users);
+    Set<UserResponse> toUserResponse(Set<User> users);
 }
