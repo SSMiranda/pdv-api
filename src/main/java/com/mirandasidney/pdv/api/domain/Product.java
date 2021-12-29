@@ -17,6 +17,7 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import java.io.Serializable;
+import java.math.BigDecimal;
 
 @Entity
 @AllArgsConstructor
@@ -32,6 +33,18 @@ public class Product implements Serializable {
     @Getter
     @Setter
     private String productName;
+
+    @Getter
+    @Setter
+    private BigDecimal costPrice;
+
+    @Getter
+    @Setter
+    private BigDecimal salePrice;
+
+    @Getter
+    @Setter
+    private Integer amount;
 
     @Getter
     @Setter

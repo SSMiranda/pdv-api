@@ -22,6 +22,7 @@ public class User implements Serializable {
 
     private static final long serialVersionUID = 1L;
     private static final String PROFILE = "USER";
+    private static final Boolean STATUS = true;
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -63,5 +64,10 @@ public class User implements Serializable {
     @Setter
     @Column(name = "CREATED_AT")
     private String createdAt = Util.formatDate();
+
+    @Getter
+    @Setter
+    @Column(name = "STATUS")
+    private Boolean status = STATUS;
 
 }

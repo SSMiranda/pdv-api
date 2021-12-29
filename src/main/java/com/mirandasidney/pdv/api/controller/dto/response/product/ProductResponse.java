@@ -14,6 +14,12 @@ public class ProductResponse {
 
     private String productName;
 
+    private String costPrice;
+
+    private String salePrice;
+
+    private String amount;
+
     private String createdAt;
 
     private CategoryResponse category;

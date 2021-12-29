@@ -15,4 +15,5 @@ public class UserResponse {
     private String phone;
     private String profile;
     private String createdAt;
+    private String status;
 }

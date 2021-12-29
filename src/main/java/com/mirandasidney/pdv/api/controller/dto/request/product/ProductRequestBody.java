@@ -14,5 +14,15 @@ public class ProductRequestBody {
 
     @NotNull
     private String productName;
+
+    @NotNull
+    private String costPrice;
+
+    @NotNull
+    private String salePrice;
+
+    @NotNull
+    private String amount;
+
     private CategoryRequest category;
 }
