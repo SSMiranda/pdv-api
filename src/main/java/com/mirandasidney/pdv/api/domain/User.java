@@ -21,8 +21,7 @@ import java.io.Serializable;
 public class User implements Serializable {
 
     private static final long serialVersionUID = 1L;
-    private static final String PROFILE = "USER";
-    private static final Boolean STATUS = true;
+    private static final Boolean STATUS = true  ;
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -58,7 +57,7 @@ public class User implements Serializable {
     @Getter
     @Setter
     @Column(name = "PROFILE")
-    private String profile = PROFILE;
+    private String profile;
 
     @Getter
     @Setter

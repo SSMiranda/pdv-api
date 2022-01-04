@@ -18,5 +18,7 @@ public class UserPostRequestBody {
     private String username;
     @NotNull
     private String password;
+    @NotNull
+    private String profile;
     private String phone;
 }
