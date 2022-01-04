@@ -1,7 +1,7 @@
 package com.mirandasidney.pdv.api.service;
 
 import com.mirandasidney.pdv.api.controller.dto.request.user.UserPostRequestBody;
-import com.mirandasidney.pdv.api.controller.dto.request.user.UserPutRequestByUser;
+import com.mirandasidney.pdv.api.controller.dto.request.user.UserPutRequest;
 import com.mirandasidney.pdv.api.controller.dto.response.user.UserResponse;
 import com.mirandasidney.pdv.api.domain.User;
 import com.mirandasidney.pdv.api.mapper.UserMapper;
@@ -22,7 +22,7 @@ import java.util.Set;
 @AllArgsConstructor(onConstructor = @__(@Autowired))
 public class UserServiceImpl implements IUserService {
 
-    private static UserMapper mapper = UserMapper.INSTANCE;
+    private static final UserMapper mapper = UserMapper.INSTANCE;
 
     private UserRepository repository;
 
@@ -61,7 +61,7 @@ public class UserServiceImpl implements IUserService {
     }
 
     @Override
-    public ResponseEntity<UserResponse> update(UserPutRequestByUser userUpdate, Long id) {
+    public ResponseEntity<UserResponse> update(UserPutRequest userUpdate, Long id) {
         return repository.findById(id)
                 .map(user -> {
                     BeanUtils.copyProperties(userUpdate, user);

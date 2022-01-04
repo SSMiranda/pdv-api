@@ -1,7 +1,7 @@
 package com.mirandasidney.pdv.api.controller;
 
 import com.mirandasidney.pdv.api.controller.dto.request.user.UserPostRequestBody;
-import com.mirandasidney.pdv.api.controller.dto.request.user.UserPutRequestByUser;
+import com.mirandasidney.pdv.api.controller.dto.request.user.UserPutRequest;
 import com.mirandasidney.pdv.api.controller.dto.response.user.UserResponse;
 import com.mirandasidney.pdv.api.service.interfaces.IUserService;
 import io.swagger.annotations.Api;
@@ -61,7 +61,7 @@ public class UserController {
     @PutMapping(value = "/{id}",
             consumes = MediaType.APPLICATION_JSON_VALUE,
             produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<UserResponse> update(@PathVariable("id") final Long id, @RequestBody final UserPutRequestByUser userUpdate) {
+    public ResponseEntity<UserResponse> update(@PathVariable("id") final Long id, @RequestBody final UserPutRequest userUpdate) {
         return service.update(userUpdate, id);
     }
 }

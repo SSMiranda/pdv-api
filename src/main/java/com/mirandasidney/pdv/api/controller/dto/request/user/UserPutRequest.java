@@ -7,7 +7,11 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 @Data
-public class UserPutRequestByAdmin {
-    private Long id;
+public class UserPutRequest {
+    private String firstname;
+    private String lastname;
+    private String username;
+    private String password;
     private String profile;
+    private String phone;
 }
