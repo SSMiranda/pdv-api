@@ -5,7 +5,6 @@ import com.mirandasidney.pdv.api.controller.dto.request.user.UserPutRequest;
 import com.mirandasidney.pdv.api.controller.dto.response.user.UserResponse;
 import com.mirandasidney.pdv.api.domain.Profile;
 import com.mirandasidney.pdv.api.domain.User;
-import com.mirandasidney.pdv.api.mapper.ProfileMapper;
 import com.mirandasidney.pdv.api.mapper.UserMapper;
 import com.mirandasidney.pdv.api.repository.ProfileRepository;
 import com.mirandasidney.pdv.api.repository.UserRepository;
@@ -26,7 +25,6 @@ import java.util.Set;
 public class UserServiceImpl implements IUserService {
 
     private static final UserMapper mapper = UserMapper.INSTANCE;
-    private static final ProfileMapper profileMapper = ProfileMapper.INSTANCE;
 
     private UserRepository repository;
     private ProfileRepository profileRepository;
@@ -39,7 +37,7 @@ public class UserServiceImpl implements IUserService {
                 .buildAndExpand(user.getUsername())
                 .toUri();
         Optional<Profile> profile = profileRepository.findById(user.getProfile().getId());
-        if(profile.isPresent()){
+        if (profile.isPresent()) {
             User newUser = mapper.toUser(user);
             newUser.setProfile(profile.get());
             User savedUser = repository.save(newUser);

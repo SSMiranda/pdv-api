@@ -2,8 +2,10 @@ package com.mirandasidney.pdv.api.service;
 
 import com.mirandasidney.pdv.api.controller.dto.request.product.ProductRequestBody;
 import com.mirandasidney.pdv.api.controller.dto.response.product.ProductResponse;
+import com.mirandasidney.pdv.api.domain.Category;
 import com.mirandasidney.pdv.api.domain.Product;
 import com.mirandasidney.pdv.api.mapper.ProductMapper;
+import com.mirandasidney.pdv.api.repository.CategoryRepository;
 import com.mirandasidney.pdv.api.repository.ProductRepository;
 import com.mirandasidney.pdv.api.service.interfaces.IProductService;
 import lombok.AllArgsConstructor;
@@ -23,6 +25,7 @@ public class ProductServiceImpl implements IProductService {
 
     private static final ProductMapper mapper = ProductMapper.INSTANCE;
     private ProductRepository repository;
+    private CategoryRepository categoryRepository;
 
     @Override
     public ResponseEntity<ProductResponse> save(ProductRequestBody product) {
@@ -31,9 +34,14 @@ public class ProductServiceImpl implements IProductService {
                 .path("/api/v1/products/{id}")
                 .buildAndExpand(product)
                 .toUri();
-        Product savedProduct = repository.save(mapper.toModel(product));
-
-        return ResponseEntity.created(uri).body(mapper.toDto(repository.save(savedProduct)));
+        Optional<Category> category = categoryRepository.findById(product.getCategory().getId());
+        if (category.isPresent()) {
+            Product newProduct = mapper.toModel(product);
+            newProduct.setCategory(category.get());
+            Product savedProduct = repository.save(newProduct);
+            return ResponseEntity.created(uri).body(mapper.toDto(repository.save(savedProduct)));
+        }
+        return ResponseEntity.badRequest().build();
     }
 
     @Override

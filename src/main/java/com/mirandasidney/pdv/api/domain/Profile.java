@@ -31,9 +31,12 @@ public class Profile implements Serializable {
 
     @Getter
     @Setter
+    @Column(unique = true)
     private String name;
 
-    @OneToMany(fetch = FetchType.LAZY, mappedBy = "profile")
+    @Getter
+    @Setter
+    @OneToMany(mappedBy = "profile", fetch = FetchType.EAGER)
     private Set<User> users;
 
 }

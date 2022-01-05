@@ -1,14 +1,11 @@
 package com.mirandasidney.pdv.api.domain;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-import org.hibernate.annotations.Fetch;
-import org.hibernate.annotations.FetchMode;
 
-import javax.persistence.CascadeType;
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
@@ -31,13 +28,12 @@ public class Category implements Serializable {
 
     @Getter
     @Setter
+    @Column(unique = true)
     private String name;
 
     @Getter
     @Setter
-    @JsonIgnore
-    @Fetch(FetchMode.JOIN)
-    @OneToMany(mappedBy = "category", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    @OneToMany(mappedBy = "category", fetch = FetchType.EAGER)
     private Set<Product> products;
 
 }

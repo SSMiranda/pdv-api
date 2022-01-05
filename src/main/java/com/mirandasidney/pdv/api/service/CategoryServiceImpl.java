@@ -53,7 +53,7 @@ public class CategoryServiceImpl implements ICategoryService {
     @Override
     public ResponseEntity<Void> removeCategory(Long id) {
         Optional<Category> category = repository.findById(id);
-        if (category.isPresent()) {
+        if (category.isPresent() && category.get().getProducts().isEmpty()) {
             repository.delete(category.get());
             return ResponseEntity.noContent().build();
         }

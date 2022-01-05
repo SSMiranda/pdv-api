@@ -52,7 +52,7 @@ public class ProfileServiceImpl implements IProfileService {
     @Override
     public ResponseEntity<Void> removeProfile(Long id) {
         Optional<Profile> profile = repository.findById(id);
-        if (profile.isPresent()) {
+        if (profile.isPresent() && profile.get().getUsers().isEmpty()) {
             repository.delete(profile.get());
             return ResponseEntity.noContent().build();
         }
