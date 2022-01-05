@@ -1,6 +1,6 @@
 package com.mirandasidney.pdv.api.service;
 
-import com.mirandasidney.pdv.api.controller.dto.request.category.CategoryRequestBody;
+import com.mirandasidney.pdv.api.controller.dto.request.category.CategoryPostRequest;
 import com.mirandasidney.pdv.api.controller.dto.response.category.CategoryResponse;
 import com.mirandasidney.pdv.api.controller.dto.response.category.CategoryWithListProductResponse;
 import com.mirandasidney.pdv.api.domain.Category;
@@ -26,7 +26,7 @@ public class CategoryServiceImpl implements ICategoryService {
     private final CategoryRepository repository;
 
     @Override
-    public ResponseEntity<CategoryResponse> save(CategoryRequestBody newCategory) {
+    public ResponseEntity<CategoryResponse> save(CategoryPostRequest newCategory) {
         URI uri = ServletUriComponentsBuilder
                 .fromCurrentRequest()
                 .path("/api/v1/categories/{id}")
@@ -61,7 +61,7 @@ public class CategoryServiceImpl implements ICategoryService {
     }
 
     @Override
-    public ResponseEntity<CategoryResponse> update(CategoryRequestBody categoryRequest, Long id) {
+    public ResponseEntity<CategoryResponse> update(CategoryPostRequest categoryRequest, Long id) {
         return repository.findById(id)
                 .map(category -> {
                     BeanUtils.copyProperties(categoryRequest, category);

@@ -1,10 +1,14 @@
 package com.mirandasidney.pdv.api.service;
 
+import com.mirandasidney.pdv.api.controller.dto.request.profile.ProfilePostRequest;
 import com.mirandasidney.pdv.api.controller.dto.request.user.UserPostRequestBody;
 import com.mirandasidney.pdv.api.controller.dto.request.user.UserPutRequest;
 import com.mirandasidney.pdv.api.controller.dto.response.user.UserResponse;
+import com.mirandasidney.pdv.api.domain.Profile;
 import com.mirandasidney.pdv.api.domain.User;
+import com.mirandasidney.pdv.api.mapper.ProfileMapper;
 import com.mirandasidney.pdv.api.mapper.UserMapper;
+import com.mirandasidney.pdv.api.repository.ProfileRepository;
 import com.mirandasidney.pdv.api.repository.UserRepository;
 import com.mirandasidney.pdv.api.service.interfaces.IUserService;
 import lombok.AllArgsConstructor;
@@ -23,8 +27,10 @@ import java.util.Set;
 public class UserServiceImpl implements IUserService {
 
     private static final UserMapper mapper = UserMapper.INSTANCE;
+    private static final ProfileMapper profileMapper = ProfileMapper.INSTANCE;
 
     private UserRepository repository;
+    private ProfileRepository profileRepository;
 
     @Override
     public ResponseEntity<UserResponse> save(UserPostRequestBody user) {
@@ -33,9 +39,15 @@ public class UserServiceImpl implements IUserService {
                 .path("/api/v1/{username}")
                 .buildAndExpand(user.getUsername())
                 .toUri();
-        User savedUser = repository.save(mapper.toUser(user));
+        Optional<Profile> profile = profileRepository.findById(user.getProfile().getId());
+        if(profile.isPresent()){
+            User newUser = mapper.toUser(user);
+            newUser.setProfile(profile.get());
+            User savedUser = repository.save(newUser);
+            return ResponseEntity.created(uri).body(mapper.toUserResponse(repository.save(savedUser)));
+        }
 
-        return ResponseEntity.created(uri).body(mapper.toUserResponse(repository.save(savedUser)));
+        return ResponseEntity.badRequest().build();
     }
 
     @Override

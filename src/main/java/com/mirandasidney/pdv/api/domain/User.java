@@ -11,6 +11,8 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 import java.io.Serializable;
 
@@ -21,7 +23,7 @@ import java.io.Serializable;
 public class User implements Serializable {
 
     private static final long serialVersionUID = 1L;
-    private static final Boolean STATUS = true  ;
+    private static final Boolean STATUS = true;
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -31,22 +33,22 @@ public class User implements Serializable {
 
     @Getter
     @Setter
-    @Column(name = "FIRSTNAME")
+    @Column(name = "FIRSTNAME", nullable = false)
     private String firstname;
 
     @Getter
     @Setter
-    @Column(name = "LASTNAME")
+    @Column(name = "LASTNAME", nullable = false)
     private String lastname;
 
     @Getter
     @Setter
-    @Column(name = "USER_NAME")
+    @Column(name = "USER_NAME", nullable = false)
     private String username;
 
     @Getter
     @Setter
-    @Column(name = "PASSWORD")
+    @Column(name = "PASSWORD", nullable = false)
     private String password;
 
     @Getter
@@ -56,8 +58,9 @@ public class User implements Serializable {
 
     @Getter
     @Setter
-    @Column(name = "PROFILE")
-    private String profile;
+    @ManyToOne
+    @JoinColumn(name = "PROFILE_ID", nullable = false)
+    private Profile profile;
 
     @Getter
     @Setter

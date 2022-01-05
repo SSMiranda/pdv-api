@@ -1,8 +1,11 @@
 package com.mirandasidney.pdv.api.controller.dto.response.user;
 
+import com.mirandasidney.pdv.api.controller.dto.response.profile.ProfileResponse;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+
+import java.util.List;
 
 @AllArgsConstructor
 @NoArgsConstructor
@@ -13,7 +16,7 @@ public class UserResponse {
     private String lastname;
     private String username;
     private String phone;
-    private String profile;
+    private ProfileResponse profile;
     private String createdAt;
     private String status;
 }

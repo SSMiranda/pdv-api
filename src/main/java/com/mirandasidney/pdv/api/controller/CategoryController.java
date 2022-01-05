@@ -1,7 +1,7 @@
 package com.mirandasidney.pdv.api.controller;
 
 
-import com.mirandasidney.pdv.api.controller.dto.request.category.CategoryRequestBody;
+import com.mirandasidney.pdv.api.controller.dto.request.category.CategoryPostRequest;
 import com.mirandasidney.pdv.api.controller.dto.response.category.CategoryResponse;
 import com.mirandasidney.pdv.api.controller.dto.response.category.CategoryWithListProductResponse;
 import com.mirandasidney.pdv.api.service.interfaces.ICategoryService;
@@ -35,7 +35,7 @@ public class CategoryController {
 
     @ApiOperation(value = "Cadastra a categoria de um produto")
     @PostMapping(consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<CategoryResponse> save(@Valid @RequestBody final CategoryRequestBody category) {
+    public ResponseEntity<CategoryResponse> save(@Valid @RequestBody final CategoryPostRequest category) {
         return service.save(category);
     }
 
@@ -61,7 +61,7 @@ public class CategoryController {
     @PutMapping(value = "/{id}",
             consumes = MediaType.APPLICATION_JSON_VALUE,
             produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<CategoryResponse> update(@PathVariable("id") final Long id, @RequestBody final CategoryRequestBody category) {
+    public ResponseEntity<CategoryResponse> update(@PathVariable("id") final Long id, @RequestBody final CategoryPostRequest category) {
         return service.update(category, id);
     }
 }
