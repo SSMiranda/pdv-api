@@ -1,6 +1,5 @@
 package com.mirandasidney.pdv.api.service;
 
-import com.mirandasidney.pdv.api.controller.dto.request.profile.ProfilePostRequest;
 import com.mirandasidney.pdv.api.controller.dto.request.user.UserPostRequestBody;
 import com.mirandasidney.pdv.api.controller.dto.request.user.UserPutRequest;
 import com.mirandasidney.pdv.api.controller.dto.response.user.UserResponse;
