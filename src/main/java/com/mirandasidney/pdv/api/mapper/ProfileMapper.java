@@ -4,6 +4,7 @@ import com.mirandasidney.pdv.api.controller.dto.request.profile.ProfileRequest;
 import com.mirandasidney.pdv.api.controller.dto.response.profile.ProfileResponse;
 import com.mirandasidney.pdv.api.domain.Profile;
 import org.mapstruct.Mapper;
+import org.mapstruct.Mapping;
 import org.mapstruct.factory.Mappers;
 
 import java.util.Set;
@@ -16,8 +17,6 @@ public interface ProfileMapper {
     Profile toModel(ProfileRequest profile);
 
     ProfileResponse toDto(Profile profile);
-
-//    ProfileResponse toProfileListDto(Profile profile);
 
     Set<ProfileResponse> toProfileListDto(Set<Profile> profiles);
 
