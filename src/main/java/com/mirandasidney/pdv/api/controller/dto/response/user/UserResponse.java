@@ -5,8 +5,6 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import java.util.List;
-
 @AllArgsConstructor
 @NoArgsConstructor
 @Data
@@ -18,5 +16,5 @@ public class UserResponse {
     private String phone;
     private ProfileResponse profile;
     private String createdAt;
-    private String status;
+    private Boolean status;
 }
