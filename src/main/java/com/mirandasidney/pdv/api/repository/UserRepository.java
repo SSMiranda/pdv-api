@@ -1,16 +1,16 @@
 package com.mirandasidney.pdv.api.repository;
 
 import com.mirandasidney.pdv.api.domain.User;
-import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.repository.PagingAndSortingRepository;
 import org.springframework.stereotype.Repository;
 
 import java.util.HashSet;
 import java.util.Set;
 
 @Repository
-public interface UserRepository extends JpaRepository<User, Long> {
+public interface UserRepository extends PagingAndSortingRepository<User, Long> {
 
-    default Set<User> findAllSet() {
+    default Set<User> findAll() {
         return new HashSet<>(this.findAll());
     }
 }

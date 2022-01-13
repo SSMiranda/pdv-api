@@ -12,13 +12,14 @@ import com.mirandasidney.pdv.api.service.interfaces.IUserService;
 import lombok.AllArgsConstructor;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import java.net.URI;
 import java.util.Optional;
-import java.util.Set;
 
 @Service
 @AllArgsConstructor(onConstructor = @__(@Autowired))
@@ -55,8 +56,10 @@ public class UserServiceImpl implements IUserService {
     }
 
     @Override
-    public ResponseEntity<Set<UserResponse>> findAll() {
-        return ResponseEntity.ok().body(mapper.toUserResponse(repository.findAllSet()));
+    public Page<UserResponse> findAll(int page, int size) {
+        PageRequest pageRequest = PageRequest.of(page, size);
+        Page<User> results = this.repository.findAll(pageRequest);
+        return results.map(UserResponse::new);
     }
 
     @Override
