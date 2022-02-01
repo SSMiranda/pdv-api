@@ -10,5 +10,6 @@ import lombok.NoArgsConstructor;
 public class ProfileResponse {
 
     private Long id;
-    private String name;
+    private String profileName;
+    private String description;
 }

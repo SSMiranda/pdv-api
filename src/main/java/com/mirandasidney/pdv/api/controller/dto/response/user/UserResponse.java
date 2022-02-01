@@ -25,7 +25,7 @@ public class UserResponse {
         this.lastname = user.getLastname();
         this.username = user.getUsername();
         this.phone = user.getPhone();
-        this.profile = new ProfileResponse(user.getProfile().getId(), user.getProfile().getName());
+        this.profile = new ProfileResponse(user.getProfile().getId(), user.getProfile().getProfileName(), user.getProfile().getDescription());
         this.createdAt = user.getCreatedAt();
         this.status = user.getStatus();
     }

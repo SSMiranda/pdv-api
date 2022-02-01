@@ -10,5 +10,6 @@ import lombok.NoArgsConstructor;
 public class ProfileRequest {
 
     private Long id;
-    private String name;
+    private String profileName;
+    private String description;
 }
