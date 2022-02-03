@@ -1,5 +1,6 @@
 package com.mirandasidney.pdv.api.domain;
 
+import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.RequiredArgsConstructor;
@@ -7,6 +8,7 @@ import lombok.Setter;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -15,6 +17,7 @@ import java.util.Set;
 
 @Entity
 @NoArgsConstructor
+@AllArgsConstructor
 public class Module {
 
     @Id
@@ -32,7 +35,7 @@ public class Module {
     @Setter
     private String description;
 
-    @OneToMany(mappedBy = "module")
+    @OneToMany(mappedBy = "module", fetch = FetchType.EAGER)
     @Getter
     @Setter
     private Set<Functionality> functionalities;

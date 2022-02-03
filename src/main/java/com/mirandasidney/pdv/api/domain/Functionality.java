@@ -1,6 +1,5 @@
 package com.mirandasidney.pdv.api.domain;
 
-import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -33,6 +32,8 @@ public class Functionality {
     @Setter
     private boolean canEdit;
 
+    @Getter
+    @Setter
     @ManyToOne
     @JoinColumn(name = "MODULE_ID", nullable = false)
     private Module module;

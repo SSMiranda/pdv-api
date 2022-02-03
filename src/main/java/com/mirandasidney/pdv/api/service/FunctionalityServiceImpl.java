@@ -16,17 +16,25 @@ import lombok.AllArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.Optional;
+
 @Service
 @AllArgsConstructor(onConstructor = @__(@Autowired))
 public class FunctionalityServiceImpl implements IFunctionalityService {
 
     private static final FunctionalityMapper mapper = FunctionalityMapper.INSTANCE;
     private final FunctionalityRepository repository;
+    private final ModuleRepository moduleRepository;
 
     @Override
     public FunctionalityResponse save(FunctionalityRequest functionalityRequest) {
-        Functionality functionality = mapper.toDomain(functionalityRequest);
-        return mapper.toDto(repository.save(functionality));
+        Optional<Module> module = moduleRepository.findById((functionalityRequest.getModule().getId()));
+        if(module.isPresent()){
+            Functionality functionality = mapper.toDomain(functionalityRequest);
+            functionality.setModule(module.get());
+            return mapper.toDto(repository.save(functionality));
+        }
+        return null;
     }
 
 //    @Override

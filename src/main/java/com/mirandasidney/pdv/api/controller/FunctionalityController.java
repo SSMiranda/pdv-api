@@ -1,6 +1,5 @@
 package com.mirandasidney.pdv.api.controller;
 
-
 import com.mirandasidney.pdv.api.controller.dto.request.functionality.FunctionalityRequest;
 import com.mirandasidney.pdv.api.controller.dto.response.FunctionalityResponse;
 import com.mirandasidney.pdv.api.service.interfaces.IFunctionalityService;
@@ -34,10 +33,12 @@ public class FunctionalityController {
     public ResponseEntity<FunctionalityResponse> save(@Valid @RequestBody final FunctionalityRequest functionality) {
         URI uri = ServletUriComponentsBuilder
                 .fromCurrentRequest()
-                .path("/api/v1/modules/{id}")
-                .buildAndExpand(functionality)
+                .path("/api/v1/functionalities/{name}")
+                .buildAndExpand(functionality.getName())
                 .toUri();
         FunctionalityResponse functionalityResponse = service.save(functionality);
-        return ResponseEntity.created(uri).body(functionalityResponse);
+        if (functionalityResponse != null)
+            return ResponseEntity.created(uri).body(functionalityResponse);
+        return ResponseEntity.badRequest().build();
     }
 }
