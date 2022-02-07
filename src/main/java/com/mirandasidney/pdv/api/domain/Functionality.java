@@ -1,5 +1,6 @@
 package com.mirandasidney.pdv.api.domain;
 
+import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -13,6 +14,7 @@ import javax.persistence.ManyToOne;
 
 @Entity
 @NoArgsConstructor
+@AllArgsConstructor
 public class Functionality {
 
     @Id

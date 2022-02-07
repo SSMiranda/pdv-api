@@ -17,5 +17,4 @@ public interface FunctionalityMapper {
     FunctionalityResponse toDto(Functionality functionality);
 
     Set<FunctionalityResponse> toDto(Set<Functionality> functionality);
-
 }

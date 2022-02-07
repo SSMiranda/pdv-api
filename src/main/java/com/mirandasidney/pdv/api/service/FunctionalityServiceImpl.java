@@ -2,7 +2,6 @@ package com.mirandasidney.pdv.api.service;
 
 import com.mirandasidney.pdv.api.controller.dto.request.functionality.FunctionalityRequest;
 import com.mirandasidney.pdv.api.controller.dto.response.functionality.FunctionalityResponse;
-import com.mirandasidney.pdv.api.controller.dto.response.profile.ProfileResponse;
 import com.mirandasidney.pdv.api.domain.Functionality;
 import com.mirandasidney.pdv.api.domain.Module;
 import com.mirandasidney.pdv.api.mapper.FunctionalityMapper;
@@ -13,7 +12,9 @@ import lombok.AllArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
+import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
+import java.net.URI;
 import java.util.Optional;
 import java.util.Set;
 
@@ -26,27 +27,42 @@ public class FunctionalityServiceImpl implements IFunctionalityService {
     private final ModuleRepository moduleRepository;
 
     @Override
-    public FunctionalityResponse save(FunctionalityRequest functionalityRequest) {
+    public ResponseEntity<FunctionalityResponse> save(FunctionalityRequest functionalityRequest) {
         Optional<Module> module = moduleRepository.findById((functionalityRequest.getModule().getId()));
-        if(module.isPresent()){
+        if (module.isPresent()) {
             Functionality functionality = mapper.toDomain(functionalityRequest);
             functionality.setModule(module.get());
-            return mapper.toDto(repository.save(functionality));
+            URI uri = ServletUriComponentsBuilder
+                    .fromCurrentRequest()
+                    .path("/api/v1/functionalities/{name}")
+                    .buildAndExpand(functionality.getName())
+                    .toUri();
+
+            final Functionality saved = repository.save(functionality);
+
+            return ResponseEntity.created(uri).body(mapper.toDto(saved));
         }
-        return null;
+        return ResponseEntity.badRequest().build();
     }
 
     @Override
-    public Set<FunctionalityResponse> listAllFunctionality() {
-        return mapper.toDto(repository.findAllSet());
+    public ResponseEntity<Set<FunctionalityResponse>> listAllFunctionality() {
+        final Set<Functionality> list = repository.findAllSet();
+
+        if (!list.isEmpty()) {
+            return ResponseEntity.ok().body(mapper.toDto(list));
+        }
+        return ResponseEntity.badRequest().build();
     }
 
-//    @Override
-//    public ResponseEntity<ProfileResponse> findProfileById(Long id) {
-//        return repository.findById(id)
-//                .map(profile -> ResponseEntity.ok().body(mapper.toDto(profile)))
-//                .orElse(ResponseEntity.notFound().build());
-//    }
+    @Override
+    public ResponseEntity<FunctionalityResponse> findFunctionalityById(Long id) {
+        return this.repository.findById(id)
+                .map(functionality -> ResponseEntity.ok().body(mapper.toDto(functionality)))
+                .orElse(ResponseEntity.notFound().build());
+    }
+
+
 //
 //    @Override
 //    public ResponseEntity<Void> removeProfile(Long id) {
