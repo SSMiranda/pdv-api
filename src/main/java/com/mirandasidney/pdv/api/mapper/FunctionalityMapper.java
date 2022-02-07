@@ -6,6 +6,8 @@ import com.mirandasidney.pdv.api.domain.Functionality;
 import org.mapstruct.Mapper;
 import org.mapstruct.factory.Mappers;
 
+import java.util.Set;
+
 @Mapper(componentModel = "spring")
 public interface FunctionalityMapper {
     FunctionalityMapper INSTANCE = Mappers.getMapper(FunctionalityMapper.class);
@@ -13,5 +15,7 @@ public interface FunctionalityMapper {
     Functionality toDomain(FunctionalityRequest dto);
 
     FunctionalityResponse toDto(Functionality functionality);
+
+    Set<FunctionalityResponse> toDto(Set<Functionality> functionality);
 
 }

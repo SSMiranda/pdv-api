@@ -8,5 +8,6 @@ import java.util.Set;
 public interface IModuleService {
 
     ModuleResponse save(ModuleRequest module);
+
     Set<ModuleResponse> listAllModules();
 }

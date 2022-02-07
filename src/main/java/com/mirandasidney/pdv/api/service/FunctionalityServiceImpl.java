@@ -2,6 +2,7 @@ package com.mirandasidney.pdv.api.service;
 
 import com.mirandasidney.pdv.api.controller.dto.request.functionality.FunctionalityRequest;
 import com.mirandasidney.pdv.api.controller.dto.response.functionality.FunctionalityResponse;
+import com.mirandasidney.pdv.api.controller.dto.response.profile.ProfileResponse;
 import com.mirandasidney.pdv.api.domain.Functionality;
 import com.mirandasidney.pdv.api.domain.Module;
 import com.mirandasidney.pdv.api.mapper.FunctionalityMapper;
@@ -10,9 +11,11 @@ import com.mirandasidney.pdv.api.repository.ModuleRepository;
 import com.mirandasidney.pdv.api.service.interfaces.IFunctionalityService;
 import lombok.AllArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import java.util.Optional;
+import java.util.Set;
 
 @Service
 @AllArgsConstructor(onConstructor = @__(@Autowired))
@@ -33,11 +36,11 @@ public class FunctionalityServiceImpl implements IFunctionalityService {
         return null;
     }
 
-//    @Override
-//    public ResponseEntity<Set<ProfileResponse>> findAll() {
-//        return ResponseEntity.ok().body(mapper.toProfileListDto(repository.findAllSet()));
-//    }
-//
+    @Override
+    public Set<FunctionalityResponse> listAllFunctionality() {
+        return mapper.toDto(repository.findAllSet());
+    }
+
 //    @Override
 //    public ResponseEntity<ProfileResponse> findProfileById(Long id) {
 //        return repository.findById(id)

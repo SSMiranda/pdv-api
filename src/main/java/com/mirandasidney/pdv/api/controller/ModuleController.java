@@ -46,8 +46,6 @@ public class ModuleController {
     @GetMapping(produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<Set<ModuleResponse>> listAllModules() {
         final Set<ModuleResponse> moduleResponses = service.listAllModules();
-        System.out.println(moduleResponses.stream().map(ModuleResponse::getName));
-
         if(!moduleResponses.isEmpty()) {
             return ResponseEntity.ok().body(moduleResponses);
         }
