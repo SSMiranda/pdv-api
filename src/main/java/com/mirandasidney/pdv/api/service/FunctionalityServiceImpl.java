@@ -52,7 +52,7 @@ public class FunctionalityServiceImpl implements IFunctionalityService {
         if (!list.isEmpty()) {
             return ResponseEntity.ok().body(mapper.toDto(list));
         }
-        return ResponseEntity.badRequest().build();
+        return ResponseEntity.noContent().build();
     }
 
     @Override
