@@ -1,7 +1,7 @@
 package com.mirandasidney.pdv.api.controller;
 
 import com.mirandasidney.pdv.api.controller.dto.request.functionality.FunctionalityRequest;
-import com.mirandasidney.pdv.api.controller.dto.response.FunctionalityResponse;
+import com.mirandasidney.pdv.api.controller.dto.response.functionality.FunctionalityResponse;
 import com.mirandasidney.pdv.api.service.interfaces.IFunctionalityService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;

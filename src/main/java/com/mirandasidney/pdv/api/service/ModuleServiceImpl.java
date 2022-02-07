@@ -2,13 +2,17 @@ package com.mirandasidney.pdv.api.service;
 
 import com.mirandasidney.pdv.api.controller.dto.request.module.ModuleRequest;
 import com.mirandasidney.pdv.api.controller.dto.response.module.ModuleResponse;
+import com.mirandasidney.pdv.api.controller.dto.response.profile.ProfileResponse;
 import com.mirandasidney.pdv.api.domain.Module;
 import com.mirandasidney.pdv.api.mapper.ModuleMapper;
 import com.mirandasidney.pdv.api.repository.ModuleRepository;
 import com.mirandasidney.pdv.api.service.interfaces.IModuleService;
 import lombok.AllArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
+
+import java.util.Set;
 
 @Service
 @AllArgsConstructor(onConstructor = @__(@Autowired))
@@ -23,11 +27,11 @@ public class ModuleServiceImpl implements IModuleService {
         return mapper.toDto(repository.save(module));
     }
 
-//    @Override
-//    public ResponseEntity<Set<ProfileResponse>> findAll() {
-//        return ResponseEntity.ok().body(mapper.toProfileListDto(repository.findAllSet()));
-//    }
-//
+    @Override
+    public Set<ModuleResponse> listAllModules() {
+        return mapper.toDto(repository.findAllSet());
+    }
+
 //    @Override
 //    public ResponseEntity<ProfileResponse> findProfileById(Long id) {
 //        return repository.findById(id)

@@ -35,9 +35,9 @@ public class Module {
     @Setter
     private String description;
 
-    @OneToMany(mappedBy = "module", fetch = FetchType.EAGER)
     @Getter
     @Setter
+    @OneToMany(mappedBy = "module", fetch = FetchType.EAGER)
     private Set<Functionality> functionalities;
 
 }

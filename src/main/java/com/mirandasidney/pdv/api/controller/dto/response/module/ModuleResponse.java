@@ -1,6 +1,6 @@
 package com.mirandasidney.pdv.api.controller.dto.response.module;
 
-import com.mirandasidney.pdv.api.controller.dto.response.FunctionalityResponse;
+import com.mirandasidney.pdv.api.controller.dto.response.functionality.FunctionalityResponse;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;

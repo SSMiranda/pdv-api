@@ -6,6 +6,8 @@ import com.mirandasidney.pdv.api.domain.Module;
 import org.mapstruct.Mapper;
 import org.mapstruct.factory.Mappers;
 
+import java.util.Set;
+
 @Mapper(componentModel = "spring")
 public interface ModuleMapper {
     ModuleMapper INSTANCE = Mappers.getMapper(ModuleMapper.class);
@@ -13,5 +15,7 @@ public interface ModuleMapper {
     Module toDomain(ModuleRequest dto);
 
     ModuleResponse toDto(Module module);
+
+    Set<ModuleResponse> toDto(Set<Module> module);
 
 }

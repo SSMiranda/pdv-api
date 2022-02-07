@@ -1,17 +1,13 @@
 package com.mirandasidney.pdv.api.service;
 
 import com.mirandasidney.pdv.api.controller.dto.request.functionality.FunctionalityRequest;
-import com.mirandasidney.pdv.api.controller.dto.request.module.ModuleRequest;
-import com.mirandasidney.pdv.api.controller.dto.response.FunctionalityResponse;
-import com.mirandasidney.pdv.api.controller.dto.response.module.ModuleResponse;
+import com.mirandasidney.pdv.api.controller.dto.response.functionality.FunctionalityResponse;
 import com.mirandasidney.pdv.api.domain.Functionality;
 import com.mirandasidney.pdv.api.domain.Module;
 import com.mirandasidney.pdv.api.mapper.FunctionalityMapper;
-import com.mirandasidney.pdv.api.mapper.ModuleMapper;
 import com.mirandasidney.pdv.api.repository.FunctionalityRepository;
 import com.mirandasidney.pdv.api.repository.ModuleRepository;
 import com.mirandasidney.pdv.api.service.interfaces.IFunctionalityService;
-import com.mirandasidney.pdv.api.service.interfaces.IModuleService;
 import lombok.AllArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;

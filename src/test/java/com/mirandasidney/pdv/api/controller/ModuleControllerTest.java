@@ -1,26 +1,16 @@
 package com.mirandasidney.pdv.api.controller;
 
-import com.mirandasidney.pdv.api.controller.dto.request.module.ModuleRequest;
-import com.mirandasidney.pdv.api.controller.dto.response.FunctionalityResponse;
-import com.mirandasidney.pdv.api.controller.dto.response.module.ModuleResponse;
-import com.mirandasidney.pdv.api.domain.Functionality;
 import com.mirandasidney.pdv.api.domain.Module;
 import com.mirandasidney.pdv.api.repository.ModuleRepository;
-import com.mirandasidney.pdv.api.service.ModuleServiceImpl;
-import com.mirandasidney.pdv.api.service.interfaces.IModuleService;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mockito;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.MediaType;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 import org.springframework.test.web.servlet.MockMvc;
-
-import java.util.Set;
 
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
