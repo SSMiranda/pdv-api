@@ -12,7 +12,6 @@ import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMock
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.MediaType;
-import org.springframework.http.ResponseEntity;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
@@ -22,7 +21,10 @@ import java.util.Set;
 
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.when;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
+import static org.springframework.http.ResponseEntity.created;
+import static org.springframework.http.ResponseEntity.ok;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
 @SpringBootTest
@@ -48,7 +50,7 @@ class FunctionalityControllerTest {
                 .path("/api/v1/functionalities/{name}")
                 .buildAndExpand(functionality.getName())
                 .toUri();
-        when(service.save(any(FunctionalityRequest.class))).thenReturn(ResponseEntity.created(uri).body(response));
+        when(service.save(any(FunctionalityRequest.class))).thenReturn(created(uri).body(response));
 
         mockMvc.perform(post("/api/v1/functionalities")
                         .contentType(MediaType.APPLICATION_JSON)
@@ -69,9 +71,9 @@ class FunctionalityControllerTest {
     void must_Return_A_Functionality_When_Given_An_Id() throws Exception {
         final FunctionalityResponse func = new FunctionalityResponse(1L, "teste", "teste", true, false);
 
-        when(service.findFunctionalityById(any(Long.class))).thenReturn(ResponseEntity.ok().body(func));
+        when(service.findFunctionalityById(any(Long.class))).thenReturn(ok().body(func));
         mockMvc.perform(get("/api/v1/functionalities/1")
-                .contentType(MediaType.APPLICATION_JSON))
+                        .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().is(200))
                 .andExpect(jsonPath("$.id").value(1L))
                 .andExpect(jsonPath("$.name").value("teste"))
@@ -90,7 +92,7 @@ class FunctionalityControllerTest {
         listHashSet.add(new FunctionalityResponse(3L, "teste", "teste", true, false));
         listHashSet.add(new FunctionalityResponse(4L, "teste", "teste", true, false));
 
-        when(service.listAllFunctionality()).thenReturn((ResponseEntity.ok().body(listHashSet)));
+        when(service.listAllFunctionality()).thenReturn((ok().body(listHashSet)));
 
         mockMvc.perform(get("/api/v1/functionalities").contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().is(200))

@@ -15,10 +15,8 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
-import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import javax.validation.Valid;
-import java.net.URI;
 import java.util.Set;
 
 @CrossOrigin(origins = "*")
@@ -33,23 +31,13 @@ public class ModuleController {
     @ApiOperation(value = "Cadastra um módulo")
     @PostMapping(name = "Cadastra um novo módulo", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<ModuleResponse> save(@Valid @RequestBody final ModuleRequest module) {
-        URI uri = ServletUriComponentsBuilder
-                .fromCurrentRequest()
-                .path("/api/v1/modules/{id}")
-                .buildAndExpand(module)
-                .toUri();
-        ModuleResponse moduleResponse = service.save(module);
-        return ResponseEntity.created(uri).body(moduleResponse);
+        return service.save(module);
     }
 
     @ApiOperation(value = "Exibe a lista dos módulos do sistema")
     @GetMapping(produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<Set<ModuleResponse>> listAllModules() {
-        final Set<ModuleResponse> moduleResponses = service.listAllModules();
-        if(!moduleResponses.isEmpty()) {
-            return ResponseEntity.ok().body(moduleResponses);
-        }
-        return ResponseEntity.noContent().build();
+        return service.listAllModules();
     }
 
 //    @ApiOperation(value = "Busca um usuário pelo ID")

@@ -2,7 +2,6 @@ package com.mirandasidney.pdv.api.service;
 
 import com.mirandasidney.pdv.api.controller.dto.request.module.ModuleRequest;
 import com.mirandasidney.pdv.api.controller.dto.response.module.ModuleResponse;
-import com.mirandasidney.pdv.api.controller.dto.response.profile.ProfileResponse;
 import com.mirandasidney.pdv.api.domain.Module;
 import com.mirandasidney.pdv.api.mapper.ModuleMapper;
 import com.mirandasidney.pdv.api.repository.ModuleRepository;
@@ -11,7 +10,9 @@ import lombok.AllArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
+import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
+import java.net.URI;
 import java.util.Set;
 
 @Service
@@ -22,14 +23,23 @@ public class ModuleServiceImpl implements IModuleService {
     private final ModuleRepository repository;
 
     @Override
-    public ModuleResponse save(ModuleRequest newModule) {
+    public ResponseEntity<ModuleResponse> save(ModuleRequest newModule) {
         Module module = mapper.toDomain(newModule);
-        return mapper.toDto(repository.save(module));
+        URI uri = ServletUriComponentsBuilder
+                .fromCurrentRequest()
+                .path("/api/v1/modules/{name}")
+                .buildAndExpand(module.getName())
+                .toUri();
+        return ResponseEntity.created(uri).body(mapper.toDto(repository.save(module)));
     }
 
     @Override
-    public Set<ModuleResponse> listAllModules() {
-        return mapper.toDto(repository.findAllSet());
+    public ResponseEntity<Set<ModuleResponse>> listAllModules() {
+        final Set<Module> modules = repository.findAllSet();
+        if(modules.isEmpty()) {
+            ResponseEntity.ok().body(mapper.toDto(modules));
+        }
+        return ResponseEntity.noContent().build();
     }
 
 //    @Override
