@@ -9,12 +9,14 @@ import lombok.Setter;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 import java.io.Serializable;
+import java.util.UUID;
+
+import static java.util.UUID.randomUUID;
 
 @Entity
 @AllArgsConstructor
@@ -26,10 +28,10 @@ public class User implements Serializable {
     private static final Boolean STATUS = true;
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "USER_ID")
+    @GeneratedValue
     @Getter
-    private Long userId;
+    @Column(name = "USER_ID", updatable = false, unique = true, nullable = false, columnDefinition = "uuid")
+    private UUID uuid = randomUUID();
 
     @Getter
     @Setter

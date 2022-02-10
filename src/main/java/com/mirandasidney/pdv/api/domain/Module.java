@@ -3,17 +3,19 @@ package com.mirandasidney.pdv.api.domain;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import lombok.RequiredArgsConstructor;
 import lombok.Setter;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.OneToMany;
+import javax.persistence.ManyToMany;
 import java.util.Set;
+import java.util.UUID;
+
+import static java.util.UUID.randomUUID;
 
 @Entity
 @NoArgsConstructor
@@ -21,13 +23,13 @@ import java.util.Set;
 public class Module {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "MODULE_ID")
+    @GeneratedValue
     @Getter
-    private Long id;
+    @Column(name = "MODULE_ID", updatable = false, unique = true, nullable = false, columnDefinition = "uuid")
+    private UUID uuid = randomUUID();
     @Getter
     @Setter
-    private boolean isChecked;
+    private boolean enable;
     @Getter
     @Setter
     private String name;
@@ -37,7 +39,6 @@ public class Module {
 
     @Getter
     @Setter
-    @OneToMany(mappedBy = "module", fetch = FetchType.EAGER)
-    private Set<Functionality> functionalities;
-
+    @ManyToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "modules")
+    private Set<Profile> profiles;
 }

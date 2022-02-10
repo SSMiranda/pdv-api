@@ -2,11 +2,12 @@ package com.mirandasidney.pdv.api.mapper;
 
 import com.mirandasidney.pdv.api.controller.dto.request.profile.ProfileRequest;
 import com.mirandasidney.pdv.api.controller.dto.response.profile.ProfileResponse;
+import com.mirandasidney.pdv.api.controller.dto.response.profile.ProfileResponseWithModules;
 import com.mirandasidney.pdv.api.domain.Profile;
 import org.mapstruct.Mapper;
-import org.mapstruct.Mapping;
 import org.mapstruct.factory.Mappers;
 
+import java.util.List;
 import java.util.Set;
 
 @Mapper(componentModel = "spring")
@@ -18,6 +19,8 @@ public interface ProfileMapper {
 
     ProfileResponse toDto(Profile profile);
 
-    Set<ProfileResponse> toProfileListDto(Set<Profile> profiles);
+    ProfileResponseWithModules toDtoFull(Profile profile);
+
+    Set<ProfileResponse> toProfileListDto(List<Profile> profiles);
 
 }

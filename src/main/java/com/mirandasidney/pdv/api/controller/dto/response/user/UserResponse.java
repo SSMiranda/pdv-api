@@ -10,7 +10,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @Data
 public class UserResponse {
-    private Long userId;
+    private String userId;
     private String firstname;
     private String lastname;
     private String username;
@@ -20,7 +20,7 @@ public class UserResponse {
     private Boolean status;
 
     public UserResponse(User user) {
-        this.userId = user.getUserId();
+        this.userId = user.getUserId().toString();
         this.firstname = user.getFirstname();
         this.lastname = user.getLastname();
         this.username = user.getUsername();

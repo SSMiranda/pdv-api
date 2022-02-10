@@ -10,7 +10,7 @@ import javax.validation.constraints.NotNull;
 @NoArgsConstructor
 @Data
 public class ModuleRequest {
-    private boolean isChecked;
+    private boolean enable;
     @NotNull
     private String name;
     @NotNull

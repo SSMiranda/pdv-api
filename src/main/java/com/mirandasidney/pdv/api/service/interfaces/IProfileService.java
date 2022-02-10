@@ -2,9 +2,12 @@ package com.mirandasidney.pdv.api.service.interfaces;
 
 import com.mirandasidney.pdv.api.controller.dto.request.profile.ProfileRequest;
 import com.mirandasidney.pdv.api.controller.dto.response.profile.ProfileResponse;
+import com.mirandasidney.pdv.api.controller.dto.response.profile.ProfileResponseWithModules;
 import org.springframework.http.ResponseEntity;
 
+import java.util.Map;
 import java.util.Set;
+import java.util.UUID;
 
 public interface IProfileService {
 
@@ -12,9 +15,9 @@ public interface IProfileService {
 
     ResponseEntity<Set<ProfileResponse>> findAll();
 
-    ResponseEntity<ProfileResponse> findProfileById(Long id);
+    ResponseEntity<ProfileResponse> findProfileById(UUID id);
 
-    ResponseEntity<Void> removeProfile(Long id);
+    ResponseEntity<Void> removeProfile(UUID id);
 
-    ResponseEntity<ProfileResponse> update(ProfileRequest category, Long id);
+    ResponseEntity<ProfileResponseWithModules> update(Map<Object, Object> profile, UUID id);
 }

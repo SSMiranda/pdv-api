@@ -13,6 +13,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import java.net.URI;
+import java.util.List;
 import java.util.Set;
 
 @Service
@@ -35,7 +36,7 @@ public class ModuleServiceImpl implements IModuleService {
 
     @Override
     public ResponseEntity<Set<ModuleResponse>> listAllModules() {
-        final Set<Module> modules = repository.findAllSet();
+        final List<Module> modules = repository.findAll();
         if(modules.isEmpty()) {
             ResponseEntity.ok().body(mapper.toDto(modules));
         }
