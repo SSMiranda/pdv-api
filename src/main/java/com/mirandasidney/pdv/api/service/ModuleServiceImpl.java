@@ -14,6 +14,7 @@ import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import java.net.URI;
 import java.util.List;
+import java.util.Optional;
 import java.util.Set;
 
 @Service
@@ -25,6 +26,10 @@ public class ModuleServiceImpl implements IModuleService {
 
     @Override
     public ResponseEntity<ModuleResponse> save(ModuleRequest newModule) {
+        final Optional<Module> response = repository.findByName(newModule.getName());
+        if(response.isPresent()) {
+            return ResponseEntity.badRequest().build();
+        }
         Module module = mapper.toDomain(newModule);
         URI uri = ServletUriComponentsBuilder
                 .fromCurrentRequest()

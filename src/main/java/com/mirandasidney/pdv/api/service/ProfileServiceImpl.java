@@ -3,20 +3,20 @@ package com.mirandasidney.pdv.api.service;
 import com.mirandasidney.pdv.api.controller.dto.request.profile.ProfileRequest;
 import com.mirandasidney.pdv.api.controller.dto.response.profile.ProfileResponse;
 import com.mirandasidney.pdv.api.controller.dto.response.profile.ProfileResponseWithModules;
+import com.mirandasidney.pdv.api.domain.Module;
 import com.mirandasidney.pdv.api.domain.Profile;
 import com.mirandasidney.pdv.api.mapper.ProfileMapper;
+import com.mirandasidney.pdv.api.repository.ModuleRepository;
 import com.mirandasidney.pdv.api.repository.ProfileRepository;
 import com.mirandasidney.pdv.api.service.interfaces.IProfileService;
 import lombok.AllArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
-import org.springframework.util.ReflectionUtils;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
-import java.lang.reflect.Field;
 import java.net.URI;
-import java.util.Map;
 import java.util.Optional;
 import java.util.Set;
 import java.util.UUID;
@@ -27,13 +27,18 @@ public class ProfileServiceImpl implements IProfileService {
 
     private static final ProfileMapper mapper = ProfileMapper.INSTANCE;
     private final ProfileRepository repository;
+    private final ModuleRepository moduleRepository;
 
     @Override
     public ResponseEntity<ProfileResponse> save(ProfileRequest newProfile) {
+        final Optional<Profile> response = repository.findByProfileName(newProfile.getProfileName());
+        if(response.isPresent()) {
+            return ResponseEntity.badRequest().build();
+        }
         URI uri = ServletUriComponentsBuilder
                 .fromCurrentRequest()
-                .path("/api/v1/profiles/{id}")
-                .buildAndExpand(newProfile)
+                .path("/api/v1/profiles/{profileName}")
+                .buildAndExpand(newProfile.getProfileName())
                 .toUri();
 
         Profile profile = mapper.toModel(newProfile);
@@ -63,18 +68,22 @@ public class ProfileServiceImpl implements IProfileService {
     }
 
     @Override
-    public ResponseEntity<ProfileResponseWithModules> update(Map<Object, Object> fields, UUID id) {
-        Optional<Profile> profile = repository.findById(id);
-        if (profile.isPresent()) {
-            fields.forEach((key, value) -> {
-                Field field = ReflectionUtils.findField(Profile.class, (String) key);
-                field.setAccessible(true);
-                ReflectionUtils.setField(field, profile.get(), value);
-            });
-            repository.saveAndFlush(profile.get());
-            ResponseEntity.ok().body(mapper.toDtoFull(profile.get()));
-        }
-        return ResponseEntity.notFound().build();
+    @Transactional
+    public ResponseEntity<ProfileResponseWithModules> update(ProfileRequest profileUpdate, UUID id) {
+        final Optional<Profile> profile = repository.findById(id);
+        return profile
+                .map(p -> {
+                    if(profileUpdate.getProfileName() != null) p.setProfileName(profileUpdate.getProfileName());
+                    if(profileUpdate.getDescription() != null) p.setDescription(profileUpdate.getDescription());
+                    if(profileUpdate.getModule() != null) {
+                        final Optional<Module> module = moduleRepository.findById(profileUpdate.getModule().getId());
+                        if (module.isPresent()) {
+                            p.appendModule(module.get());
+                        }
+                    }
+                    repository.save(p);
+                    return ResponseEntity.ok().body(mapper.toDtoFull(p));
+                }).orElse(ResponseEntity.badRequest().build());
     }
 
 }

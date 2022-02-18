@@ -11,7 +11,7 @@ import java.util.UUID;
 @Data
 public class ProfileResponse {
 
-    private UUID id;
+    private UUID uuid;
     private String profileName;
     private String description;
 }

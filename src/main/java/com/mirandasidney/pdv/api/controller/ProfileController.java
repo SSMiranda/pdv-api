@@ -21,7 +21,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import javax.validation.Valid;
-import java.util.Map;
 import java.util.Set;
 import java.util.UUID;
 
@@ -62,7 +61,7 @@ public class ProfileController {
     @PatchMapping(value = "/{id}",
             consumes = MediaType.APPLICATION_JSON_VALUE,
             produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<ProfileResponseWithModules> update(@RequestBody final Map<Object, Object> profile, @PathVariable("id") final UUID id) {
+    public ResponseEntity<ProfileResponseWithModules> update(@RequestBody final ProfileRequest profile, @PathVariable("id") final UUID id)  {
         return service.update(profile, id);
     }
 

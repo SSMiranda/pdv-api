@@ -1,4 +1,4 @@
-package com.mirandasidney.pdv.api.configurer;
+package com.mirandasidney.pdv.api.config;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;

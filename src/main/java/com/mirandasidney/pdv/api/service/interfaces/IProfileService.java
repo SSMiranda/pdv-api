@@ -5,7 +5,6 @@ import com.mirandasidney.pdv.api.controller.dto.response.profile.ProfileResponse
 import com.mirandasidney.pdv.api.controller.dto.response.profile.ProfileResponseWithModules;
 import org.springframework.http.ResponseEntity;
 
-import java.util.Map;
 import java.util.Set;
 import java.util.UUID;
 
@@ -19,5 +18,5 @@ public interface IProfileService {
 
     ResponseEntity<Void> removeProfile(UUID id);
 
-    ResponseEntity<ProfileResponseWithModules> update(Map<Object, Object> profile, UUID id);
+    ResponseEntity<ProfileResponseWithModules> update(ProfileRequest profile, UUID id);
 }

@@ -5,16 +5,11 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import java.io.Serializable;
-import java.util.Set;
-
 @AllArgsConstructor
 @NoArgsConstructor
 @Data
-public class ProfileRequest implements Serializable {
-
-    private Long id;
+public class ProfileRequest {
     private String profileName;
     private String description;
-    private Set<ModuleRequestById> modules;
+    private ModuleRequestById module;
 }

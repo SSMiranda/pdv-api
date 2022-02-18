@@ -16,7 +16,7 @@ public interface ModuleMapper {
 
     Module toDomain(ModuleRequest dto);
 
-    @Mapping(source = "id", target = "id", resultType = String.class)
+    @Mapping(source = "uuid", target = "uuid", resultType = String.class)
     ModuleResponse toDto(Module module);
 
     Set<ModuleResponse> toDto(List<Module> module);

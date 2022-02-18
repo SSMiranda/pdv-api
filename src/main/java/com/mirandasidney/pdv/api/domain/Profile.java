@@ -16,6 +16,7 @@ import javax.persistence.ManyToMany;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import java.io.Serializable;
+import java.util.HashSet;
 import java.util.Set;
 import java.util.UUID;
 
@@ -55,6 +56,10 @@ public class Profile implements Serializable {
             name = "modules_profile",
             joinColumns = @JoinColumn(name = "PROFILE_ID"),
             inverseJoinColumns = @JoinColumn(name = "MODULE_ID"))
-    private Set<Module> modules;
+    private Set<Module> modules = new HashSet<>();
+
+    public void appendModule(Module module) {
+        this.modules.add(module);
+    }
 
 }

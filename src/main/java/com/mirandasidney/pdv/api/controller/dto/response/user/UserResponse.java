@@ -6,11 +6,13 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.util.UUID;
+
 @AllArgsConstructor
 @NoArgsConstructor
 @Data
 public class UserResponse {
-    private String userId;
+    private UUID uuid;
     private String firstname;
     private String lastname;
     private String username;
@@ -20,12 +22,12 @@ public class UserResponse {
     private Boolean status;
 
     public UserResponse(User user) {
-        this.userId = user.getUserId().toString();
+        this.uuid = user.getUuid();
         this.firstname = user.getFirstname();
         this.lastname = user.getLastname();
         this.username = user.getUsername();
         this.phone = user.getPhone();
-        this.profile = new ProfileResponse(user.getProfile().getId(), user.getProfile().getProfileName(), user.getProfile().getDescription());
+        this.profile = new ProfileResponse(user.getProfile().getUuid(), user.getProfile().getProfileName(), user.getProfile().getDescription());
         this.createdAt = user.getCreatedAt();
         this.status = user.getStatus();
     }
