@@ -17,6 +17,7 @@ import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 import java.net.URI;
 import java.util.Optional;
 import java.util.Set;
+import java.util.UUID;
 
 @Service
 @AllArgsConstructor(onConstructor = @__(@Autowired))
@@ -56,7 +57,7 @@ public class FunctionalityServiceImpl implements IFunctionalityService {
     }
 
     @Override
-    public ResponseEntity<FunctionalityResponse> findFunctionalityById(Long id) {
+    public ResponseEntity<FunctionalityResponse> findFunctionalityById(UUID id) {
         return this.repository.findById(id)
                 .map(functionality -> ResponseEntity.ok().body(mapper.toDto(functionality)))
                 .orElse(ResponseEntity.notFound().build());

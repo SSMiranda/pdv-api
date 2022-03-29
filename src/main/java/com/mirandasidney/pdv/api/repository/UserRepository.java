@@ -6,9 +6,10 @@ import org.springframework.stereotype.Repository;
 
 import java.util.HashSet;
 import java.util.Set;
+import java.util.UUID;
 
 @Repository
-public interface UserRepository extends PagingAndSortingRepository<User, Long> {
+public interface UserRepository extends PagingAndSortingRepository<User, UUID> {
 
     default Set<User> findAll() {
         return new HashSet<>(this.findAll());

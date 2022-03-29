@@ -10,5 +10,5 @@ import java.util.UUID;
 @NoArgsConstructor
 @Data
 public class ProfileUserRequest {
-    private UUID id;
+    private UUID uuid;
 }

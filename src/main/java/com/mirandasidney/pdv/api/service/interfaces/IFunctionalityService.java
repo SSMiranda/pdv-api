@@ -4,8 +4,8 @@ import com.mirandasidney.pdv.api.controller.dto.request.functionality.Functional
 import com.mirandasidney.pdv.api.controller.dto.response.functionality.FunctionalityResponse;
 import org.springframework.http.ResponseEntity;
 
-import java.util.Optional;
 import java.util.Set;
+import java.util.UUID;
 
 public interface IFunctionalityService {
 
@@ -13,6 +13,6 @@ public interface IFunctionalityService {
 
     ResponseEntity<Set<FunctionalityResponse>> listAllFunctionality();
 
-    ResponseEntity<FunctionalityResponse> findFunctionalityById(Long id);
+    ResponseEntity<FunctionalityResponse> findFunctionalityById(UUID id);
 
 }

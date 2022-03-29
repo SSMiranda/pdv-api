@@ -6,9 +6,10 @@ import org.springframework.stereotype.Repository;
 
 import java.util.HashSet;
 import java.util.Set;
+import java.util.UUID;
 
 @Repository
-public interface CategoryRepository extends JpaRepository<Category, Long> {
+public interface CategoryRepository extends JpaRepository<Category, UUID> {
 
     default Set<Category> findAllSet() {
         return new HashSet<>(this.findAll());

@@ -19,6 +19,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import javax.validation.Valid;
 import java.util.Set;
+import java.util.UUID;
 
 @CrossOrigin(origins = "*")
 @RestController
@@ -43,7 +44,7 @@ public class FunctionalityController {
 
     @ApiOperation(value = "Busca uma funcionalidade pelo ID")
     @GetMapping(value = "/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<FunctionalityResponse> findUserById(@PathVariable final Long id) {
+    public ResponseEntity<FunctionalityResponse> findUserById(@PathVariable final UUID id) {
         return service.findFunctionalityById(id);
     }
 }

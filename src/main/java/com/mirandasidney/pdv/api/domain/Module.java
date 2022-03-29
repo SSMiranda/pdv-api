@@ -11,13 +11,11 @@ import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.ManyToMany;
-import java.util.HashSet;
 import java.util.Set;
 import java.util.UUID;
-
-import static java.util.UUID.randomUUID;
 
 @Entity
 @NoArgsConstructor
@@ -26,10 +24,10 @@ import static java.util.UUID.randomUUID;
 public class Module {
 
     @Id
-    @GeneratedValue
     @Getter
-    @Column(name = "MODULE_ID", updatable = false, unique = true, nullable = false, columnDefinition = "uuid")
-    private UUID uuid = randomUUID();
+    @GeneratedValue(strategy = GenerationType.AUTO)
+    @Column(name = "MODULE_ID", updatable = false, unique = true, nullable = false)
+    private UUID uuid;
 
     @Getter
     @Setter
@@ -47,5 +45,5 @@ public class Module {
     @Getter
     @Setter
     @ManyToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "modules")
-    private Set<Profile> profiles = new HashSet<>();
+    private Set<Profile> profiles;
 }

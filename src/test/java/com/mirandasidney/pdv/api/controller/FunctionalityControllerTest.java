@@ -18,6 +18,7 @@ import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 import java.net.URI;
 import java.util.HashSet;
 import java.util.Set;
+import java.util.UUID;
 
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.when;
@@ -44,7 +45,7 @@ class FunctionalityControllerTest {
     @DisplayName("Must return status code 201 when making POST request to endpoint - /api/v1/functionalities")
     void must_Return201_When_New_Functionality() throws Exception {
         final FunctionalityRequest functionality = new FunctionalityRequest("teste", "teste", true, false, new ModuleRequestById());
-        final FunctionalityResponse response = new FunctionalityResponse(1L, functionality.getName(), functionality.getDescription(), functionality.isCanView(), functionality.isCanEdit());
+        final FunctionalityResponse response = new FunctionalityResponse(UUID.randomUUID(), functionality.getName(), functionality.getDescription(), functionality.isCanView(), functionality.isCanEdit());
         URI uri = ServletUriComponentsBuilder
                 .fromCurrentRequest()
                 .path("/api/v1/functionalities/{name}")
@@ -58,7 +59,7 @@ class FunctionalityControllerTest {
                         .accept(MediaType.APPLICATION_JSON))
                 .andExpect(header().string("Location", "http://localhost/api/v1/functionalities/teste"))
                 .andExpect(status().is(201))
-                .andExpect(jsonPath("$.id").value(1L))
+                .andExpect(jsonPath("$.id").value(response.getUuid()))
                 .andExpect(jsonPath("$.name").value("teste"))
                 .andExpect(jsonPath("$.description").value("teste"))
                 .andExpect(jsonPath("$.canView").value(true))
@@ -69,13 +70,13 @@ class FunctionalityControllerTest {
     @Test
     @DisplayName("Must return status code 200 when making GET request to endpoint - /api/v1/functionalities/{id}")
     void must_Return_A_Functionality_When_Given_An_Id() throws Exception {
-        final FunctionalityResponse func = new FunctionalityResponse(1L, "teste", "teste", true, false);
+        final FunctionalityResponse func = new FunctionalityResponse(UUID.randomUUID(), "teste", "teste", true, false);
 
-        when(service.findFunctionalityById(any(Long.class))).thenReturn(ok().body(func));
+        when(service.findFunctionalityById(any(UUID.class))).thenReturn(ok().body(func));
         mockMvc.perform(get("/api/v1/functionalities/1")
                         .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().is(200))
-                .andExpect(jsonPath("$.id").value(1L))
+                .andExpect(jsonPath("$.id").value(func.getUuid()))
                 .andExpect(jsonPath("$.name").value("teste"))
                 .andExpect(jsonPath("$.description").value("teste"))
                 .andExpect(jsonPath("$.canView").value(true))
@@ -87,10 +88,10 @@ class FunctionalityControllerTest {
     @DisplayName("Must return functionality list and status code 200 when making GET request to endpoint - /api/v1/functionalities")
     void must_Return_Functionality_List_All() throws Exception {
         final Set<FunctionalityResponse> listHashSet = new HashSet<>();
-        listHashSet.add(new FunctionalityResponse(1L, "teste", "teste", true, false));
-        listHashSet.add(new FunctionalityResponse(2L, "teste", "teste", true, false));
-        listHashSet.add(new FunctionalityResponse(3L, "teste", "teste", true, false));
-        listHashSet.add(new FunctionalityResponse(4L, "teste", "teste", true, false));
+        listHashSet.add(new FunctionalityResponse(UUID.randomUUID(), "teste", "teste", true, false));
+        listHashSet.add(new FunctionalityResponse(UUID.randomUUID(), "teste", "teste", true, false));
+        listHashSet.add(new FunctionalityResponse(UUID.randomUUID(), "teste", "teste", true, false));
+        listHashSet.add(new FunctionalityResponse(UUID.randomUUID(), "teste", "teste", true, false));
 
         when(service.listAllFunctionality()).thenReturn((ok().body(listHashSet)));
 

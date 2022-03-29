@@ -22,6 +22,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import javax.validation.Valid;
 import java.util.Set;
+import java.util.UUID;
 
 @CrossOrigin(origins = "*")
 @RestController
@@ -46,19 +47,19 @@ public class ProductController {
 
     @ApiOperation(value = "Busca um produto pelo ID")
     @GetMapping(value = "/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<ProductResponse> findUserById(@PathVariable final Long id) {
+    public ResponseEntity<ProductResponse> findUserById(@PathVariable final UUID id) {
         return service.findProductById(id);
     }
 
     @ApiOperation(value = "Remove uma categoria")
     @DeleteMapping("/{id}")
-    public ResponseEntity<Void> remove(@PathVariable final Long id) {
+    public ResponseEntity<Void> remove(@PathVariable final UUID id) {
         return service.removeProduct(id);
     }
 
     @ApiOperation(value = "Atualiza um produto")
     @PutMapping(value = "/{id}", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<ProductResponse> update(@PathVariable("id") final Long id, @RequestBody final ProductRequestBody product) {
+    public ResponseEntity<ProductResponse> update(@PathVariable("id") final UUID id, @RequestBody final ProductRequestBody product) {
         return service.update(product, id);
     }
 }

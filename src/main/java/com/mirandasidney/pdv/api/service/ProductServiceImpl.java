@@ -18,6 +18,7 @@ import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 import java.net.URI;
 import java.util.Optional;
 import java.util.Set;
+import java.util.UUID;
 
 @Service
 @AllArgsConstructor(onConstructor = @__(@Autowired))
@@ -34,7 +35,7 @@ public class ProductServiceImpl implements IProductService {
                 .path("/api/v1/products/{id}")
                 .buildAndExpand(product)
                 .toUri();
-        Optional<Category> category = categoryRepository.findById(product.getCategory().getId());
+        Optional<Category> category = categoryRepository.findById(product.getCategory().getUuid());
         if (category.isPresent()) {
             Product newProduct = mapper.toModel(product);
             newProduct.setCategory(category.get());
@@ -50,14 +51,14 @@ public class ProductServiceImpl implements IProductService {
     }
 
     @Override
-    public ResponseEntity<ProductResponse> findProductById(Long id) {
+    public ResponseEntity<ProductResponse> findProductById(UUID id) {
         return repository.findById(id)
                 .map(product -> ResponseEntity.ok().body(mapper.toDto(product)))
                 .orElse(ResponseEntity.notFound().build());
     }
 
     @Override
-    public ResponseEntity<Void> removeProduct(Long id) {
+    public ResponseEntity<Void> removeProduct(UUID id) {
         Optional<Product> product = repository.findById(id);
         if (product.isPresent()) {
             repository.delete(product.get());
@@ -67,7 +68,7 @@ public class ProductServiceImpl implements IProductService {
     }
 
     @Override
-    public ResponseEntity<ProductResponse> update(ProductRequestBody productUpdate, Long id) {
+    public ResponseEntity<ProductResponse> update(ProductRequestBody productUpdate, UUID id) {
         return repository.findById(id)
                 .map(product -> {
                     BeanUtils.copyProperties(productUpdate, product);

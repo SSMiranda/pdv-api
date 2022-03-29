@@ -6,13 +6,14 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.util.Set;
+import java.util.UUID;
 
 @AllArgsConstructor
 @NoArgsConstructor
 @Data
 public class CategoryWithListProductResponse {
 
-    private Long categoryId;
+    private UUID uuid;
 
     private String name;
 

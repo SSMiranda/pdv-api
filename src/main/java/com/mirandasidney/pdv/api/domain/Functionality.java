@@ -4,10 +4,12 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import org.hibernate.annotations.GenericGenerator;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
@@ -22,9 +24,9 @@ public class Functionality {
 
     @Id
     @Getter
-    @GeneratedValue
+    @GeneratedValue(strategy = GenerationType.AUTO)
     @Column(name = "FUNCTIONALITY_ID", updatable = false, unique = true, nullable = false, columnDefinition = "uuid")
-    private UUID uuid = randomUUID();
+    private UUID uuid;
 
     @Getter
     @Setter

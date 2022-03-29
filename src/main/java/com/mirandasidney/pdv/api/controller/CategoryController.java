@@ -23,6 +23,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import javax.validation.Valid;
 import java.util.Set;
+import java.util.UUID;
 
 @CrossOrigin(origins = "*")
 @RestController
@@ -47,13 +48,13 @@ public class CategoryController {
 
     @ApiOperation(value = "Busca uma categoria pelo ID")
     @GetMapping(value = "/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<CategoryWithListProductResponse> findCategoryById(@PathVariable final Long id) {
+    public ResponseEntity<CategoryWithListProductResponse> findCategoryById(@PathVariable final UUID id) {
         return service.findCategoryById(id);
     }
 
     @ApiOperation(value = "Remove uma categoria")
     @DeleteMapping("/{id}")
-    public ResponseEntity<Void> remove(@PathVariable final Long id) {
+    public ResponseEntity<Void> remove(@PathVariable final UUID id) {
         return service.removeCategory(id);
     }
 
@@ -61,7 +62,7 @@ public class CategoryController {
     @PutMapping(value = "/{id}",
             consumes = MediaType.APPLICATION_JSON_VALUE,
             produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<CategoryResponse> update(@PathVariable("id") final Long id, @RequestBody final CategoryPostRequest category) {
+    public ResponseEntity<CategoryResponse> update(@PathVariable("id") final UUID id, @RequestBody final CategoryPostRequest category) {
         return service.update(category, id);
     }
 }

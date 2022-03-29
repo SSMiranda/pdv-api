@@ -17,6 +17,7 @@ import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 import java.net.URI;
 import java.util.Optional;
 import java.util.Set;
+import java.util.UUID;
 
 @Service
 @AllArgsConstructor(onConstructor = @__(@Autowired))
@@ -44,14 +45,14 @@ public class CategoryServiceImpl implements ICategoryService {
     }
 
     @Override
-    public ResponseEntity<CategoryWithListProductResponse> findCategoryById(Long id) {
+    public ResponseEntity<CategoryWithListProductResponse> findCategoryById(UUID id) {
         return repository.findById(id)
                 .map(category -> ResponseEntity.ok().body(mapper.toCategoryListDto(category)))
                 .orElse(ResponseEntity.notFound().build());
     }
 
     @Override
-    public ResponseEntity<Void> removeCategory(Long id) {
+    public ResponseEntity<Void> removeCategory(UUID id) {
         Optional<Category> category = repository.findById(id);
         if (category.isPresent() && category.get().getProducts().isEmpty()) {
             repository.delete(category.get());
@@ -61,7 +62,7 @@ public class CategoryServiceImpl implements ICategoryService {
     }
 
     @Override
-    public ResponseEntity<CategoryResponse> update(CategoryPostRequest categoryRequest, Long id) {
+    public ResponseEntity<CategoryResponse> update(CategoryPostRequest categoryRequest, UUID id) {
         return repository.findById(id)
                 .map(category -> {
                     BeanUtils.copyProperties(categoryRequest, category);

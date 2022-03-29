@@ -6,6 +6,7 @@ import com.mirandasidney.pdv.api.controller.dto.response.category.CategoryWithLi
 import org.springframework.http.ResponseEntity;
 
 import java.util.Set;
+import java.util.UUID;
 
 public interface ICategoryService {
 
@@ -13,9 +14,9 @@ public interface ICategoryService {
 
     ResponseEntity<Set<CategoryWithListProductResponse>> findAll();
 
-    ResponseEntity<CategoryWithListProductResponse> findCategoryById(Long id);
+    ResponseEntity<CategoryWithListProductResponse> findCategoryById(UUID id);
 
-    ResponseEntity<Void> removeCategory(Long id);
+    ResponseEntity<Void> removeCategory(UUID id);
 
-    ResponseEntity<CategoryResponse> update(CategoryPostRequest category, Long id);
+    ResponseEntity<CategoryResponse> update(CategoryPostRequest category, UUID id);
 }

@@ -9,13 +9,12 @@ import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.OneToMany;
 import java.io.Serializable;
 import java.util.Set;
 import java.util.UUID;
-
-import static java.util.UUID.randomUUID;
 
 @Entity
 @AllArgsConstructor
@@ -25,9 +24,9 @@ public class Category implements Serializable {
 
     @Id
     @Getter
-    @GeneratedValue
+    @GeneratedValue(strategy = GenerationType.AUTO)
     @Column(name = "CATEGORY_ID", updatable = false, unique = true, nullable = false, columnDefinition = "uuid")
-    private UUID uuid = randomUUID();
+    private UUID uuid;
 
     @Getter
     @Setter

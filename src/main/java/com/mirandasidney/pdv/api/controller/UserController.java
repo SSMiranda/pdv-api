@@ -23,6 +23,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import javax.validation.Valid;
+import java.util.UUID;
 
 @CrossOrigin(origins = "*")
 @RestController
@@ -42,7 +43,7 @@ public class UserController {
 
     @ApiOperation(value = "Busca um usuário pelo ID")
     @GetMapping(value = "/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<UserResponse> findUserById(@PathVariable final Long id) {
+    public ResponseEntity<UserResponse> findUserById(@PathVariable final UUID id) {
         return service.findUserById(id);
     }
 
@@ -55,7 +56,7 @@ public class UserController {
 
     @ApiOperation(value = "Remove um usuário")
     @DeleteMapping("/{id}")
-    public ResponseEntity<Void> remove(@PathVariable final Long id) {
+    public ResponseEntity<Void> remove(@PathVariable final UUID id) {
         return service.removeUser(id);
     }
 
@@ -63,7 +64,7 @@ public class UserController {
     @PutMapping(value = "/{id}",
             consumes = MediaType.APPLICATION_JSON_VALUE,
             produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<UserResponse> update(@PathVariable("id") final Long id, @RequestBody final UserPutRequest userUpdate) {
+    public ResponseEntity<UserResponse> update(@PathVariable("id") final UUID id, @RequestBody final UserPutRequest userUpdate) {
         return service.update(userUpdate, id);
     }
 }

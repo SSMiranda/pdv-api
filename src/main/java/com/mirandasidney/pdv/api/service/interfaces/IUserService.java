@@ -6,14 +6,16 @@ import com.mirandasidney.pdv.api.controller.dto.response.user.UserResponse;
 import org.springframework.data.domain.Page;
 import org.springframework.http.ResponseEntity;
 
+import java.util.UUID;
+
 public interface IUserService {
     ResponseEntity<UserResponse> save(UserPostRequestBody user);
 
-    ResponseEntity<UserResponse> findUserById(Long id);
+    ResponseEntity<UserResponse> findUserById(UUID id);
 
     Page<UserResponse> findAll(int page, int size);
 
-    ResponseEntity<Void> removeUser(Long id);
+    ResponseEntity<Void> removeUser(UUID id);
 
-    ResponseEntity<UserResponse> update(UserPutRequest user, Long id);
+    ResponseEntity<UserResponse> update(UserPutRequest user, UUID id);
 }

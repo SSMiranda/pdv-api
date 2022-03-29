@@ -72,7 +72,7 @@ public class ProfileServiceImpl implements IProfileService {
     public ResponseEntity<ProfileResponseWithModules> update(ProfileRequest profileUpdate, UUID id) {
         final Optional<Profile> profile = repository.findById(id);
         return profile
-                .map(p -> {
+        .map(p -> {
                     if(profileUpdate.getProfileName() != null) p.setProfileName(profileUpdate.getProfileName());
                     if(profileUpdate.getDescription() != null) p.setDescription(profileUpdate.getDescription());
                     if(profileUpdate.getModule() != null) {

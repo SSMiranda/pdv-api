@@ -8,7 +8,5 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @Data
 public class CategoryPostRequest {
-
-    private Long id;
     private String name;
 }

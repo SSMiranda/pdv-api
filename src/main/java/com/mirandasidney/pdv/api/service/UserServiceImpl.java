@@ -20,6 +20,7 @@ import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import java.net.URI;
 import java.util.Optional;
+import java.util.UUID;
 
 @Service
 @AllArgsConstructor(onConstructor = @__(@Autowired))
@@ -37,19 +38,19 @@ public class UserServiceImpl implements IUserService {
                 .path("/api/v1/{username}")
                 .buildAndExpand(user.getUsername())
                 .toUri();
-        Optional<Profile> profile = profileRepository.findById(user.getProfile().getId());
+        Optional<Profile> profile = profileRepository.findById(user.getProfile().getUuid());
         if (profile.isPresent()) {
             User newUser = mapper.toUser(user);
             newUser.setProfile(profile.get());
             User savedUser = repository.save(newUser);
-            return ResponseEntity.created(uri).body(mapper.toUserResponse(repository.save(savedUser)));
+            return ResponseEntity.created(uri).body(mapper.toUserResponse(savedUser));
         }
 
         return ResponseEntity.badRequest().build();
     }
 
     @Override
-    public ResponseEntity<UserResponse> findUserById(Long id) {
+    public ResponseEntity<UserResponse> findUserById(UUID id) {
         return repository.findById(id)
                 .map(user -> ResponseEntity.ok().body(mapper.toUserResponse(user)))
                 .orElse(ResponseEntity.notFound().build());
@@ -63,7 +64,7 @@ public class UserServiceImpl implements IUserService {
     }
 
     @Override
-    public ResponseEntity<Void> removeUser(Long id) {
+    public ResponseEntity<Void> removeUser(UUID id) {
         Optional<User> user = repository.findById(id);
         if (user.isPresent()) {
             repository.delete(user.get());
@@ -73,7 +74,7 @@ public class UserServiceImpl implements IUserService {
     }
 
     @Override
-    public ResponseEntity<UserResponse> update(UserPutRequest userUpdate, Long id) {
+    public ResponseEntity<UserResponse> update(UserPutRequest userUpdate, UUID id) {
         return repository.findById(id)
                 .map(user -> {
                     BeanUtils.copyProperties(userUpdate, user);

@@ -41,8 +41,8 @@ public class ProfileController {
 
     @ApiOperation(value = "Busca um perfil pelo ID")
     @GetMapping(value = "/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<ProfileResponse> findProfileById(@PathVariable final UUID id) {
-        return service.findProfileById(id);
+    public ResponseEntity<ProfileResponse> findProfileById(@PathVariable final String id) {
+        return service.findProfileById(UUID.fromString(id));
     }
 
     @ApiOperation(value = "Retorna a lista de perfis cadastrados")
