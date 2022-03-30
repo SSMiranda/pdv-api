@@ -24,5 +24,7 @@ public class ProductResponse {
 
     private String createdAt;
 
+    private String update;
+
     private CategoryResponse category;
 }

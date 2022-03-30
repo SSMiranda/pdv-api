@@ -46,12 +46,16 @@ public class Product implements Serializable {
     private Integer amount;
 
     @Getter
-    @Setter
     private String createdAt = Util.formatDate();
+
+    @Getter
+    @Setter
+    private String update;
 
     @Getter
     @Setter
     @ManyToOne
     @JoinColumn(name = "CATEGORY_ID")
     private Category category;
+
 }

@@ -8,13 +8,16 @@ import com.mirandasidney.pdv.api.mapper.ProductMapper;
 import com.mirandasidney.pdv.api.repository.CategoryRepository;
 import com.mirandasidney.pdv.api.repository.ProductRepository;
 import com.mirandasidney.pdv.api.service.interfaces.IProductService;
+import com.mirandasidney.pdv.api.util.Util;
 import lombok.AllArgsConstructor;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
+import java.math.BigDecimal;
 import java.net.URI;
 import java.util.Optional;
 import java.util.Set;
@@ -74,6 +77,28 @@ public class ProductServiceImpl implements IProductService {
                     BeanUtils.copyProperties(productUpdate, product);
                     repository.save(product);
                     return ResponseEntity.ok().body(mapper.toDto(product));
+                }).orElse(ResponseEntity.badRequest().build());
+    }
+
+    @Override
+    @Transactional
+    public ResponseEntity<ProductResponse> productPartlyUpdate(ProductRequestBody productUpdate, UUID id) {
+        final Optional<Product> product = repository.findById(id);
+        return product
+                .map(p -> {
+                    if(productUpdate.getProductName() != null) p.setProductName(productUpdate.getProductName());
+                    if(productUpdate.getCategory() != null){
+                        final Optional<Category> category = categoryRepository.findById(productUpdate.getCategory().getUuid());
+                        if(category.isPresent())
+                            p.setCategory(category.get());
+                    }
+                    if(productUpdate.getAmount() != null) p.setAmount(Integer.valueOf(productUpdate.getAmount()));
+                    if(productUpdate.getCostPrice() != null) p.setCostPrice(new BigDecimal(productUpdate.getCostPrice()));
+                    if(productUpdate.getSalePrice() != null) p.setSalePrice(new BigDecimal(productUpdate.getSalePrice()));
+                    if(productUpdate != null) p.setUpdate(Util.formatDate());
+
+                    repository.save(p);
+                    return ResponseEntity.ok().body(mapper.toDto(p));
                 }).orElse(ResponseEntity.badRequest().build());
     }
 

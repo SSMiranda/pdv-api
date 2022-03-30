@@ -13,6 +13,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
@@ -61,5 +62,12 @@ public class ProductController {
     @PutMapping(value = "/{id}", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<ProductResponse> update(@PathVariable("id") final UUID id, @RequestBody final ProductRequestBody product) {
         return service.update(product, id);
+    }
+
+    @ApiOperation(value = "Atualiza dados parciais de um produto")
+    @PatchMapping(value = "/{id}",
+            consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<ProductResponse> update(@RequestBody final ProductRequestBody product, @PathVariable("id") final UUID id)  {
+        return service.productPartlyUpdate(product, id);
     }
 }

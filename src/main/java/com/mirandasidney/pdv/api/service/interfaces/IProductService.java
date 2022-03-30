@@ -17,4 +17,6 @@ public interface IProductService {
     ResponseEntity<Void> removeProduct(UUID id);
 
     ResponseEntity<ProductResponse> update(ProductRequestBody product, UUID id);
+
+    ResponseEntity<ProductResponse> productPartlyUpdate(ProductRequestBody product, UUID id);
 }
