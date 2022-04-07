@@ -87,23 +87,21 @@ public class ProductServiceImpl implements IProductService {
     @Override
     @Transactional
     public ResponseEntity<ProductResponse> productPartlyUpdate(ProductRequestBody productUpdate, UUID id) {
-        final Optional<Product> product = repository.findById(id);
-        return product
-                .map(p -> {
-                    if(productUpdate.getProductName() != null) p.setProductName(productUpdate.getProductName());
-                    if(productUpdate.getCategory() != null){
-                        final Optional<Category> category = categoryRepository.findById(productUpdate.getCategory().getUuid());
-                        if(category.isPresent())
-                            p.setCategory(category.get());
-                    }
-                    if(productUpdate.getAmount() != null) p.setAmount(Integer.valueOf(productUpdate.getAmount()));
-                    if(productUpdate.getCostPrice() != null) p.setCostPrice(new BigDecimal(productUpdate.getCostPrice()));
-                    if(productUpdate.getSalePrice() != null) p.setSalePrice(new BigDecimal(productUpdate.getSalePrice()));
-                    if(productUpdate != null) p.setUpdate(Util.formatDate());
+        return repository.findById(id).map(p -> {
+                if(productUpdate.getProductName() != null) p.setProductName(productUpdate.getProductName());
+                if(productUpdate.getCategory() != null){
+                    final Optional<Category> category = categoryRepository.findById(productUpdate.getCategory().getUuid());
+                    if(category.isPresent())
+                        p.setCategory(category.get());
+                }
+                if(productUpdate.getAmount() != null) p.setAmount(Integer.valueOf(productUpdate.getAmount()));
+                if(productUpdate.getCostPrice() != null) p.setCostPrice(new BigDecimal(productUpdate.getCostPrice()));
+                if(productUpdate.getSalePrice() != null) p.setSalePrice(new BigDecimal(productUpdate.getSalePrice()));
+                if(productUpdate != null) p.setUpdate(Util.formatDate());
 
-                    repository.save(p);
-                    return ResponseEntity.ok().body(mapper.toDto(p));
-                }).orElse(ResponseEntity.badRequest().build());
+                repository.save(p);
+                return ResponseEntity.ok().body(mapper.toDto(p));
+            }).orElse(ResponseEntity.badRequest().build());
     }
 
 }

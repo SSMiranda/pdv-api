@@ -70,7 +70,12 @@ public class User implements Serializable {
 
     @Getter
     @Setter
+    @Column(name = "UPDATED")
+    private String updated;
+
+    @Getter
+    @Setter
     @Column(name = "STATUS")
-    private Boolean status = STATUS;
+    private Boolean active = STATUS;
 
 }

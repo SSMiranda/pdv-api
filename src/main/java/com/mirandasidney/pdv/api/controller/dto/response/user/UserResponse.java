@@ -19,7 +19,8 @@ public class UserResponse {
     private String phone;
     private ProfileResponse profile;
     private String createdAt;
-    private Boolean status;
+    private Boolean active;
+    private String updated;
 
     public UserResponse(User user) {
         this.uuid = user.getUuid();
@@ -29,7 +30,8 @@ public class UserResponse {
         this.phone = user.getPhone();
         this.profile = new ProfileResponse(user.getProfile().getUuid(), user.getProfile().getProfileName(), user.getProfile().getDescription());
         this.createdAt = user.getCreatedAt();
-        this.status = user.getStatus();
+        this.active = user.getActive();
+        this.updated = null;
     }
 
 }

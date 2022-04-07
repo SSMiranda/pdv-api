@@ -1,7 +1,7 @@
 package com.mirandasidney.pdv.api.controller;
 
 import com.mirandasidney.pdv.api.controller.dto.request.user.UserPostRequestBody;
-import com.mirandasidney.pdv.api.controller.dto.request.user.UserPutRequest;
+import com.mirandasidney.pdv.api.controller.dto.request.user.UpdateUserRequest;
 import com.mirandasidney.pdv.api.controller.dto.response.user.UserResponse;
 import com.mirandasidney.pdv.api.service.interfaces.IUserService;
 import io.swagger.annotations.Api;
@@ -14,6 +14,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
@@ -56,7 +57,7 @@ public class UserController {
 
     @ApiOperation(value = "Remove um usuário")
     @DeleteMapping("/{id}")
-    public ResponseEntity<Void> remove(@PathVariable final UUID id) {
+    public ResponseEntity<?> remove(@PathVariable final UUID id) {
         return service.removeUser(id);
     }
 
@@ -64,7 +65,15 @@ public class UserController {
     @PutMapping(value = "/{id}",
             consumes = MediaType.APPLICATION_JSON_VALUE,
             produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<UserResponse> update(@PathVariable("id") final UUID id, @RequestBody final UserPutRequest userUpdate) {
+    public ResponseEntity<UserResponse> update(@PathVariable("id") final UUID id, @RequestBody final UpdateUserRequest userUpdate) {
         return service.update(userUpdate, id);
+    }
+
+    @ApiOperation(value = "Atualiza parcialmente os dados do usuário")
+    @PatchMapping(value = "/{id}",
+            consumes = MediaType.APPLICATION_JSON_VALUE,
+            produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<UserResponse> userPartlyUpdate(@PathVariable("id") final UUID id, @RequestBody final UpdateUserRequest userUpdate) {
+        return service.userPartlyUpdate(userUpdate, id);
     }
 }
