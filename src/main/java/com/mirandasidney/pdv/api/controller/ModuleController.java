@@ -10,12 +10,14 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import javax.validation.Valid;
+import java.util.Set;
 
 @CrossOrigin(origins = "*")
 @RestController
@@ -31,12 +33,12 @@ public class ModuleController {
     public ResponseEntity<ModuleResponse> save(@Valid @RequestBody final ModuleRequest module) {
         return service.save(module);
     }
-//
-//    @ApiOperation(value = "Exibe a lista dos módulos do sistema")
-//    @GetMapping(produces = MediaType.APPLICATION_JSON_VALUE)
-//    public ResponseEntity<Set<ModuleResponse>> listAllModules() {
-//        return service.listAllModules();
-//    }
+
+    @ApiOperation(value = "Exibe a lista dos módulos do sistema")
+    @GetMapping(produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<Set<ModuleResponse>> listAllModules() {
+        return service.listAllModules();
+    }
 
 //    @ApiOperation(value = "Busca um usuário pelo ID")
 //    @GetMapping(value = "/{id}", produces = MediaType.APPLICATION_JSON_VALUE)

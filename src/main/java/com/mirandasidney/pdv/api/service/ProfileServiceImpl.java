@@ -5,6 +5,7 @@ import com.mirandasidney.pdv.api.controller.dto.response.profile.ProfileResponse
 import com.mirandasidney.pdv.api.controller.dto.response.profile.ProfileResponseWithModules;
 import com.mirandasidney.pdv.api.domain.Module;
 import com.mirandasidney.pdv.api.domain.Profile;
+import com.mirandasidney.pdv.api.exception.ResourceNotFoundException;
 import com.mirandasidney.pdv.api.mapper.ProfileMapper;
 import com.mirandasidney.pdv.api.repository.ModuleRepository;
 import com.mirandasidney.pdv.api.repository.ProfileRepository;
@@ -47,24 +48,25 @@ public class ProfileServiceImpl implements IProfileService {
 
     @Override
     public ResponseEntity<Set<ProfileResponse>> findAll() {
-        return ResponseEntity.ok().body(mapper.toProfileListDto(repository.findAll()));
+        Set<Profile> profile = repository.findAllSet();
+        if(profile.isEmpty())
+            return ResponseEntity.noContent().build();
+        return ResponseEntity.ok().body(mapper.toProfileListDto(profile));
     }
 
     @Override
     public ResponseEntity<ProfileResponse> findProfileById(UUID id) {
         return repository.findById(id)
                 .map(profile -> ResponseEntity.ok().body(mapper.toDto(profile)))
-                .orElse(ResponseEntity.notFound().build());
+                .orElseThrow(() -> new ResourceNotFoundException("Profile not found with UUID: " + id));
     }
 
     @Override
-    public ResponseEntity<Void> removeProfile(UUID id) {
-        Optional<Profile> profile = repository.findById(id);
-        if (profile.isPresent() && profile.get().getUsers().isEmpty()) {
-            repository.delete(profile.get());
+    public ResponseEntity<?> removeProfile(UUID id) {
+        return repository.findById(id).map(profile -> {
+            repository.delete(profile);
             return ResponseEntity.noContent().build();
-        }
-        return ResponseEntity.badRequest().build();
+        }).orElseThrow(() -> new ResourceNotFoundException("Category not found with UUID: " + id));
     }
 
     @Override

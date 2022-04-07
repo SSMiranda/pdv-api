@@ -53,7 +53,7 @@ public class ProfileController {
 
     @ApiOperation(value = "Remove um perfil")
     @DeleteMapping("/{id}")
-    public ResponseEntity<Void> remove(@PathVariable final UUID id) {
+    public ResponseEntity<?> remove(@PathVariable final UUID id) {
         return service.removeProfile(id);
     }
 

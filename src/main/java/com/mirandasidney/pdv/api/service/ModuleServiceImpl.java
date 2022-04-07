@@ -42,10 +42,9 @@ public class ModuleServiceImpl implements IModuleService {
     @Override
     public ResponseEntity<Set<ModuleResponse>> listAllModules() {
         final List<Module> modules = repository.findAll();
-        if(modules.isEmpty()) {
-            ResponseEntity.ok().body(mapper.toDto(modules));
-        }
-        return ResponseEntity.noContent().build();
+        if(modules.isEmpty())
+            return ResponseEntity.noContent().build();
+        return ResponseEntity.ok().body(mapper.toDto(modules));
     }
 
 //    @Override

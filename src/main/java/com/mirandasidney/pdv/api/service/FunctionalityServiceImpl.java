@@ -4,6 +4,7 @@ import com.mirandasidney.pdv.api.controller.dto.request.functionality.Functional
 import com.mirandasidney.pdv.api.controller.dto.response.functionality.FunctionalityResponse;
 import com.mirandasidney.pdv.api.domain.Functionality;
 import com.mirandasidney.pdv.api.domain.Module;
+import com.mirandasidney.pdv.api.exception.ResourceNotFoundException;
 import com.mirandasidney.pdv.api.mapper.FunctionalityMapper;
 import com.mirandasidney.pdv.api.repository.FunctionalityRepository;
 import com.mirandasidney.pdv.api.repository.ModuleRepository;
@@ -49,18 +50,16 @@ public class FunctionalityServiceImpl implements IFunctionalityService {
     @Override
     public ResponseEntity<Set<FunctionalityResponse>> listAllFunctionality() {
         final Set<Functionality> list = repository.findAllSet();
-
-        if (!list.isEmpty()) {
-            return ResponseEntity.ok().body(mapper.toDto(list));
-        }
-        return ResponseEntity.noContent().build();
+        if (list.isEmpty())
+            return ResponseEntity.noContent().build();
+        return ResponseEntity.ok().body(mapper.toDto(list));
     }
 
     @Override
     public ResponseEntity<FunctionalityResponse> findFunctionalityById(UUID id) {
         return this.repository.findById(id)
                 .map(functionality -> ResponseEntity.ok().body(mapper.toDto(functionality)))
-                .orElse(ResponseEntity.notFound().build());
+                .orElseThrow(() -> new ResourceNotFoundException("Functionality not found with UUID: " + id));
     }
 
 

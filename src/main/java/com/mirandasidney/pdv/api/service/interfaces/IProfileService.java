@@ -16,7 +16,7 @@ public interface IProfileService {
 
     ResponseEntity<ProfileResponse> findProfileById(UUID id);
 
-    ResponseEntity<Void> removeProfile(UUID id);
+    ResponseEntity<?> removeProfile(UUID id);
 
     ResponseEntity<ProfileResponseWithModules> update(ProfileRequest profile, UUID id);
 }

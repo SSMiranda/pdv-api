@@ -4,6 +4,7 @@ import com.mirandasidney.pdv.api.controller.dto.request.product.ProductRequestBo
 import com.mirandasidney.pdv.api.controller.dto.response.product.ProductResponse;
 import com.mirandasidney.pdv.api.domain.Category;
 import com.mirandasidney.pdv.api.domain.Product;
+import com.mirandasidney.pdv.api.exception.ResourceNotFoundException;
 import com.mirandasidney.pdv.api.mapper.ProductMapper;
 import com.mirandasidney.pdv.api.repository.CategoryRepository;
 import com.mirandasidney.pdv.api.repository.ProductRepository;
@@ -38,36 +39,39 @@ public class ProductServiceImpl implements IProductService {
                 .path("/api/v1/products/{id}")
                 .buildAndExpand(product)
                 .toUri();
-        Optional<Category> category = categoryRepository.findById(product.getCategory().getUuid());
-        if (category.isPresent()) {
+        Optional<Category> category = Optional.ofNullable(categoryRepository
+                .findById(product.getCategory().getUuid())
+                .orElseThrow(() -> new ResourceNotFoundException("Category not found with UUID: " + product.getCategory().getUuid())));
+
             Product newProduct = mapper.toModel(product);
             newProduct.setCategory(category.get());
             Product savedProduct = repository.save(newProduct);
             return ResponseEntity.created(uri).body(mapper.toDto(repository.save(savedProduct)));
-        }
-        return ResponseEntity.badRequest().build();
     }
 
     @Override
     public ResponseEntity<Set<ProductResponse>> findAll() {
-        return ResponseEntity.ok().body(mapper.toSetDto(repository.findAllSet()));
+        Set<Product> list = repository.findAllSet();
+        if(list.isEmpty())
+            return ResponseEntity.noContent().build();
+        return ResponseEntity.ok().body(mapper.toSetDto(list));
     }
 
     @Override
     public ResponseEntity<ProductResponse> findProductById(UUID id) {
         return repository.findById(id)
                 .map(product -> ResponseEntity.ok().body(mapper.toDto(product)))
-                .orElse(ResponseEntity.notFound().build());
+                .orElseThrow(() -> new ResourceNotFoundException("Product not found with UUID: " + id));
     }
 
     @Override
-    public ResponseEntity<Void> removeProduct(UUID id) {
-        Optional<Product> product = repository.findById(id);
-        if (product.isPresent()) {
-            repository.delete(product.get());
-            return ResponseEntity.noContent().build();
-        }
-        return ResponseEntity.badRequest().build();
+    public ResponseEntity<?> removeProduct(UUID id) {
+        return repository.findById(id)
+                .map(product -> {
+                    repository.deleteById(id);
+                   return ResponseEntity.noContent().build();
+                })
+                .orElseThrow(() -> new ResourceNotFoundException("Product not found with UUID: " + id));
     }
 
     @Override

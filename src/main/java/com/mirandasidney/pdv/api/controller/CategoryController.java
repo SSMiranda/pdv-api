@@ -54,7 +54,7 @@ public class CategoryController {
 
     @ApiOperation(value = "Remove uma categoria")
     @DeleteMapping("/{id}")
-    public ResponseEntity<Void> remove(@PathVariable final UUID id) {
+    public ResponseEntity<?> remove(@PathVariable final UUID id) {
         return service.removeCategory(id);
     }
 

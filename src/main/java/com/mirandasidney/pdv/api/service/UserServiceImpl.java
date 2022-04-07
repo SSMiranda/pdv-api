@@ -5,6 +5,7 @@ import com.mirandasidney.pdv.api.controller.dto.request.user.UserPutRequest;
 import com.mirandasidney.pdv.api.controller.dto.response.user.UserResponse;
 import com.mirandasidney.pdv.api.domain.Profile;
 import com.mirandasidney.pdv.api.domain.User;
+import com.mirandasidney.pdv.api.exception.ResourceNotFoundException;
 import com.mirandasidney.pdv.api.mapper.UserMapper;
 import com.mirandasidney.pdv.api.repository.ProfileRepository;
 import com.mirandasidney.pdv.api.repository.UserRepository;
@@ -53,7 +54,7 @@ public class UserServiceImpl implements IUserService {
     public ResponseEntity<UserResponse> findUserById(UUID id) {
         return repository.findById(id)
                 .map(user -> ResponseEntity.ok().body(mapper.toUserResponse(user)))
-                .orElse(ResponseEntity.notFound().build());
+                .orElseThrow(() -> new ResourceNotFoundException("User not found with UUID: " + id));
     }
 
     @Override

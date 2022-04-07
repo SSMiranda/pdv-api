@@ -4,6 +4,7 @@ import com.mirandasidney.pdv.api.controller.dto.request.category.CategoryPostReq
 import com.mirandasidney.pdv.api.controller.dto.response.category.CategoryResponse;
 import com.mirandasidney.pdv.api.controller.dto.response.category.CategoryWithListProductResponse;
 import com.mirandasidney.pdv.api.domain.Category;
+import com.mirandasidney.pdv.api.exception.ResourceNotFoundException;
 import com.mirandasidney.pdv.api.mapper.CategoryMapper;
 import com.mirandasidney.pdv.api.repository.CategoryRepository;
 import com.mirandasidney.pdv.api.service.interfaces.ICategoryService;
@@ -15,7 +16,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import java.net.URI;
-import java.util.Optional;
 import java.util.Set;
 import java.util.UUID;
 
@@ -41,24 +41,25 @@ public class CategoryServiceImpl implements ICategoryService {
 
     @Override
     public ResponseEntity<Set<CategoryWithListProductResponse>> findAll() {
-        return ResponseEntity.ok().body(mapper.toCategoryListDto(repository.findAllSet()));
+        Set<Category> list = repository.findAllSet();
+        if(list.isEmpty())
+            return ResponseEntity.noContent().build();
+        return ResponseEntity.ok().body(mapper.toCategoryListDto(list));
     }
 
     @Override
     public ResponseEntity<CategoryWithListProductResponse> findCategoryById(UUID id) {
         return repository.findById(id)
                 .map(category -> ResponseEntity.ok().body(mapper.toCategoryListDto(category)))
-                .orElse(ResponseEntity.notFound().build());
+                .orElseThrow(() -> new ResourceNotFoundException("Category not found with UUID: " + id));
     }
 
     @Override
-    public ResponseEntity<Void> removeCategory(UUID id) {
-        Optional<Category> category = repository.findById(id);
-        if (category.isPresent() && category.get().getProducts().isEmpty()) {
-            repository.delete(category.get());
+    public ResponseEntity<?> removeCategory(UUID id) {
+        return repository.findById(id).map(category -> {
+            repository.delete(category);
             return ResponseEntity.noContent().build();
-        }
-        return ResponseEntity.badRequest().build();
+        }).orElseThrow(() -> new ResourceNotFoundException("Category not found with UUID: " + id));
     }
 
     @Override

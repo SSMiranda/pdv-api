@@ -12,16 +12,16 @@ import javax.validation.constraints.NotNull;
 @Data
 public class ProductRequestBody {
 
-    @NotNull
+    @NotNull(message = "product name must not be empty or null")
     private String productName;
 
-    @NotNull
+    @NotNull(message = "product cost price must not be empty or null")
     private String costPrice;
 
-    @NotNull
+    @NotNull(message = "product sale price must not be empty or null")
     private String salePrice;
 
-    @NotNull
+    @NotNull(message = "product amount must not be empty or null")
     private String amount;
 
     private CategoryRequest category;

@@ -16,7 +16,7 @@ public interface ICategoryService {
 
     ResponseEntity<CategoryWithListProductResponse> findCategoryById(UUID id);
 
-    ResponseEntity<Void> removeCategory(UUID id);
+    ResponseEntity<?> removeCategory(UUID id);
 
     ResponseEntity<CategoryResponse> update(CategoryPostRequest category, UUID id);
 }

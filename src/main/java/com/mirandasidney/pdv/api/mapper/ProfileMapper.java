@@ -21,6 +21,6 @@ public interface ProfileMapper {
 
     ProfileResponseWithModules toDtoFull(Profile profile);
 
-    Set<ProfileResponse> toProfileListDto(List<Profile> profiles);
+    Set<ProfileResponse> toProfileListDto(Set<Profile> profiles);
 
 }

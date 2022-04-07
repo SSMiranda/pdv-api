@@ -59,7 +59,7 @@ class FunctionalityControllerTest {
                         .accept(MediaType.APPLICATION_JSON))
                 .andExpect(header().string("Location", "http://localhost/api/v1/functionalities/teste"))
                 .andExpect(status().is(201))
-                .andExpect(jsonPath("$.id").value(response.getUuid()))
+                .andExpect(jsonPath("$.uuid").value(response.getUuid()))
                 .andExpect(jsonPath("$.name").value("teste"))
                 .andExpect(jsonPath("$.description").value("teste"))
                 .andExpect(jsonPath("$.canView").value(true))
@@ -73,10 +73,10 @@ class FunctionalityControllerTest {
         final FunctionalityResponse func = new FunctionalityResponse(UUID.randomUUID(), "teste", "teste", true, false);
 
         when(service.findFunctionalityById(any(UUID.class))).thenReturn(ok().body(func));
-        mockMvc.perform(get("/api/v1/functionalities/1")
+        mockMvc.perform(get("/api/v1/functionalities/"+ func.getUuid())
                         .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().is(200))
-                .andExpect(jsonPath("$.id").value(func.getUuid()))
+//                .andExpect(jsonPath("$.uuid").value(func.getUuid()))
                 .andExpect(jsonPath("$.name").value("teste"))
                 .andExpect(jsonPath("$.description").value("teste"))
                 .andExpect(jsonPath("$.canView").value(true))
