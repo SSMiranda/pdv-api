@@ -34,14 +34,15 @@ public class ProductServiceImpl implements IProductService {
 
     @Override
     public ResponseEntity<ProductResponse> save(ProductRequestBody product) {
+        Optional<Category> category = Optional.ofNullable(categoryRepository
+                .findById(product.getCategory().getUuid())
+                .orElseThrow(() -> new ResourceNotFoundException("Category not found with UUID: " + product.getCategory().getUuid())));
+
         final URI uri = ServletUriComponentsBuilder
                 .fromCurrentRequest()
                 .path("/api/v1/products/{id}")
                 .buildAndExpand(product)
                 .toUri();
-        Optional<Category> category = Optional.ofNullable(categoryRepository
-                .findById(product.getCategory().getUuid())
-                .orElseThrow(() -> new ResourceNotFoundException("Category not found with UUID: " + product.getCategory().getUuid())));
 
             Product newProduct = mapper.toModel(product);
             newProduct.setCategory(category.get());
@@ -81,7 +82,7 @@ public class ProductServiceImpl implements IProductService {
                     BeanUtils.copyProperties(productUpdate, product);
                     repository.save(product);
                     return ResponseEntity.ok().body(mapper.toDto(product));
-                }).orElse(ResponseEntity.badRequest().build());
+                }).orElseThrow(() -> new ResourceNotFoundException("Product not found with UUID: " + id));
     }
 
     @Override
@@ -101,7 +102,7 @@ public class ProductServiceImpl implements IProductService {
 
                 repository.save(p);
                 return ResponseEntity.ok().body(mapper.toDto(p));
-            }).orElse(ResponseEntity.badRequest().build());
+            }).orElseThrow(() -> new ResourceNotFoundException("Product not found with UUID: " + id));
     }
 
 }

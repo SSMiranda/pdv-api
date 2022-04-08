@@ -30,21 +30,20 @@ public class FunctionalityServiceImpl implements IFunctionalityService {
 
     @Override
     public ResponseEntity<FunctionalityResponse> save(FunctionalityRequest functionalityRequest) {
-        Optional<Module> module = moduleRepository.findById((functionalityRequest.getModule().getId()));
-        if (module.isPresent()) {
-            Functionality functionality = mapper.toDomain(functionalityRequest);
-            functionality.setModule(module.get());
-            URI uri = ServletUriComponentsBuilder
-                    .fromCurrentRequest()
-                    .path("/api/v1/functionalities/{name}")
-                    .buildAndExpand(functionality.getName())
-                    .toUri();
+        Optional<Module> module = Optional.ofNullable(moduleRepository
+                .findById(functionalityRequest.getModule().getUuid())
+                .orElseThrow(() -> new ResourceNotFoundException("Module not found with UUID: " + functionalityRequest.getModule().getUuid())));
 
-            final Functionality saved = repository.save(functionality);
+        Functionality functionality = mapper.toDomain(functionalityRequest);
+        functionality.setModule(module.get());
+        URI uri = ServletUriComponentsBuilder
+                .fromCurrentRequest()
+                .path("/api/v1/functionalities/{name}")
+                .buildAndExpand(functionality.getName())
+                .toUri();
 
-            return ResponseEntity.created(uri).body(mapper.toDto(saved));
-        }
-        return ResponseEntity.badRequest().build();
+        final Functionality saved = repository.save(functionality);
+        return ResponseEntity.created(uri).body(mapper.toDto(saved));
     }
 
     @Override
@@ -61,27 +60,4 @@ public class FunctionalityServiceImpl implements IFunctionalityService {
                 .map(functionality -> ResponseEntity.ok().body(mapper.toDto(functionality)))
                 .orElseThrow(() -> new ResourceNotFoundException("Functionality not found with UUID: " + id));
     }
-
-
-//
-//    @Override
-//    public ResponseEntity<Void> removeProfile(Long id) {
-//        Optional<Profile> profile = repository.findById(id);
-//        if (profile.isPresent() && profile.get().getUsers().isEmpty()) {
-//            repository.delete(profile.get());
-//            return ResponseEntity.noContent().build();
-//        }
-//        return ResponseEntity.badRequest().build();
-//    }
-//
-//    @Override
-//    public ResponseEntity<ProfileResponse> update(ProfileRequest categoryRequest, Long id) {
-//        return repository.findById(id)
-//                .map(category -> {
-//                    BeanUtils.copyProperties(categoryRequest, category);
-//                    repository.save(category);
-//                    return ResponseEntity.ok().body(mapper.toDto(category));
-//                }).orElse(ResponseEntity.badRequest().build());
-//    }
-
 }

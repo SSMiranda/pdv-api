@@ -3,6 +3,7 @@ package com.mirandasidney.pdv.api.service;
 import com.mirandasidney.pdv.api.controller.dto.request.module.ModuleRequest;
 import com.mirandasidney.pdv.api.controller.dto.response.module.ModuleResponse;
 import com.mirandasidney.pdv.api.domain.Module;
+import com.mirandasidney.pdv.api.exception.ValidationException;
 import com.mirandasidney.pdv.api.mapper.ModuleMapper;
 import com.mirandasidney.pdv.api.repository.ModuleRepository;
 import com.mirandasidney.pdv.api.service.interfaces.IModuleService;
@@ -28,7 +29,7 @@ public class ModuleServiceImpl implements IModuleService {
     public ResponseEntity<ModuleResponse> save(ModuleRequest newModule) {
         final Optional<Module> response = repository.findByName(newModule.getName());
         if(response.isPresent()) {
-            return ResponseEntity.badRequest().build();
+            throw new ValidationException("Module already exist with name: " + newModule.getName());
         }
         Module module = mapper.toDomain(newModule);
         URI uri = ServletUriComponentsBuilder
@@ -46,32 +47,4 @@ public class ModuleServiceImpl implements IModuleService {
             return ResponseEntity.noContent().build();
         return ResponseEntity.ok().body(mapper.toDto(modules));
     }
-
-//    @Override
-//    public ResponseEntity<ProfileResponse> findProfileById(Long id) {
-//        return repository.findById(id)
-//                .map(profile -> ResponseEntity.ok().body(mapper.toDto(profile)))
-//                .orElse(ResponseEntity.notFound().build());
-//    }
-//
-//    @Override
-//    public ResponseEntity<Void> removeProfile(Long id) {
-//        Optional<Profile> profile = repository.findById(id);
-//        if (profile.isPresent() && profile.get().getUsers().isEmpty()) {
-//            repository.delete(profile.get());
-//            return ResponseEntity.noContent().build();
-//        }
-//        return ResponseEntity.badRequest().build();
-//    }
-//
-//    @Override
-//    public ResponseEntity<ProfileResponse> update(ProfileRequest categoryRequest, Long id) {
-//        return repository.findById(id)
-//                .map(category -> {
-//                    BeanUtils.copyProperties(categoryRequest, category);
-//                    repository.save(category);
-//                    return ResponseEntity.ok().body(mapper.toDto(category));
-//                }).orElse(ResponseEntity.badRequest().build());
-//    }
-
 }

@@ -2,6 +2,7 @@ package com.mirandasidney.pdv.api.handler;
 
 import com.mirandasidney.pdv.api.exception.ApiError;
 import com.mirandasidney.pdv.api.exception.ResourceNotFoundException;
+import com.mirandasidney.pdv.api.exception.ValidationException;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -28,6 +29,21 @@ public class RestExceptionHandler extends ResponseEntityExceptionHandler {
         return ResponseEntityBuilder.build(ApiError
                 .builder()
                 .message("Resource Not Found, check the documentation")
+                .status(HttpStatus.BAD_REQUEST.value())
+                .className(ex.getClass().getName())
+                .timestamp(LocalDateTime.now())
+                .errors(err)
+                .build());
+    }
+
+    @ExceptionHandler(ValidationException.class)
+    public ResponseEntity<Object> handleValidationException(ValidationException ex) {
+        List<String> err = new ArrayList();
+        err.add(ex.getMessage());
+
+        return ResponseEntityBuilder.build(ApiError
+                .builder()
+                .message("Constraint Infringed, check the documentation")
                 .status(HttpStatus.BAD_REQUEST.value())
                 .className(ex.getClass().getName())
                 .timestamp(LocalDateTime.now())

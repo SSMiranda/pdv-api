@@ -34,14 +34,15 @@ public class UserServiceImpl implements IUserService {
 
     @Override
     public ResponseEntity<UserResponse> save(UserPostRequestBody user) {
+        Profile profile = profileRepository
+                .findById(user.getProfile().getUuid())
+                .orElseThrow(() -> new ResourceNotFoundException("Profile not found with UUID: " + user.getProfile().getUuid()));
+
         final URI uri = ServletUriComponentsBuilder
                 .fromCurrentRequest()
                 .path("/api/v1/{username}")
                 .buildAndExpand(user.getUsername())
                 .toUri();
-        Profile profile = profileRepository
-                .findById(user.getProfile().getUuid())
-                .orElseThrow(() -> new ResourceNotFoundException("Profile not found with UUID: " + user.getProfile().getUuid() ));
 
             User newUser = mapper.toUser(user);
             newUser.setProfile(profile);
@@ -80,7 +81,7 @@ public class UserServiceImpl implements IUserService {
                     BeanUtils.copyProperties(userUpdate, user);
                     repository.save(user);
                     return ResponseEntity.ok().body(mapper.toUserResponse(user));
-                }).orElse(ResponseEntity.badRequest().build());
+                }).orElseThrow(() -> new ResourceNotFoundException("User not found with UUID: " + id));
     }
 
     @Override

@@ -6,6 +6,7 @@ import com.mirandasidney.pdv.api.controller.dto.response.profile.ProfileResponse
 import com.mirandasidney.pdv.api.domain.Module;
 import com.mirandasidney.pdv.api.domain.Profile;
 import com.mirandasidney.pdv.api.exception.ResourceNotFoundException;
+import com.mirandasidney.pdv.api.exception.ValidationException;
 import com.mirandasidney.pdv.api.mapper.ProfileMapper;
 import com.mirandasidney.pdv.api.repository.ModuleRepository;
 import com.mirandasidney.pdv.api.repository.ProfileRepository;
@@ -31,18 +32,19 @@ public class ProfileServiceImpl implements IProfileService {
 
     @Override
     public ResponseEntity<ProfileResponse> save(ProfileRequest newProfile) {
-        final Optional<Profile> response = repository.findByProfileName(newProfile.getProfileName());
-        if(response.isPresent()) {
-            return ResponseEntity.badRequest().build();
-        }
+        Optional<Profile> profile = repository.findByProfileName(newProfile.getProfileName());
+        if(profile.isPresent()) {
+            throw new ValidationException("Profile already exist with name: " + newProfile.getProfileName());
+        };
+
         URI uri = ServletUriComponentsBuilder
                 .fromCurrentRequest()
                 .path("/api/v1/profiles/{profileName}")
                 .buildAndExpand(newProfile.getProfileName())
                 .toUri();
 
-        Profile profile = mapper.toModel(newProfile);
-        return ResponseEntity.created(uri).body(mapper.toDto(repository.save(profile)));
+        Profile profileModel = mapper.toModel(newProfile);
+        return ResponseEntity.created(uri).body(mapper.toDto(repository.save(profileModel)));
     }
 
     @Override
@@ -76,14 +78,14 @@ public class ProfileServiceImpl implements IProfileService {
                     if(profileUpdate.getProfileName() != null) p.setProfileName(profileUpdate.getProfileName());
                     if(profileUpdate.getDescription() != null) p.setDescription(profileUpdate.getDescription());
                     if(profileUpdate.getModule() != null) {
-                        final Optional<Module> module = moduleRepository.findById(profileUpdate.getModule().getId());
+                        final Optional<Module> module = moduleRepository.findById(profileUpdate.getModule().getUuid());
                         if (module.isPresent()) {
                             p.appendModule(module.get());
                         }
                     }
                     repository.save(p);
                     return ResponseEntity.ok().body(mapper.toDtoFull(p));
-                }).orElse(ResponseEntity.badRequest().build());
+                }).orElseThrow(() -> new ResourceNotFoundException("Profile not found with UUID: " + id));
     }
 
 }
