@@ -65,7 +65,7 @@ public class UserServiceImpl implements IUserService {
     }
 
     @Override
-    public ResponseEntity<?> removeUser(UUID id) {
+    public ResponseEntity<Object> removeUser(UUID id) {
         return repository.findById(id)
                 .map(user -> {
                     repository.delete(user);

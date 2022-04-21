@@ -3,7 +3,6 @@ package com.mirandasidney.pdv.api.domain;
 import lombok.Getter;
 import lombok.Setter;
 
-import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
@@ -47,9 +46,8 @@ public class Profile implements Serializable {
 
     @Getter
     @Setter
-    @ManyToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
-    @JoinTable(
-            name = "modules_profile",
+    @ManyToMany(fetch = FetchType.EAGER)
+    @JoinTable(name = "modules_profile",
             joinColumns = @JoinColumn(name = "PROFILE_ID"),
             inverseJoinColumns = @JoinColumn(name = "MODULE_ID"))
     private Set<Module> modules;

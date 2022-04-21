@@ -14,12 +14,12 @@ public interface IProfileService {
     @Transactional
     ResponseEntity<ProfileResponse> save(ProfileRequest profile);
 
-    ResponseEntity<Set<ProfileResponse>> findAll();
+    ResponseEntity<Set<ProfileResponseWithModules>> findAll();
 
-    ResponseEntity<ProfileResponse> findProfileById(UUID id);
+    ResponseEntity<ProfileResponseWithModules> findProfileById(UUID id);
 
     @Transactional
-    ResponseEntity<?> removeProfile(UUID id);
+    ResponseEntity<Object> removeProfile(UUID id);
 
     @Transactional
     ResponseEntity<ProfileResponseWithModules> update(ProfileRequest profile, UUID id);

@@ -1,10 +1,10 @@
 package com.mirandasidney.pdv.api.domain;
 
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-import org.hibernate.annotations.GenericGenerator;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -13,14 +13,14 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import java.io.Serializable;
 import java.util.UUID;
-
-import static java.util.UUID.randomUUID;
 
 @Entity
 @NoArgsConstructor
 @AllArgsConstructor
-public class Functionality {
+public class Functionality implements Serializable {
+    private static final long serialVersionUID = 1L;
 
     @Id
     @Getter
@@ -30,6 +30,7 @@ public class Functionality {
 
     @Getter
     @Setter
+    @Column(unique = true)
     private String name;
     @Getter
     @Setter

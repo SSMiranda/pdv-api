@@ -1,27 +1,26 @@
 package com.mirandasidney.pdv.api.domain;
 
 import lombok.AllArgsConstructor;
-import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.ManyToMany;
+import javax.persistence.OneToMany;
+import java.io.Serializable;
 import java.util.Set;
 import java.util.UUID;
 
 @Entity
 @NoArgsConstructor
 @AllArgsConstructor
-@EqualsAndHashCode
-public class Module {
+public class Module implements Serializable {
+    private static final long serialVersionUID = 1L;
 
     @Id
     @Getter
@@ -44,6 +43,6 @@ public class Module {
 
     @Getter
     @Setter
-    @ManyToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "modules")
-    private Set<Profile> profiles;
+    @OneToMany(mappedBy = "module", fetch = FetchType.EAGER)
+    private Set<Functionality> functionalities;
 }

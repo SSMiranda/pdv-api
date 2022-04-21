@@ -19,7 +19,7 @@ public interface IUserService {
     Page<UserResponse> findAll(int page, int size);
 
     @Transactional
-    ResponseEntity<?> removeUser(UUID id);
+    ResponseEntity<Object> removeUser(UUID id);
 
     @Transactional
     ResponseEntity<UserResponse> update(UpdateUserRequest user, UUID id);

@@ -7,7 +7,6 @@ import com.mirandasidney.pdv.api.domain.Profile;
 import org.mapstruct.Mapper;
 import org.mapstruct.factory.Mappers;
 
-import java.util.List;
 import java.util.Set;
 
 @Mapper(componentModel = "spring")
@@ -21,6 +20,6 @@ public interface ProfileMapper {
 
     ProfileResponseWithModules toDtoFull(Profile profile);
 
-    Set<ProfileResponse> toProfileListDto(Set<Profile> profiles);
+    Set<ProfileResponseWithModules> toProfileListDto(Set<Profile> profiles);
 
 }

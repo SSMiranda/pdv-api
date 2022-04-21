@@ -41,19 +41,19 @@ public class ProfileController {
 
     @ApiOperation(value = "Busca um perfil pelo ID")
     @GetMapping(value = "/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<ProfileResponse> findProfileById(@PathVariable final String id) {
+    public ResponseEntity<ProfileResponseWithModules> findProfileById(@PathVariable final String id) {
         return service.findProfileById(UUID.fromString(id));
     }
 
     @ApiOperation(value = "Retorna a lista de perfis cadastrados")
     @GetMapping(produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<Set<ProfileResponse>> findAll() {
+    public ResponseEntity<Set<ProfileResponseWithModules>> findAll() {
         return service.findAll();
     }
 
     @ApiOperation(value = "Remove um perfil")
     @DeleteMapping("/{id}")
-    public ResponseEntity<?> remove(@PathVariable final UUID id) {
+    public ResponseEntity<Object> remove(@PathVariable final UUID id) {
         return service.removeProfile(id);
     }
 

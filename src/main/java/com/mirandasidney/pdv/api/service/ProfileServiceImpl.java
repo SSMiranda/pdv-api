@@ -35,7 +35,7 @@ public class ProfileServiceImpl implements IProfileService {
         Optional<Profile> profile = repository.findByProfileName(newProfile.getProfileName());
         if(profile.isPresent()) {
             throw new ValidationException("Profile already exist with name: " + newProfile.getProfileName());
-        };
+        }
 
         URI uri = ServletUriComponentsBuilder
                 .fromCurrentRequest()
@@ -48,7 +48,7 @@ public class ProfileServiceImpl implements IProfileService {
     }
 
     @Override
-    public ResponseEntity<Set<ProfileResponse>> findAll() {
+    public ResponseEntity<Set<ProfileResponseWithModules>> findAll() {
         Set<Profile> profile = repository.findAllSet();
         if(profile.isEmpty())
             return ResponseEntity.noContent().build();
@@ -56,14 +56,14 @@ public class ProfileServiceImpl implements IProfileService {
     }
 
     @Override
-    public ResponseEntity<ProfileResponse> findProfileById(UUID id) {
+    public ResponseEntity<ProfileResponseWithModules> findProfileById(UUID id) {
         return repository.findById(id)
-                .map(profile -> ResponseEntity.ok().body(mapper.toDto(profile)))
+                .map(profile -> ResponseEntity.ok().body(mapper.toDtoFull(profile)))
                 .orElseThrow(() -> new ResourceNotFoundException("Profile not found with UUID: " + id));
     }
 
     @Override
-    public ResponseEntity<?> removeProfile(UUID id) {
+    public ResponseEntity<Object> removeProfile(UUID id) {
         return repository.findById(id).map(profile -> {
             repository.delete(profile);
             return ResponseEntity.noContent().build();

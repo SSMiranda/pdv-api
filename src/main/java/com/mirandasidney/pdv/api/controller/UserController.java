@@ -57,7 +57,7 @@ public class UserController {
 
     @ApiOperation(value = "Remove um usuário")
     @DeleteMapping("/{id}")
-    public ResponseEntity<?> remove(@PathVariable final UUID id) {
+    public ResponseEntity<Object> remove(@PathVariable final UUID id) {
         return service.removeUser(id);
     }
 
@@ -73,7 +73,7 @@ public class UserController {
     @PatchMapping(value = "/{id}",
             consumes = MediaType.APPLICATION_JSON_VALUE,
             produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<UserResponse> userPartlyUpdate(@PathVariable("id") final UUID id, @RequestBody final UpdateUserRequest userUpdate) {
-        return service.userPartlyUpdate(userUpdate, id);
+    public ResponseEntity<UserResponse> userPartlyUpdate(@PathVariable("id") final String id, @RequestBody final UpdateUserRequest userUpdate) {
+        return service.userPartlyUpdate(userUpdate, UUID.fromString(id));
     }
 }
