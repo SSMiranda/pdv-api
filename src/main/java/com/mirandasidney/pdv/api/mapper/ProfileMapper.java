@@ -2,7 +2,7 @@ package com.mirandasidney.pdv.api.mapper;
 
 import com.mirandasidney.pdv.api.controller.dto.request.profile.ProfileRequest;
 import com.mirandasidney.pdv.api.controller.dto.response.profile.ProfileResponse;
-import com.mirandasidney.pdv.api.controller.dto.response.profile.ProfileResponseWithModules;
+import com.mirandasidney.pdv.api.controller.dto.response.profile.ProfileResponseAllAttribute;
 import com.mirandasidney.pdv.api.domain.Profile;
 import org.mapstruct.Mapper;
 import org.mapstruct.factory.Mappers;
@@ -18,8 +18,8 @@ public interface ProfileMapper {
 
     ProfileResponse toDto(Profile profile);
 
-    ProfileResponseWithModules toDtoFull(Profile profile);
+    ProfileResponseAllAttribute toDtoFull(Profile profile);
 
-    Set<ProfileResponseWithModules> toProfileListDto(Set<Profile> profiles);
+    Set<ProfileResponseAllAttribute> toProfileListDto(Set<Profile> profiles);
 
 }

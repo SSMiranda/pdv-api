@@ -2,12 +2,14 @@ package com.mirandasidney.pdv.api.service;
 
 import com.mirandasidney.pdv.api.controller.dto.request.profile.ProfileRequest;
 import com.mirandasidney.pdv.api.controller.dto.response.profile.ProfileResponse;
-import com.mirandasidney.pdv.api.controller.dto.response.profile.ProfileResponseWithModules;
+import com.mirandasidney.pdv.api.controller.dto.response.profile.ProfileResponseAllAttribute;
+import com.mirandasidney.pdv.api.domain.Functionality;
 import com.mirandasidney.pdv.api.domain.Module;
 import com.mirandasidney.pdv.api.domain.Profile;
 import com.mirandasidney.pdv.api.exception.ResourceNotFoundException;
 import com.mirandasidney.pdv.api.exception.ValidationException;
 import com.mirandasidney.pdv.api.mapper.ProfileMapper;
+import com.mirandasidney.pdv.api.repository.FunctionalityRepository;
 import com.mirandasidney.pdv.api.repository.ModuleRepository;
 import com.mirandasidney.pdv.api.repository.ProfileRepository;
 import com.mirandasidney.pdv.api.service.interfaces.IProfileService;
@@ -29,6 +31,7 @@ public class ProfileServiceImpl implements IProfileService {
     private static final ProfileMapper mapper = ProfileMapper.INSTANCE;
     private final ProfileRepository repository;
     private final ModuleRepository moduleRepository;
+    private final FunctionalityRepository functionalityRepository;
 
     @Override
     public ResponseEntity<ProfileResponse> save(ProfileRequest newProfile) {
@@ -48,7 +51,7 @@ public class ProfileServiceImpl implements IProfileService {
     }
 
     @Override
-    public ResponseEntity<Set<ProfileResponseWithModules>> findAll() {
+    public ResponseEntity<Set<ProfileResponseAllAttribute>> findAll() {
         Set<Profile> profile = repository.findAllSet();
         if(profile.isEmpty())
             return ResponseEntity.noContent().build();
@@ -56,7 +59,7 @@ public class ProfileServiceImpl implements IProfileService {
     }
 
     @Override
-    public ResponseEntity<ProfileResponseWithModules> findProfileById(UUID id) {
+    public ResponseEntity<ProfileResponseAllAttribute> findProfileById(UUID id) {
         return repository.findById(id)
                 .map(profile -> ResponseEntity.ok().body(mapper.toDtoFull(profile)))
                 .orElseThrow(() -> new ResourceNotFoundException("Profile not found with UUID: " + id));
@@ -71,17 +74,21 @@ public class ProfileServiceImpl implements IProfileService {
     }
 
     @Override
-    public ResponseEntity<ProfileResponseWithModules> update(ProfileRequest profileUpdate, UUID id) {
+    public ResponseEntity<ProfileResponseAllAttribute> update(ProfileRequest profileUpdate, UUID id) {
         final Optional<Profile> profile = repository.findById(id);
         return profile
         .map(p -> {
                     if(profileUpdate.getProfileName() != null) p.setProfileName(profileUpdate.getProfileName());
                     if(profileUpdate.getDescription() != null) p.setDescription(profileUpdate.getDescription());
+
                     if(profileUpdate.getModule() != null) {
                         final Optional<Module> module = moduleRepository.findById(profileUpdate.getModule().getUuid());
-                        if (module.isPresent()) {
-                            p.appendModule(module.get());
-                        }
+                        module.ifPresent(p::appendModule);
+                    }
+
+                    if(profileUpdate.getFunctionality() != null) {
+                        final Optional<Functionality> functionality = functionalityRepository.findById(profileUpdate.getFunctionality().getUuid());
+                        functionality.ifPresent(p::appendFunctionality);
                     }
                     repository.save(p);
                     return ResponseEntity.ok().body(mapper.toDtoFull(p));

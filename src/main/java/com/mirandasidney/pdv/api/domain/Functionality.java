@@ -1,6 +1,5 @@
 package com.mirandasidney.pdv.api.domain;
 
-import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -8,6 +7,7 @@ import lombok.Setter;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -32,19 +32,18 @@ public class Functionality implements Serializable {
     @Setter
     @Column(unique = true)
     private String name;
-    @Getter
-    @Setter
-    private String description;
-    @Getter
-    @Setter
-    private boolean canView;
-    @Getter
-    @Setter
-    private boolean canEdit;
 
     @Getter
     @Setter
-    @ManyToOne
+    private String description;
+
+    @Getter
+    @Setter
+    private boolean visible;
+
+    @Getter
+    @Setter
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "MODULE_ID", nullable = false)
     private Module module;
 

@@ -21,6 +21,8 @@ public class UserResponse {
     private String createdAt;
     private Boolean active;
     private String updated;
+//    private Set<ModuleResponse> modules;
+//    private Set<FunctionalityResponse> functionalities;
 
     public UserResponse(User user) {
         this.uuid = user.getUuid();
@@ -31,7 +33,6 @@ public class UserResponse {
         this.profile = new ProfileResponse(user.getProfile().getUuid(), user.getProfile().getProfileName(), user.getProfile().getDescription());
         this.createdAt = user.getCreatedAt();
         this.active = user.getActive();
-        this.updated = null;
     }
 
 }

@@ -19,5 +19,4 @@ public class ModuleResponse {
     private String description;
     private Set<FunctionalityResponse> functionalities;
 
-
 }

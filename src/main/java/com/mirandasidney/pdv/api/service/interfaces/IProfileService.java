@@ -2,7 +2,7 @@ package com.mirandasidney.pdv.api.service.interfaces;
 
 import com.mirandasidney.pdv.api.controller.dto.request.profile.ProfileRequest;
 import com.mirandasidney.pdv.api.controller.dto.response.profile.ProfileResponse;
-import com.mirandasidney.pdv.api.controller.dto.response.profile.ProfileResponseWithModules;
+import com.mirandasidney.pdv.api.controller.dto.response.profile.ProfileResponseAllAttribute;
 import org.springframework.http.ResponseEntity;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -14,13 +14,13 @@ public interface IProfileService {
     @Transactional
     ResponseEntity<ProfileResponse> save(ProfileRequest profile);
 
-    ResponseEntity<Set<ProfileResponseWithModules>> findAll();
+    ResponseEntity<Set<ProfileResponseAllAttribute>> findAll();
 
-    ResponseEntity<ProfileResponseWithModules> findProfileById(UUID id);
+    ResponseEntity<ProfileResponseAllAttribute> findProfileById(UUID id);
 
     @Transactional
     ResponseEntity<Object> removeProfile(UUID id);
 
     @Transactional
-    ResponseEntity<ProfileResponseWithModules> update(ProfileRequest profile, UUID id);
+    ResponseEntity<ProfileResponseAllAttribute> update(ProfileRequest profile, UUID id);
 }

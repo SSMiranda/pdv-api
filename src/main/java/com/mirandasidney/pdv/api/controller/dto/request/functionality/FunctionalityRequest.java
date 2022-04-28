@@ -16,8 +16,8 @@ public class FunctionalityRequest {
     private String name;
     @NotNull
     private String description;
-    private boolean canView;
-    private boolean canEdit;
     @NotNull
     private ModuleRequestById module;
+
+    private boolean isVisible;
 }

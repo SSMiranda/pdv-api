@@ -2,7 +2,7 @@ package com.mirandasidney.pdv.api.controller;
 
 import com.mirandasidney.pdv.api.controller.dto.request.profile.ProfileRequest;
 import com.mirandasidney.pdv.api.controller.dto.response.profile.ProfileResponse;
-import com.mirandasidney.pdv.api.controller.dto.response.profile.ProfileResponseWithModules;
+import com.mirandasidney.pdv.api.controller.dto.response.profile.ProfileResponseAllAttribute;
 import com.mirandasidney.pdv.api.service.interfaces.IProfileService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -41,13 +41,13 @@ public class ProfileController {
 
     @ApiOperation(value = "Busca um perfil pelo ID")
     @GetMapping(value = "/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<ProfileResponseWithModules> findProfileById(@PathVariable final String id) {
+    public ResponseEntity<ProfileResponseAllAttribute> findProfileById(@PathVariable final String id) {
         return service.findProfileById(UUID.fromString(id));
     }
 
     @ApiOperation(value = "Retorna a lista de perfis cadastrados")
     @GetMapping(produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<Set<ProfileResponseWithModules>> findAll() {
+    public ResponseEntity<Set<ProfileResponseAllAttribute>> findAll() {
         return service.findAll();
     }
 
@@ -61,7 +61,7 @@ public class ProfileController {
     @PatchMapping(value = "/{id}",
             consumes = MediaType.APPLICATION_JSON_VALUE,
             produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<ProfileResponseWithModules> update(@RequestBody final ProfileRequest profile, @PathVariable("id") final UUID id)  {
+    public ResponseEntity<ProfileResponseAllAttribute> update(@RequestBody final ProfileRequest profile, @PathVariable("id") final UUID id)  {
         return service.update(profile, id);
     }
 

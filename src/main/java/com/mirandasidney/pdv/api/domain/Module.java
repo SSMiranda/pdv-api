@@ -13,6 +13,7 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.OneToMany;
 import java.io.Serializable;
+import java.util.HashSet;
 import java.util.Set;
 import java.util.UUID;
 
@@ -44,5 +45,5 @@ public class Module implements Serializable {
     @Getter
     @Setter
     @OneToMany(mappedBy = "module", fetch = FetchType.EAGER)
-    private Set<Functionality> functionalities;
+    private Set<Functionality> functionalities = new HashSet<>();
 }

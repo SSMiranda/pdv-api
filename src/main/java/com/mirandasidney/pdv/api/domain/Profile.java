@@ -52,8 +52,20 @@ public class Profile implements Serializable {
             inverseJoinColumns = @JoinColumn(name = "MODULE_ID"))
     private Set<Module> modules;
 
+    @Getter
+    @Setter
+    @ManyToMany(fetch = FetchType.EAGER)
+    @JoinTable(name = "functionality_profile",
+            joinColumns = @JoinColumn(name = "PROFILE_ID"),
+            inverseJoinColumns = @JoinColumn(name = "FUNCTIONALITY_ID"))
+    private Set<Functionality> functionalities;
+
     public void appendModule(Module module) {
         this.modules.add(module);
+    }
+
+    public void appendFunctionality(Functionality functionality) {
+        this.functionalities.add(functionality);
     }
 
 }

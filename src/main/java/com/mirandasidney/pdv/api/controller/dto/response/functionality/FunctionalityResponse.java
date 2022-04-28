@@ -14,6 +14,5 @@ public class FunctionalityResponse {
     private UUID uuid;
     private String name;
     private String description;
-    private boolean canView;
-    private boolean canEdit;
+    private boolean visible;
 }
