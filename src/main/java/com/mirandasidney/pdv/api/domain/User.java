@@ -1,27 +1,40 @@
 package com.mirandasidney.pdv.api.domain;
 
-import com.mirandasidney.pdv.api.util.Util;
+import com.mirandasidney.pdv.api.utils.DateUtils;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.userdetails.UserDetails;
 
 import javax.persistence.Column;
+import javax.persistence.ConstraintMode;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
+import javax.persistence.ForeignKey;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
+import javax.persistence.JoinTable;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
-import java.io.Serializable;
+import javax.persistence.UniqueConstraint;
+import java.util.Collection;
+import java.util.HashSet;
+import java.util.Set;
 import java.util.UUID;
+
+/**
+ * @author Sidney Miranda
+ */
 
 @Entity
 @AllArgsConstructor
 @NoArgsConstructor
-@Table(name = "USER")
-public class User implements Serializable {
+@Table(name = "Users")
+public class User implements UserDetails {
 
     private static final long serialVersionUID = 1L;
     private static final Boolean STATUS = true;
@@ -29,7 +42,7 @@ public class User implements Serializable {
     @Id
     @Getter
     @GeneratedValue(strategy = GenerationType.AUTO)
-    @Column(name = "USER_ID", updatable = false, unique = true, nullable = false, columnDefinition = "uuid")
+    @Column(name = "user_id", updatable = false, unique = true, nullable = false)
     private UUID uuid;
 
     @Getter
@@ -39,34 +52,46 @@ public class User implements Serializable {
 
     @Getter
     @Setter
-    @Column(name = "LASTNAME", nullable = false)
+    @Column(nullable = false)
     private String lastname;
 
-    @Getter
     @Setter
-    @Column(name = "USER_NAME", nullable = false)
+    @Column(nullable = false)
     private String username;
 
-    @Getter
     @Setter
-    @Column(name = "PASSWORD", nullable = false)
+    @Column(nullable = false)
     private String password;
 
     @Getter
     @Setter
-    @Column(name = "PHONE")
     private String phone;
 
+    @OneToMany(fetch = FetchType.EAGER)
+    @JoinTable(name = "users_role",
+            uniqueConstraints = @UniqueConstraint(
+                    columnNames = {"user_id", "role_id"},
+                    name = "unique_role_user"),
+            joinColumns = @JoinColumn(
+                    name = "user_id",
+                    referencedColumnName = "user_id",
+                    table = "users",
+                    foreignKey = @ForeignKey(name = "user_fk", value = ConstraintMode.CONSTRAINT),
+                    unique = false),
+            inverseJoinColumns = @JoinColumn(
+                    name = "role_id",
+                    referencedColumnName = "role_id",
+                    table = "role",
+                    foreignKey = @ForeignKey(name = "role_fk", value = ConstraintMode.CONSTRAINT),
+                    unique = false))
     @Getter
     @Setter
-    @ManyToOne
-    @JoinColumn(name = "PROFILE_ID", nullable = false)
-    private Profile profile;
+    private Set<Role> roles = new HashSet<>();
 
     @Getter
     @Setter
     @Column(name = "CREATED_AT")
-    private String createdAt = Util.formatDate();
+    private String createdAt = DateUtils.formatDate();
 
     @Getter
     @Setter
@@ -78,4 +103,38 @@ public class User implements Serializable {
     @Column(name = "STATUS")
     private Boolean active = STATUS;
 
+    @Override
+    public Collection<? extends GrantedAuthority> getAuthorities() {
+        return this.roles;
+    }
+
+    @Override
+    public String getPassword() {
+        return this.password;
+    }
+
+    @Override
+    public String getUsername() {
+        return this.username;
+    }
+
+    @Override
+    public boolean isAccountNonExpired() {
+        return true;
+    }
+
+    @Override
+    public boolean isAccountNonLocked() {
+        return true;
+    }
+
+    @Override
+    public boolean isCredentialsNonExpired() {
+        return true;
+    }
+
+    @Override
+    public boolean isEnabled() {
+        return true;
+    }
 }

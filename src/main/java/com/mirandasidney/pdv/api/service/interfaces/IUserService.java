@@ -5,11 +5,12 @@ import com.mirandasidney.pdv.api.controller.dto.request.user.UpdateUserRequest;
 import com.mirandasidney.pdv.api.controller.dto.response.user.UserResponse;
 import org.springframework.data.domain.Page;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.UUID;
 
-public interface IUserService {
+public interface IUserService extends UserDetailsService {
 
     @Transactional
     ResponseEntity<UserResponse> save(UserPostRequestBody user);

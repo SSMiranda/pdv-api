@@ -1,4 +1,4 @@
-package com.mirandasidney.pdv.api.controller.dto.request.profile;
+package com.mirandasidney.pdv.api.controller.dto.request.role;
 
 import com.mirandasidney.pdv.api.controller.dto.request.functionality.FunctionalityRequestById;
 import com.mirandasidney.pdv.api.controller.dto.request.module.ModuleRequestById;

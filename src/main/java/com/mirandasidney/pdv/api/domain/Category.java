@@ -13,6 +13,7 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.OneToMany;
 import java.io.Serializable;
+import java.util.HashSet;
 import java.util.Set;
 import java.util.UUID;
 
@@ -25,7 +26,7 @@ public class Category implements Serializable {
     @Id
     @Getter
     @GeneratedValue(strategy = GenerationType.AUTO)
-    @Column(name = "CATEGORY_ID", updatable = false, unique = true, nullable = false, columnDefinition = "uuid")
+    @Column(name = "CATEGORY_ID", updatable = false, unique = true, nullable = false)
     private UUID uuid;
 
     @Getter
@@ -36,6 +37,6 @@ public class Category implements Serializable {
     @Getter
     @Setter
     @OneToMany(mappedBy = "category", fetch = FetchType.EAGER)
-    private Set<Product> products;
+    private Set<Product> products = new HashSet<>();
 
 }

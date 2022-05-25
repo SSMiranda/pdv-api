@@ -1,6 +1,6 @@
 package com.mirandasidney.pdv.api.controller.dto.request.user;
 
-import com.mirandasidney.pdv.api.controller.dto.request.profile.ProfileUserRequest;
+import com.mirandasidney.pdv.api.controller.dto.request.role.ProfileUserRequest;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -12,7 +12,7 @@ public class UpdateUserRequest {
     private String firstname;
     private String lastname;
     private String username;
-    private ProfileUserRequest profile;
+    private ProfileUserRequest role;
     private String phone;
     private Boolean active;
 }

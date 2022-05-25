@@ -1,8 +1,8 @@
 package com.mirandasidney.pdv.api.controller;
 
-import com.mirandasidney.pdv.api.controller.dto.request.profile.ProfileRequest;
-import com.mirandasidney.pdv.api.controller.dto.response.profile.ProfileResponse;
-import com.mirandasidney.pdv.api.controller.dto.response.profile.ProfileResponseAllAttribute;
+import com.mirandasidney.pdv.api.controller.dto.request.role.ProfileRequest;
+import com.mirandasidney.pdv.api.controller.dto.response.role.ProfileResponse;
+import com.mirandasidney.pdv.api.controller.dto.response.role.ProfileResponseAllAttribute;
 import com.mirandasidney.pdv.api.service.interfaces.IProfileService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -35,8 +35,8 @@ public class ProfileController {
 
     @ApiOperation(value = "Cadastra um perfil")
     @PostMapping(consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<ProfileResponse> save(@Valid @RequestBody final ProfileRequest profile) {
-        return service.save(profile);
+    public ResponseEntity<ProfileResponse> save(@Valid @RequestBody final ProfileRequest role) {
+        return service.save(role);
     }
 
     @ApiOperation(value = "Busca um perfil pelo ID")
@@ -61,8 +61,8 @@ public class ProfileController {
     @PatchMapping(value = "/{id}",
             consumes = MediaType.APPLICATION_JSON_VALUE,
             produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<ProfileResponseAllAttribute> update(@RequestBody final ProfileRequest profile, @PathVariable("id") final UUID id)  {
-        return service.update(profile, id);
+    public ResponseEntity<ProfileResponseAllAttribute> update(@RequestBody final ProfileRequest role, @PathVariable("id") final UUID id)  {
+        return service.update(role, id);
     }
 
 }

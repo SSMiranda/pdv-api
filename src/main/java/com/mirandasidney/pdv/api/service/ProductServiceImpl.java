@@ -9,7 +9,7 @@ import com.mirandasidney.pdv.api.mapper.ProductMapper;
 import com.mirandasidney.pdv.api.repository.CategoryRepository;
 import com.mirandasidney.pdv.api.repository.ProductRepository;
 import com.mirandasidney.pdv.api.service.interfaces.IProductService;
-import com.mirandasidney.pdv.api.util.Util;
+import com.mirandasidney.pdv.api.utils.DateUtils;
 import lombok.AllArgsConstructor;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -98,7 +98,7 @@ public class ProductServiceImpl implements IProductService {
                 if(productUpdate.getAmount() != null) p.setAmount(Integer.valueOf(productUpdate.getAmount()));
                 if(productUpdate.getCostPrice() != null) p.setCostPrice(new BigDecimal(productUpdate.getCostPrice()));
                 if(productUpdate.getSalePrice() != null) p.setSalePrice(new BigDecimal(productUpdate.getSalePrice()));
-                if(productUpdate != null) p.setUpdate(Util.formatDate());
+                if(productUpdate != null) p.setUpdate(DateUtils.formatDate());
 
                 repository.save(p);
                 return ResponseEntity.ok().body(mapper.toDto(p));

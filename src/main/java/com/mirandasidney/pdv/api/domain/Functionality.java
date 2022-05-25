@@ -25,7 +25,7 @@ public class Functionality implements Serializable {
     @Id
     @Getter
     @GeneratedValue(strategy = GenerationType.AUTO)
-    @Column(name = "FUNCTIONALITY_ID", updatable = false, unique = true, nullable = false, columnDefinition = "uuid")
+    @Column(name = "FUNCTIONALITY_ID", updatable = false, unique = true, nullable = false)
     private UUID uuid;
 
     @Getter

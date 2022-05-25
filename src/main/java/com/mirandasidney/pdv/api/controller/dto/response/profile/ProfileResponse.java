@@ -1,4 +1,4 @@
-package com.mirandasidney.pdv.api.controller.dto.response.profile;
+package com.mirandasidney.pdv.api.controller.dto.response.role;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;

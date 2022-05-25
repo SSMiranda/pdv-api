@@ -1,6 +1,6 @@
 package com.mirandasidney.pdv.api.controller.dto.request.user;
 
-import com.mirandasidney.pdv.api.controller.dto.request.profile.ProfileUserRequest;
+import com.mirandasidney.pdv.api.controller.dto.request.role.ProfileUserRequest;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -20,6 +20,6 @@ public class UserPostRequestBody {
     @NotNull
     private String password;
     @NotNull
-    private ProfileUserRequest profile;
+    private ProfileUserRequest role;
     private String phone;
 }

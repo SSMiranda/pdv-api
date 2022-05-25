@@ -1,26 +1,28 @@
 package com.mirandasidney.pdv.api.service;
 
-import com.mirandasidney.pdv.api.controller.dto.request.user.UserPostRequestBody;
 import com.mirandasidney.pdv.api.controller.dto.request.user.UpdateUserRequest;
+import com.mirandasidney.pdv.api.controller.dto.request.user.UserPostRequestBody;
 import com.mirandasidney.pdv.api.controller.dto.response.user.UserResponse;
-import com.mirandasidney.pdv.api.domain.Profile;
+import com.mirandasidney.pdv.api.domain.Role;
 import com.mirandasidney.pdv.api.domain.User;
 import com.mirandasidney.pdv.api.exception.ResourceNotFoundException;
 import com.mirandasidney.pdv.api.mapper.UserMapper;
 import com.mirandasidney.pdv.api.repository.ProfileRepository;
 import com.mirandasidney.pdv.api.repository.UserRepository;
 import com.mirandasidney.pdv.api.service.interfaces.IUserService;
-import com.mirandasidney.pdv.api.util.Util;
 import lombok.AllArgsConstructor;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import java.net.URI;
+import java.util.Optional;
 import java.util.UUID;
 
 @Service
@@ -33,10 +35,18 @@ public class UserServiceImpl implements IUserService {
     private ProfileRepository profileRepository;
 
     @Override
+    public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
+        final User user =  Optional.ofNullable(repository.findUserByUsername(username))
+                .orElseThrow(() -> new UsernameNotFoundException("User not found."));
+
+        return new org.springframework.security.core.userdetails.User(user.getUsername(), user.getPassword(), user.getAuthorities());
+    }
+
+    @Override
     public ResponseEntity<UserResponse> save(UserPostRequestBody user) {
-        Profile profile = profileRepository
-                .findById(user.getProfile().getUuid())
-                .orElseThrow(() -> new ResourceNotFoundException("Profile not found with UUID: " + user.getProfile().getUuid()));
+        Role role = profileRepository
+                .findById(user.getRole().getUuid())
+                .orElseThrow(() -> new ResourceNotFoundException("Profile not found with UUID: " + user.getRole().getUuid()));
 
         final URI uri = ServletUriComponentsBuilder
                 .fromCurrentRequest()
@@ -45,7 +55,7 @@ public class UserServiceImpl implements IUserService {
                 .toUri();
 
             User newUser = mapper.toUser(user);
-            newUser.setProfile(profile);
+//            newUser.setRole(role);
             User savedUser = repository.save(newUser);
             return ResponseEntity.created(uri).body(mapper.toUserResponse(savedUser));
     }
@@ -86,22 +96,23 @@ public class UserServiceImpl implements IUserService {
 
     @Override
     public ResponseEntity<UserResponse> userPartlyUpdate(UpdateUserRequest userUpdate, UUID id) {
-        return repository.findById(id)
-                .map(user -> {
-                    if(userUpdate.getProfile() != null) {
-                        Profile p = profileRepository
-                                .findById(userUpdate.getProfile().getUuid())
-                                .orElseThrow(() -> new ResourceNotFoundException("Profile not found with UUID" + userUpdate.getProfile().getUuid()));
-                        user.setProfile(p);
-                    }
-                    if(userUpdate.getUsername() != null) user.setUsername(userUpdate.getUsername());
-                    if(userUpdate.getFirstname() != null) user.setFirstname(userUpdate.getFirstname());
-                    if(userUpdate.getLastname() != null) user.setLastname(userUpdate.getLastname());
-                    if(userUpdate.getPhone() != null) user.setPhone(userUpdate.getPhone());
-                    if(userUpdate.getActive() != null) user.setActive((userUpdate.getActive()));
-                    if(userUpdate != null) user.setUpdated(Util.formatDate());
-
-            return ResponseEntity.ok().body(mapper.toUserResponse(repository.save(user)));
-        }).orElseThrow(() -> new ResourceNotFoundException("User not found with UUID " + id));
+//        return repository.findById(id)
+//                .map(user -> {
+//                    if(userUpdate.getRole() != null) {
+//                        Role p = profileRepository
+//                                .findById(userUpdate.getRole().getUuid())
+//                                .orElseThrow(() -> new ResourceNotFoundException("Profile not found with UUID" + userUpdate.getRole().getUuid()));
+//                        user.setRole(p);
+//                    }
+//                    if(userUpdate.getUsername() != null) user.setUsername(userUpdate.getUsername());
+//                    if(userUpdate.getFirstname() != null) user.setFirstname(userUpdate.getFirstname());
+//                    if(userUpdate.getLastname() != null) user.setLastname(userUpdate.getLastname());
+//                    if(userUpdate.getPhone() != null) user.setPhone(userUpdate.getPhone());
+//                    if(userUpdate.getActive() != null) user.setActive((userUpdate.getActive()));
+//                    if(userUpdate != null) user.setUpdated(Util.formatDate());
+//
+//            return ResponseEntity.ok().body(mapper.toUserResponse(repository.save(user)));
+//        }).orElseThrow(() -> new ResourceNotFoundException("User not found with UUID " + id));
+        return null;
     }
 }

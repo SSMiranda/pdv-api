@@ -1,6 +1,6 @@
 package com.mirandasidney.pdv.api.controller.dto.response.user;
 
-import com.mirandasidney.pdv.api.controller.dto.response.profile.ProfileResponse;
+import com.mirandasidney.pdv.api.controller.dto.response.role.ProfileResponse;
 import com.mirandasidney.pdv.api.domain.User;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -17,7 +17,7 @@ public class UserResponse {
     private String lastname;
     private String username;
     private String phone;
-    private ProfileResponse profile;
+    private ProfileResponse role;
     private String createdAt;
     private Boolean active;
     private String updated;
@@ -30,7 +30,7 @@ public class UserResponse {
         this.lastname = user.getLastname();
         this.username = user.getUsername();
         this.phone = user.getPhone();
-        this.profile = new ProfileResponse(user.getProfile().getUuid(), user.getProfile().getProfileName(), user.getProfile().getDescription());
+//        this.role = new ProfileResponse(user.getRoles().getUuid(), user.getRole().getProfileName(), user.getRole().getDescription());
         this.createdAt = user.getCreatedAt();
         this.active = user.getActive();
     }

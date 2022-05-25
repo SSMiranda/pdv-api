@@ -1,9 +1,9 @@
 package com.mirandasidney.pdv.api.mapper;
 
-import com.mirandasidney.pdv.api.controller.dto.request.profile.ProfileRequest;
-import com.mirandasidney.pdv.api.controller.dto.response.profile.ProfileResponse;
-import com.mirandasidney.pdv.api.controller.dto.response.profile.ProfileResponseAllAttribute;
-import com.mirandasidney.pdv.api.domain.Profile;
+import com.mirandasidney.pdv.api.controller.dto.request.role.ProfileRequest;
+import com.mirandasidney.pdv.api.controller.dto.response.role.ProfileResponse;
+import com.mirandasidney.pdv.api.controller.dto.response.role.ProfileResponseAllAttribute;
+import com.mirandasidney.pdv.api.domain.Role;
 import org.mapstruct.Mapper;
 import org.mapstruct.factory.Mappers;
 
@@ -14,12 +14,12 @@ public interface ProfileMapper {
 
     ProfileMapper INSTANCE = Mappers.getMapper(ProfileMapper.class);
 
-    Profile toModel(ProfileRequest profile);
+    Role toModel(ProfileRequest role);
 
-    ProfileResponse toDto(Profile profile);
+    ProfileResponse toDto(Role role);
 
-    ProfileResponseAllAttribute toDtoFull(Profile profile);
+    ProfileResponseAllAttribute toDtoFull(Role role);
 
-    Set<ProfileResponseAllAttribute> toProfileListDto(Set<Profile> profiles);
+    Set<ProfileResponseAllAttribute> toProfileListDto(Set<Role> roles);
 
 }

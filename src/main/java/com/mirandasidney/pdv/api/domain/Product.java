@@ -1,6 +1,6 @@
 package com.mirandasidney.pdv.api.domain;
 
-import com.mirandasidney.pdv.api.util.Util;
+import com.mirandasidney.pdv.api.utils.DateUtils;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -26,7 +26,7 @@ public class Product implements Serializable {
     @Id
     @Getter
     @GeneratedValue(strategy = GenerationType.AUTO)
-    @Column(name = "PRODUCT_ID", updatable = false, unique = true, nullable = false, columnDefinition = "uuid")
+    @Column(name = "PRODUCT_ID", updatable = false, unique = true, nullable = false)
     private UUID uuid;
 
     @Getter
@@ -46,7 +46,7 @@ public class Product implements Serializable {
     private Integer amount;
 
     @Getter
-    private String createdAt = Util.formatDate();
+    private String createdAt = DateUtils.formatDate();
 
     @Getter
     @Setter

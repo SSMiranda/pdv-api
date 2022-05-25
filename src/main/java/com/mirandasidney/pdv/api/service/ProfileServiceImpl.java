@@ -1,11 +1,9 @@
 package com.mirandasidney.pdv.api.service;
 
-import com.mirandasidney.pdv.api.controller.dto.request.profile.ProfileRequest;
-import com.mirandasidney.pdv.api.controller.dto.response.profile.ProfileResponse;
-import com.mirandasidney.pdv.api.controller.dto.response.profile.ProfileResponseAllAttribute;
-import com.mirandasidney.pdv.api.domain.Functionality;
-import com.mirandasidney.pdv.api.domain.Module;
-import com.mirandasidney.pdv.api.domain.Profile;
+import com.mirandasidney.pdv.api.controller.dto.request.role.ProfileRequest;
+import com.mirandasidney.pdv.api.controller.dto.response.role.ProfileResponse;
+import com.mirandasidney.pdv.api.controller.dto.response.role.ProfileResponseAllAttribute;
+import com.mirandasidney.pdv.api.domain.Role;
 import com.mirandasidney.pdv.api.exception.ResourceNotFoundException;
 import com.mirandasidney.pdv.api.exception.ValidationException;
 import com.mirandasidney.pdv.api.mapper.ProfileMapper;
@@ -35,8 +33,8 @@ public class ProfileServiceImpl implements IProfileService {
 
     @Override
     public ResponseEntity<ProfileResponse> save(ProfileRequest newProfile) {
-        Optional<Profile> profile = repository.findByProfileName(newProfile.getProfileName());
-        if(profile.isPresent()) {
+        Optional<Role> role = repository.findByProfileName(newProfile.getProfileName());
+        if(role.isPresent()) {
             throw new ValidationException("Profile already exist with name: " + newProfile.getProfileName());
         }
 
@@ -46,50 +44,50 @@ public class ProfileServiceImpl implements IProfileService {
                 .buildAndExpand(newProfile.getProfileName())
                 .toUri();
 
-        Profile profileModel = mapper.toModel(newProfile);
-        return ResponseEntity.created(uri).body(mapper.toDto(repository.save(profileModel)));
+        Role roleModel = mapper.toModel(newProfile);
+        return ResponseEntity.created(uri).body(mapper.toDto(repository.save(roleModel)));
     }
 
     @Override
     public ResponseEntity<Set<ProfileResponseAllAttribute>> findAll() {
-        Set<Profile> profile = repository.findAllSet();
-        if(profile.isEmpty())
+        Set<Role> role = repository.findAllSet();
+        if(role.isEmpty())
             return ResponseEntity.noContent().build();
-        return ResponseEntity.ok().body(mapper.toProfileListDto(profile));
+        return ResponseEntity.ok().body(mapper.toProfileListDto(role));
     }
 
     @Override
     public ResponseEntity<ProfileResponseAllAttribute> findProfileById(UUID id) {
         return repository.findById(id)
-                .map(profile -> ResponseEntity.ok().body(mapper.toDtoFull(profile)))
+                .map(role -> ResponseEntity.ok().body(mapper.toDtoFull(role)))
                 .orElseThrow(() -> new ResourceNotFoundException("Profile not found with UUID: " + id));
     }
 
     @Override
     public ResponseEntity<Object> removeProfile(UUID id) {
-        return repository.findById(id).map(profile -> {
-            repository.delete(profile);
+        return repository.findById(id).map(role -> {
+            repository.delete(role);
             return ResponseEntity.noContent().build();
         }).orElseThrow(() -> new ResourceNotFoundException("Category not found with UUID: " + id));
     }
 
     @Override
     public ResponseEntity<ProfileResponseAllAttribute> update(ProfileRequest profileUpdate, UUID id) {
-        final Optional<Profile> profile = repository.findById(id);
-        return profile
+        final Optional<Role> role = repository.findById(id);
+        return role
         .map(p -> {
                     if(profileUpdate.getProfileName() != null) p.setProfileName(profileUpdate.getProfileName());
                     if(profileUpdate.getDescription() != null) p.setDescription(profileUpdate.getDescription());
 
-                    if(profileUpdate.getModule() != null) {
-                        final Optional<Module> module = moduleRepository.findById(profileUpdate.getModule().getUuid());
-                        module.ifPresent(p::appendModule);
-                    }
+//                    if(profileUpdate.getModule() != null) {
+//                        final Optional<Module> module = moduleRepository.findById(profileUpdate.getModule().getUuid());
+//                        module.ifPresent(p::appendModule);
+//                    }
 
-                    if(profileUpdate.getFunctionality() != null) {
-                        final Optional<Functionality> functionality = functionalityRepository.findById(profileUpdate.getFunctionality().getUuid());
-                        functionality.ifPresent(p::appendFunctionality);
-                    }
+//                    if(profileUpdate.getFunctionality() != null) {
+//                        final Optional<Functionality> functionality = functionalityRepository.findById(profileUpdate.getFunctionality().getUuid());
+//                        functionality.ifPresent(p::appendFunctionality);
+//                    }
                     repository.save(p);
                     return ResponseEntity.ok().body(mapper.toDtoFull(p));
                 }).orElseThrow(() -> new ResourceNotFoundException("Profile not found with UUID: " + id));
