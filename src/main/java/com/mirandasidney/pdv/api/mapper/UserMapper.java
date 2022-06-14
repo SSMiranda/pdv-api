@@ -4,8 +4,10 @@ import com.mirandasidney.pdv.api.controller.dto.request.user.UserPostRequestBody
 import com.mirandasidney.pdv.api.controller.dto.response.user.UserResponse;
 import com.mirandasidney.pdv.api.domain.User;
 import org.mapstruct.Mapper;
-import org.mapstruct.Mapping;
 import org.mapstruct.factory.Mappers;
+import org.springframework.data.domain.Page;
+
+import java.util.Set;
 
 @Mapper(componentModel = "spring")
 public interface UserMapper {
@@ -13,7 +15,5 @@ public interface UserMapper {
 
     User toUser(UserPostRequestBody userPostRequestBody);
 
-    @Mapping(source = "uuid", target = "uuid")
     UserResponse toUserResponse(User user);
-
 }

@@ -27,4 +27,5 @@ public class ProductResponse {
     private String update;
 
     private CategoryResponse category;
+
 }

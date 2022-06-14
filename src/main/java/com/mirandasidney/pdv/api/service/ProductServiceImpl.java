@@ -95,7 +95,6 @@ public class ProductServiceImpl implements IProductService {
                     if(category.isPresent())
                         p.setCategory(category.get());
                 }
-                if(productUpdate.getAmount() != null) p.setAmount(Integer.valueOf(productUpdate.getAmount()));
                 if(productUpdate.getCostPrice() != null) p.setCostPrice(new BigDecimal(productUpdate.getCostPrice()));
                 if(productUpdate.getSalePrice() != null) p.setSalePrice(new BigDecimal(productUpdate.getSalePrice()));
                 if(productUpdate != null) p.setUpdate(DateUtils.formatDate());

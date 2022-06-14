@@ -3,8 +3,8 @@ package com.mirandasidney.pdv.api.controller;
 import com.mirandasidney.pdv.api.controller.dto.request.functionality.FunctionalityRequest;
 import com.mirandasidney.pdv.api.controller.dto.response.functionality.FunctionalityResponse;
 import com.mirandasidney.pdv.api.service.interfaces.IFunctionalityService;
-import io.swagger.annotations.Api;
-import io.swagger.annotations.ApiOperation;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.AllArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
@@ -23,26 +23,26 @@ import java.util.UUID;
 
 @CrossOrigin(origins = "*")
 @RestController
-@Api("REST API SISTEMA PDV")
+@Tag(name = "FunctionalityController", description = "REST API SISTEMA PDV")
 @AllArgsConstructor(onConstructor = @__(@Autowired))
 @RequestMapping("/api/v1/functionalities")
 public class FunctionalityController {
 
     private final IFunctionalityService service;
 
-    @ApiOperation(value = "Cadastra uma funcionalidade do software")
+    @Operation(description = "Cadastra uma funcionalidade do software")
     @PostMapping(consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<FunctionalityResponse> save(@Valid @RequestBody final FunctionalityRequest functionality) {
         return service.save(functionality);
     }
 
-    @ApiOperation(value = "Exibe a lista das funcionalidades do sistema")
+    @Operation(description = "Exibe a lista das funcionalidades do sistema")
     @GetMapping(produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<Set<FunctionalityResponse>> listAllFunctionality() {
         return service.listAllFunctionality();
     }
 
-    @ApiOperation(value = "Busca uma funcionalidade pelo ID")
+    @Operation(description = "Busca uma funcionalidade pelo ID")
     @GetMapping(value = "/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<FunctionalityResponse> findUserById(@PathVariable final UUID id) {
         return service.findFunctionalityById(id);

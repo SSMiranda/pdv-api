@@ -35,15 +35,15 @@ public class Product implements Serializable {
 
     @Getter
     @Setter
+    private String description;
+
+    @Getter
+    @Setter
     private BigDecimal costPrice;
 
     @Getter
     @Setter
     private BigDecimal salePrice;
-
-    @Getter
-    @Setter
-    private Integer amount;
 
     @Getter
     private String createdAt = DateUtils.formatDate();

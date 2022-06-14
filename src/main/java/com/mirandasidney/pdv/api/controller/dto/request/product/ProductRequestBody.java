@@ -15,14 +15,14 @@ public class ProductRequestBody {
     @NotNull(message = "product name must not be empty or null")
     private String productName;
 
+    private String description;
+
     @NotNull(message = "product cost price must not be empty or null")
     private String costPrice;
 
     @NotNull(message = "product sale price must not be empty or null")
     private String salePrice;
 
-    @NotNull(message = "product amount must not be empty or null")
-    private String amount;
-
     private CategoryRequest category;
+
 }

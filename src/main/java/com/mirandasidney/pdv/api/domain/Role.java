@@ -22,53 +22,22 @@ public class Role implements GrantedAuthority {
     private static final long serialVersionUID = 1L;
 
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
     @Getter
-    @Column(name = "role_id", updatable = false, unique = true, nullable = false, columnDefinition = "uuid")
+    @GeneratedValue(strategy = GenerationType.AUTO)
+    @Column(updatable = false, unique = true, nullable = false)
     private UUID uuid;
 
-    @Getter
     @Setter
-    @Column(unique = true)
-    private String profileName;
+    @Column(nullable = false)
+    private String name;
 
     @Getter
     @Setter
-    @Column
     private String description;
-
-//    @Getter
-//    @Setter
-//    @OneToMany(mappedBy = "roles")
-//    private Set<User> users;
-
-//    @Getter
-//    @Setter
-//    @ManyToMany(fetch = FetchType.EAGER)
-//    @JoinTable(name = "modules_profile",
-//            joinColumns = @JoinColumn(name = "PROFILE_ID"),
-//            inverseJoinColumns = @JoinColumn(name = "MODULE_ID"))
-//    private Set<Module> modules;
-
-//    @Getter
-//    @Setter
-//    @ManyToMany(fetch = FetchType.EAGER)
-//    @JoinTable(name = "functionality_profile",
-//            joinColumns = @JoinColumn(name = "PROFILE_ID"),
-//            inverseJoinColumns = @JoinColumn(name = "FUNCTIONALITY_ID"))
-//    private Set<Functionality> functionalities;
 
     @Override
     public String getAuthority() {
-        return null;
+        return this.name;
     }
-
-//    public void appendModule(Module module) {
-//        this.modules.add(module);
-//    }
-
-//    public void appendFunctionality(Functionality functionality) {
-//        this.functionalities.add(functionality);
-//    }
 
 }

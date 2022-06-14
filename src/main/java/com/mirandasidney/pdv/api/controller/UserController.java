@@ -1,11 +1,16 @@
 package com.mirandasidney.pdv.api.controller;
 
-import com.mirandasidney.pdv.api.controller.dto.request.user.UserPostRequestBody;
 import com.mirandasidney.pdv.api.controller.dto.request.user.UpdateUserRequest;
+import com.mirandasidney.pdv.api.controller.dto.request.user.UserPostRequestBody;
 import com.mirandasidney.pdv.api.controller.dto.response.user.UserResponse;
 import com.mirandasidney.pdv.api.service.interfaces.IUserService;
-import io.swagger.annotations.Api;
-import io.swagger.annotations.ApiOperation;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.media.Content;
+import io.swagger.v3.oas.annotations.media.Schema;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import io.swagger.v3.oas.annotations.responses.ApiResponses;
+import io.swagger.v3.oas.annotations.security.SecurityRequirement;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.AllArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -28,40 +33,47 @@ import java.util.UUID;
 
 @CrossOrigin(origins = "*")
 @RestController
-@Api("REST API SISTEMA PDV")
+@Tag(name = "UserController", description = "REST API SISTEMA PDV")
+@SecurityRequirement(name = "apipdv")
 @AllArgsConstructor(onConstructor = @__(@Autowired))
 @RequestMapping("/api/v1/users")
 public class UserController {
 
     private final IUserService service;
 
-    @ApiOperation(value = "Cadastra um usuário")
+    @Operation(description = "Cadastra um usuário")
     @PostMapping(consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<UserResponse> save(@Valid @RequestBody final UserPostRequestBody user) {
 
         return service.save(user);
     }
 
-    @ApiOperation(value = "Busca um usuário pelo ID")
+    @Operation(description = "Busca um usuário pelo ID")
     @GetMapping(value = "/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<UserResponse> findUserById(@PathVariable final UUID id) {
         return service.findUserById(id);
     }
 
-    @ApiOperation(value = "Retorna a lista paginada de usuários cadastrados")
+    @Operation(summary = "Lista de usuários", description = "Retorna a lista paginada de usuários cadastrados")
+    @ApiResponses(value = {
+            @ApiResponse(
+                    responseCode = "200",
+                    description = "Usuários encontrados",
+                    content = {@Content(mediaType = "application/json", schema = @Schema(implementation = UserResponse.class))})
+    })
     @GetMapping(produces = MediaType.APPLICATION_JSON_VALUE)
     public Page<UserResponse> findAll(@RequestParam(value = "page", required = false, defaultValue = "0") int page,
                                       @RequestParam(value = "size", required = false, defaultValue = "10") int size) {
         return service.findAll(page, size);
     }
 
-    @ApiOperation(value = "Remove um usuário")
+    @Operation(description = "Remove um usuário")
     @DeleteMapping("/{id}")
     public ResponseEntity<Object> remove(@PathVariable final UUID id) {
         return service.removeUser(id);
     }
 
-    @ApiOperation(value = "Atualiza os dados do usuário")
+    @Operation(description = "Atualiza os dados do usuário")
     @PutMapping(value = "/{id}",
             consumes = MediaType.APPLICATION_JSON_VALUE,
             produces = MediaType.APPLICATION_JSON_VALUE)
@@ -69,7 +81,7 @@ public class UserController {
         return service.update(userUpdate, id);
     }
 
-    @ApiOperation(value = "Atualiza parcialmente os dados do usuário")
+    @Operation(description = "Atualiza parcialmente os dados do usuário")
     @PatchMapping(value = "/{id}",
             consumes = MediaType.APPLICATION_JSON_VALUE,
             produces = MediaType.APPLICATION_JSON_VALUE)

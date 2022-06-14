@@ -4,8 +4,8 @@ package com.mirandasidney.pdv.api.controller;
 import com.mirandasidney.pdv.api.controller.dto.request.product.ProductRequestBody;
 import com.mirandasidney.pdv.api.controller.dto.response.product.ProductResponse;
 import com.mirandasidney.pdv.api.service.interfaces.IProductService;
-import io.swagger.annotations.Api;
-import io.swagger.annotations.ApiOperation;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.AllArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
@@ -27,44 +27,44 @@ import java.util.UUID;
 
 @CrossOrigin(origins = "*")
 @RestController
-@Api("REST API SISTEMA PDV")
+@Tag(name = "ProductController", description = "REST API SISTEMA PDV")
 @AllArgsConstructor(onConstructor = @__(@Autowired))
 @RequestMapping("/api/v1/products")
 public class ProductController {
 
     private IProductService service;
 
-    @ApiOperation(value = "Cadastra um produto")
+    @Operation(description = "Cadastra um produto")
     @PostMapping(consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<ProductResponse> save(@Valid @RequestBody final ProductRequestBody product) {
         return service.save(product);
     }
 
-    @ApiOperation(value = "Retorna a lista de produtos")
+    @Operation(description = "Retorna a lista de produtos")
     @GetMapping(produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<Set<ProductResponse>> findAll() {
         return service.findAll();
     }
 
-    @ApiOperation(value = "Busca um produto pelo ID")
+    @Operation(description = "Busca um produto pelo ID")
     @GetMapping(value = "/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<ProductResponse> findUserById(@PathVariable final UUID id) {
         return service.findProductById(id);
     }
 
-    @ApiOperation(value = "Remove uma categoria")
+    @Operation(description = "Remove uma categoria")
     @DeleteMapping("/{id}")
     public ResponseEntity<?> remove(@PathVariable final UUID id) {
         return service.removeProduct(id);
     }
 
-    @ApiOperation(value = "Atualiza um produto")
+    @Operation(description = "Atualiza um produto")
     @PutMapping(value = "/{id}", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<ProductResponse> update(@PathVariable("id") final UUID id, @RequestBody final ProductRequestBody product) {
         return service.update(product, id);
     }
 
-    @ApiOperation(value = "Atualiza dados parciais de um produto")
+    @Operation(description = "Atualiza dados parciais de um produto")
     @PatchMapping(value = "/{id}",
             consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<ProductResponse> update(@RequestBody final ProductRequestBody product, @PathVariable("id") final UUID id)  {

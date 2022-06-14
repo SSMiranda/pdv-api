@@ -9,6 +9,6 @@ import java.util.UUID;
 @AllArgsConstructor
 @NoArgsConstructor
 @Data
-public class ProfileUserRequest {
+public class RoleRequestById {
     private UUID uuid;
 }

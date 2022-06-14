@@ -1,15 +1,13 @@
 package com.mirandasidney.pdv.api.service;
 
-import com.mirandasidney.pdv.api.controller.dto.request.role.ProfileRequest;
-import com.mirandasidney.pdv.api.controller.dto.response.role.ProfileResponse;
+import com.mirandasidney.pdv.api.controller.dto.request.role.RoleRequest;
+import com.mirandasidney.pdv.api.controller.dto.response.role.RoleResponse;
 import com.mirandasidney.pdv.api.controller.dto.response.role.ProfileResponseAllAttribute;
 import com.mirandasidney.pdv.api.domain.Role;
 import com.mirandasidney.pdv.api.exception.ResourceNotFoundException;
 import com.mirandasidney.pdv.api.exception.ValidationException;
 import com.mirandasidney.pdv.api.mapper.ProfileMapper;
-import com.mirandasidney.pdv.api.repository.FunctionalityRepository;
-import com.mirandasidney.pdv.api.repository.ModuleRepository;
-import com.mirandasidney.pdv.api.repository.ProfileRepository;
+import com.mirandasidney.pdv.api.repository.AuthorityRepository;
 import com.mirandasidney.pdv.api.service.interfaces.IProfileService;
 import lombok.AllArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -27,21 +25,19 @@ import java.util.UUID;
 public class ProfileServiceImpl implements IProfileService {
 
     private static final ProfileMapper mapper = ProfileMapper.INSTANCE;
-    private final ProfileRepository repository;
-    private final ModuleRepository moduleRepository;
-    private final FunctionalityRepository functionalityRepository;
+    private final AuthorityRepository repository;
 
     @Override
-    public ResponseEntity<ProfileResponse> save(ProfileRequest newProfile) {
-        Optional<Role> role = repository.findByProfileName(newProfile.getProfileName());
+    public ResponseEntity<RoleResponse> save(RoleRequest newProfile) {
+        Optional<Role> role = repository.findByName(newProfile.getName());
         if(role.isPresent()) {
-            throw new ValidationException("Profile already exist with name: " + newProfile.getProfileName());
+            throw new ValidationException("Profile already exist with name: " + newProfile.getName());
         }
 
         URI uri = ServletUriComponentsBuilder
                 .fromCurrentRequest()
                 .path("/api/v1/profiles/{profileName}")
-                .buildAndExpand(newProfile.getProfileName())
+                .buildAndExpand(newProfile.getName())
                 .toUri();
 
         Role roleModel = mapper.toModel(newProfile);
@@ -72,22 +68,12 @@ public class ProfileServiceImpl implements IProfileService {
     }
 
     @Override
-    public ResponseEntity<ProfileResponseAllAttribute> update(ProfileRequest profileUpdate, UUID id) {
+    public ResponseEntity<ProfileResponseAllAttribute> update(RoleRequest roleRequest, UUID id) {
         final Optional<Role> role = repository.findById(id);
         return role
         .map(p -> {
-                    if(profileUpdate.getProfileName() != null) p.setProfileName(profileUpdate.getProfileName());
-                    if(profileUpdate.getDescription() != null) p.setDescription(profileUpdate.getDescription());
-
-//                    if(profileUpdate.getModule() != null) {
-//                        final Optional<Module> module = moduleRepository.findById(profileUpdate.getModule().getUuid());
-//                        module.ifPresent(p::appendModule);
-//                    }
-
-//                    if(profileUpdate.getFunctionality() != null) {
-//                        final Optional<Functionality> functionality = functionalityRepository.findById(profileUpdate.getFunctionality().getUuid());
-//                        functionality.ifPresent(p::appendFunctionality);
-//                    }
+                    if(roleRequest.getName() != null) p.setName(roleRequest.getName());
+                    if(roleRequest.getDescription() != null) p.setDescription(roleRequest.getDescription());
                     repository.save(p);
                     return ResponseEntity.ok().body(mapper.toDtoFull(p));
                 }).orElseThrow(() -> new ResourceNotFoundException("Profile not found with UUID: " + id));

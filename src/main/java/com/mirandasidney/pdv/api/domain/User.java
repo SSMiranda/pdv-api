@@ -22,6 +22,7 @@ import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.persistence.UniqueConstraint;
 import java.util.Collection;
+import java.util.Collections;
 import java.util.HashSet;
 import java.util.Set;
 import java.util.UUID;
@@ -42,7 +43,7 @@ public class User implements UserDetails {
     @Id
     @Getter
     @GeneratedValue(strategy = GenerationType.AUTO)
-    @Column(name = "user_id", updatable = false, unique = true, nullable = false)
+    @Column(updatable = false, unique = true, nullable = false)
     private UUID uuid;
 
     @Getter
@@ -68,24 +69,22 @@ public class User implements UserDetails {
     private String phone;
 
     @OneToMany(fetch = FetchType.EAGER)
+    @Getter
     @JoinTable(name = "users_role",
             uniqueConstraints = @UniqueConstraint(
                     columnNames = {"user_id", "role_id"},
                     name = "unique_role_user"),
             joinColumns = @JoinColumn(
                     name = "user_id",
-                    referencedColumnName = "user_id",
-                    table = "users",
-                    foreignKey = @ForeignKey(name = "user_fk", value = ConstraintMode.CONSTRAINT),
-                    unique = false),
+                    referencedColumnName = "uuid",
+                    table = "user",
+                    foreignKey = @ForeignKey(name = "user_fk", value = ConstraintMode.CONSTRAINT)),
             inverseJoinColumns = @JoinColumn(
                     name = "role_id",
-                    referencedColumnName = "role_id",
+                    referencedColumnName = "uuid",
                     table = "role",
-                    foreignKey = @ForeignKey(name = "role_fk", value = ConstraintMode.CONSTRAINT),
-                    unique = false))
-    @Getter
-    @Setter
+                    foreignKey = @ForeignKey(name = "role_fk", value = ConstraintMode.CONSTRAINT))
+    )
     private Set<Role> roles = new HashSet<>();
 
     @Getter
@@ -102,6 +101,7 @@ public class User implements UserDetails {
     @Setter
     @Column(name = "STATUS")
     private Boolean active = STATUS;
+
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
@@ -136,5 +136,9 @@ public class User implements UserDetails {
     @Override
     public boolean isEnabled() {
         return true;
+    }
+
+    public void addRole(Role... role) {
+        Collections.addAll(this.roles, role);
     }
 }

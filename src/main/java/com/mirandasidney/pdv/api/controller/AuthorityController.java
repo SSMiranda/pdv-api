@@ -1,11 +1,11 @@
 package com.mirandasidney.pdv.api.controller;
 
-import com.mirandasidney.pdv.api.controller.dto.request.role.ProfileRequest;
-import com.mirandasidney.pdv.api.controller.dto.response.role.ProfileResponse;
+import com.mirandasidney.pdv.api.controller.dto.request.role.RoleRequest;
 import com.mirandasidney.pdv.api.controller.dto.response.role.ProfileResponseAllAttribute;
+import com.mirandasidney.pdv.api.controller.dto.response.role.RoleResponse;
 import com.mirandasidney.pdv.api.service.interfaces.IProfileService;
-import io.swagger.annotations.Api;
-import io.swagger.annotations.ApiOperation;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.AllArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
@@ -26,42 +26,42 @@ import java.util.UUID;
 
 @CrossOrigin(origins = "*")
 @RestController
-@Api("REST API SISTEMA PDV")
+@Tag(name = "AuthorityControler", description = "REST API SISTEMA PDV")
 @AllArgsConstructor(onConstructor = @__(@Autowired))
 @RequestMapping("/api/v1/profiles")
-public class ProfileController {
+public class AuthorityController {
 
     private final IProfileService service;
 
-    @ApiOperation(value = "Cadastra um perfil")
+    @Operation(description = "Cadastra um perfil")
     @PostMapping(consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<ProfileResponse> save(@Valid @RequestBody final ProfileRequest role) {
+    public ResponseEntity<RoleResponse> save(@Valid @RequestBody final RoleRequest role) {
         return service.save(role);
     }
 
-    @ApiOperation(value = "Busca um perfil pelo ID")
+    @Operation(description = "Busca um perfil pelo ID")
     @GetMapping(value = "/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<ProfileResponseAllAttribute> findProfileById(@PathVariable final String id) {
         return service.findProfileById(UUID.fromString(id));
     }
 
-    @ApiOperation(value = "Retorna a lista de perfis cadastrados")
+    @Operation(description = "Retorna a lista de perfis cadastrados")
     @GetMapping(produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<Set<ProfileResponseAllAttribute>> findAll() {
         return service.findAll();
     }
 
-    @ApiOperation(value = "Remove um perfil")
+    @Operation(description = "Remove um perfil")
     @DeleteMapping("/{id}")
     public ResponseEntity<Object> remove(@PathVariable final UUID id) {
         return service.removeProfile(id);
     }
 
-    @ApiOperation(value = "Atualiza dados parciais de um perfil")
+    @Operation(description = "Atualiza dados parciais de um perfil")
     @PatchMapping(value = "/{id}",
             consumes = MediaType.APPLICATION_JSON_VALUE,
             produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<ProfileResponseAllAttribute> update(@RequestBody final ProfileRequest role, @PathVariable("id") final UUID id)  {
+    public ResponseEntity<ProfileResponseAllAttribute> update(@RequestBody final RoleRequest role, @PathVariable("id") final UUID id)  {
         return service.update(role, id);
     }
 
