@@ -2,8 +2,8 @@ package com.mirandasidney.pdv.api.service;
 
 import com.mirandasidney.pdv.api.controller.dto.request.functionality.FunctionalityRequest;
 import com.mirandasidney.pdv.api.controller.dto.response.functionality.FunctionalityResponse;
-import com.mirandasidney.pdv.api.domain.Functionality;
-import com.mirandasidney.pdv.api.domain.Module;
+import com.mirandasidney.pdv.api.entities.Functionality;
+import com.mirandasidney.pdv.api.entities.Module;
 import com.mirandasidney.pdv.api.exception.ResourceNotFoundException;
 import com.mirandasidney.pdv.api.mapper.FunctionalityMapper;
 import com.mirandasidney.pdv.api.repository.FunctionalityRepository;
@@ -35,7 +35,7 @@ public class FunctionalityServiceImpl implements IFunctionalityService {
                 .orElseThrow(() -> new ResourceNotFoundException("Module not found with UUID: " + functionalityRequest.getModule().getUuid())));
 
         Functionality functionality = mapper.toDomain(functionalityRequest);
-        functionality.setModule(module.get());
+//        functionality.setModule(module.get());
         URI uri = ServletUriComponentsBuilder
                 .fromCurrentRequest()
                 .path("/api/v1/functionalities/{name}")

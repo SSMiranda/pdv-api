@@ -3,9 +3,10 @@ package com.mirandasidney.pdv.api.service;
 import com.mirandasidney.pdv.api.controller.dto.request.user.UpdateUserRequest;
 import com.mirandasidney.pdv.api.controller.dto.request.user.UserPostRequestBody;
 import com.mirandasidney.pdv.api.controller.dto.response.user.UserResponse;
-import com.mirandasidney.pdv.api.domain.Role;
-import com.mirandasidney.pdv.api.domain.User;
+import com.mirandasidney.pdv.api.entities.Role;
+import com.mirandasidney.pdv.api.entities.User;
 import com.mirandasidney.pdv.api.exception.ResourceNotFoundException;
+import com.mirandasidney.pdv.api.exception.ValidationException;
 import com.mirandasidney.pdv.api.mapper.UserMapper;
 import com.mirandasidney.pdv.api.repository.AuthorityRepository;
 import com.mirandasidney.pdv.api.repository.UserRepository;
@@ -17,6 +18,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
@@ -25,8 +28,11 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import java.net.URI;
+import java.util.Collection;
 import java.util.Optional;
+import java.util.Set;
 import java.util.UUID;
+import java.util.stream.Collectors;
 
 @Service
 @AllArgsConstructor(onConstructor = @__(@Autowired))
@@ -37,19 +43,32 @@ public class UserServiceImpl implements IUserService {
     private UserRepository repository;
     private AuthorityRepository authorityRepository;
 
+    private Collection<? extends GrantedAuthority> mapRolesToAuthorities(Collection<Role> roles) {
+        return roles.stream().map(role -> new SimpleGrantedAuthority(role.getAuthority())).collect(Collectors.toSet());
+    }
+
     @Override
+    @Transactional
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
         final User user =  Optional.ofNullable(repository.findUserByUsername(username))
                 .orElseThrow(() -> new UsernameNotFoundException("User not found."));
 
-        return new org.springframework.security.core.userdetails.User(user.getUsername(), user.getPassword(), user.getAuthorities());
+        return new org.springframework.security.core.userdetails.User(user.getUsername(), user.getPassword(), mapRolesToAuthorities(user.getRoles()));
     }
 
     @Override
+    @Transactional
     public ResponseEntity<UserResponse> save(UserPostRequestBody user) {
-        Role role = authorityRepository
-                .findById(user.getRole().getUuid())
-                .orElseThrow(() -> new ResourceNotFoundException("Profile not found with UUID: " + user.getRole().getUuid()));
+        final boolean existsByUsername = repository.existsByUsername(user.getUsername());
+
+        if(existsByUsername) {
+            throw new ValidationException("Username already exists, try again!");
+        }
+
+        final Set<Role> roles = user.getRoles().stream()
+                .map(role -> authorityRepository.findById(role.getUuid())
+                        .orElseThrow(() -> new ResourceNotFoundException("Profile not found with UUID: " + role.getUuid())))
+                .collect(Collectors.toSet());
 
         final URI uri = ServletUriComponentsBuilder
                 .fromCurrentRequest()
@@ -59,7 +78,7 @@ public class UserServiceImpl implements IUserService {
 
             User newUser = mapper.toUser(user);
             newUser.setPassword(new BCryptPasswordEncoder().encode(user.getPassword()));
-            newUser.addRole(role);
+            newUser.setRoles(roles);
             User savedUser = repository.save(newUser);
             return ResponseEntity.created(uri).body(mapper.toUserResponse(savedUser));
     }
@@ -72,7 +91,6 @@ public class UserServiceImpl implements IUserService {
     }
 
     @Override
-    @Transactional(readOnly = true)
     public Page<UserResponse> findAll(int page, int size) {
         PageRequest pageRequest = PageRequest.of(page, size);
         Page<User> users = this.repository.findAll(pageRequest);

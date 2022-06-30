@@ -12,6 +12,7 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 @OpenAPIDefinition(info = @Info(title = "PDV API", version = "2.0", description = "Api do sistema PDV"))
 @SecurityScheme(name = "apipdv", scheme = "basic", type = SecuritySchemeType.HTTP, in = SecuritySchemeIn.HEADER)
 public class ManagerPdvApplication {
+
 	public static void main(String[] args) {
 		SpringApplication.run(ManagerPdvApplication.class, args);
 	}

@@ -16,6 +16,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.annotation.Secured;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -41,10 +42,19 @@ public class UserController {
 
     private final IUserService service;
 
-    @Operation(description = "Cadastra um usuário")
+    @Operation(summary = "Cadastro de usuários", description = "Cadastra um novo usuário no sistema")
+    @ApiResponses(value = {
+            @ApiResponse(
+                    responseCode = "201",
+                    description = "Status retornado ao criar um usuário com sucesso.",
+                    content = {@Content(mediaType = "application/json", schema = @Schema(implementation = UserResponse.class))}),
+            @ApiResponse(
+                    responseCode = "400",
+                    description = "Status retornado ao efetuar um cadastro mal sucedido",
+                    content = {@Content(mediaType = "application/json", schema = @Schema(implementation = UserResponse.class))})
+    })
     @PostMapping(consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<UserResponse> save(@Valid @RequestBody final UserPostRequestBody user) {
-
         return service.save(user);
     }
 
@@ -54,6 +64,7 @@ public class UserController {
         return service.findUserById(id);
     }
 
+    @Secured("ROLE_ADMIN")
     @Operation(summary = "Lista de usuários", description = "Retorna a lista paginada de usuários cadastrados")
     @ApiResponses(value = {
             @ApiResponse(
@@ -67,11 +78,13 @@ public class UserController {
         return service.findAll(page, size);
     }
 
+
     @Operation(description = "Remove um usuário")
     @DeleteMapping("/{id}")
     public ResponseEntity<Object> remove(@PathVariable final UUID id) {
         return service.removeUser(id);
     }
+
 
     @Operation(description = "Atualiza os dados do usuário")
     @PutMapping(value = "/{id}",
@@ -80,6 +93,7 @@ public class UserController {
     public ResponseEntity<UserResponse> update(@PathVariable("id") final UUID id, @RequestBody final UpdateUserRequest userUpdate) {
         return service.update(userUpdate, id);
     }
+
 
     @Operation(description = "Atualiza parcialmente os dados do usuário")
     @PatchMapping(value = "/{id}",

@@ -14,7 +14,7 @@ import java.util.UUID;
 @Data
 public class ProfileResponseAllAttribute {
     private UUID uuid;
-    private String profileName;
+    private String name;
     private String description;
     private Set<ModuleResponse> modules;
     private Set<FunctionalityResponse> functionalities;

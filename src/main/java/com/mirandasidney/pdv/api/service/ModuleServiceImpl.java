@@ -2,7 +2,7 @@ package com.mirandasidney.pdv.api.service;
 
 import com.mirandasidney.pdv.api.controller.dto.request.module.ModuleRequest;
 import com.mirandasidney.pdv.api.controller.dto.response.module.ModuleResponse;
-import com.mirandasidney.pdv.api.domain.Module;
+import com.mirandasidney.pdv.api.entities.Module;
 import com.mirandasidney.pdv.api.exception.ValidationException;
 import com.mirandasidney.pdv.api.mapper.ModuleMapper;
 import com.mirandasidney.pdv.api.repository.ModuleRepository;

@@ -1,4 +1,4 @@
-package com.mirandasidney.pdv.api.domain;
+package com.mirandasidney.pdv.api.entities;
 
 import com.mirandasidney.pdv.api.utils.DateUtils;
 import lombok.AllArgsConstructor;

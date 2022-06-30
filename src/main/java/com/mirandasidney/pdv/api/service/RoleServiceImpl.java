@@ -3,12 +3,12 @@ package com.mirandasidney.pdv.api.service;
 import com.mirandasidney.pdv.api.controller.dto.request.role.RoleRequest;
 import com.mirandasidney.pdv.api.controller.dto.response.role.RoleResponse;
 import com.mirandasidney.pdv.api.controller.dto.response.role.ProfileResponseAllAttribute;
-import com.mirandasidney.pdv.api.domain.Role;
+import com.mirandasidney.pdv.api.entities.Role;
 import com.mirandasidney.pdv.api.exception.ResourceNotFoundException;
 import com.mirandasidney.pdv.api.exception.ValidationException;
 import com.mirandasidney.pdv.api.mapper.ProfileMapper;
 import com.mirandasidney.pdv.api.repository.AuthorityRepository;
-import com.mirandasidney.pdv.api.service.interfaces.IProfileService;
+import com.mirandasidney.pdv.api.service.interfaces.IRoleService;
 import lombok.AllArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -22,7 +22,7 @@ import java.util.UUID;
 
 @Service
 @AllArgsConstructor(onConstructor = @__(@Autowired))
-public class ProfileServiceImpl implements IProfileService {
+public class RoleServiceImpl implements IRoleService {
 
     private static final ProfileMapper mapper = ProfileMapper.INSTANCE;
     private final AuthorityRepository repository;
@@ -36,7 +36,7 @@ public class ProfileServiceImpl implements IProfileService {
 
         URI uri = ServletUriComponentsBuilder
                 .fromCurrentRequest()
-                .path("/api/v1/profiles/{profileName}")
+                .path("/api/v1/profiles/{role}")
                 .buildAndExpand(newProfile.getName())
                 .toUri();
 

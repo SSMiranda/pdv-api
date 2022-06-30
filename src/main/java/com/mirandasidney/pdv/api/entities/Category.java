@@ -1,4 +1,4 @@
-package com.mirandasidney.pdv.api.domain;
+package com.mirandasidney.pdv.api.entities;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;

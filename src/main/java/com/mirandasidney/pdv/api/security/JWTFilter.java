@@ -1,7 +1,7 @@
 package com.mirandasidney.pdv.api.security;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.mirandasidney.pdv.api.domain.User;
+import com.mirandasidney.pdv.api.entities.User;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
@@ -45,4 +45,7 @@ public class JWTFilter extends AbstractAuthenticationProcessingFilter {
             throws IOException {
         new JWTTokenAuthenticationService().addAuthentication(response, authentication.getName());
     }
+
+
+
 }

@@ -1,6 +1,6 @@
 package com.mirandasidney.pdv.api.repository;
 
-import com.mirandasidney.pdv.api.domain.Role;
+import com.mirandasidney.pdv.api.entities.Role;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
@@ -16,5 +16,5 @@ public interface AuthorityRepository extends JpaRepository<Role, UUID> {
         return new HashSet<>(this.findAll());
     }
 
-    Optional<Role> findByName(String profileName);
+    Optional<Role> findByName(String name);
 }

@@ -1,12 +1,11 @@
 package com.mirandasidney.pdv.api.controller.dto.response.user;
 
 import com.mirandasidney.pdv.api.controller.dto.response.role.RoleResponse;
-import com.mirandasidney.pdv.api.domain.User;
+import com.mirandasidney.pdv.api.entities.User;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import java.util.HashSet;
 import java.util.Set;
 import java.util.UUID;
 import java.util.stream.Collectors;
@@ -20,7 +19,7 @@ public class UserResponse {
     private String lastname;
     private String username;
     private String phone;
-    private Set<RoleResponse> roles = new HashSet<>();
+    private Set<RoleResponse> roles;
     private String createdAt;
     private Boolean active;
     private String updated;

@@ -1,6 +1,6 @@
 package com.mirandasidney.pdv.api.repository;
 
-import com.mirandasidney.pdv.api.domain.Product;
+import com.mirandasidney.pdv.api.entities.Product;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 

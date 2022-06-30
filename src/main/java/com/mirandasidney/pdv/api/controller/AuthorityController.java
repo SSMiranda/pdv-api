@@ -3,7 +3,7 @@ package com.mirandasidney.pdv.api.controller;
 import com.mirandasidney.pdv.api.controller.dto.request.role.RoleRequest;
 import com.mirandasidney.pdv.api.controller.dto.response.role.ProfileResponseAllAttribute;
 import com.mirandasidney.pdv.api.controller.dto.response.role.RoleResponse;
-import com.mirandasidney.pdv.api.service.interfaces.IProfileService;
+import com.mirandasidney.pdv.api.service.interfaces.IRoleService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.AllArgsConstructor;
@@ -31,7 +31,7 @@ import java.util.UUID;
 @RequestMapping("/api/v1/profiles")
 public class AuthorityController {
 
-    private final IProfileService service;
+    private final IRoleService service;
 
     @Operation(description = "Cadastra um perfil")
     @PostMapping(consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)

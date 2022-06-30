@@ -3,7 +3,7 @@ package com.mirandasidney.pdv.api.mapper;
 import com.mirandasidney.pdv.api.controller.dto.request.role.RoleRequest;
 import com.mirandasidney.pdv.api.controller.dto.response.role.RoleResponse;
 import com.mirandasidney.pdv.api.controller.dto.response.role.ProfileResponseAllAttribute;
-import com.mirandasidney.pdv.api.domain.Role;
+import com.mirandasidney.pdv.api.entities.Role;
 import org.mapstruct.Mapper;
 import org.mapstruct.factory.Mappers;
 

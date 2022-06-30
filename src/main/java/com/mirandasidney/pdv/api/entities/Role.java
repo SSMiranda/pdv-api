@@ -1,4 +1,4 @@
-package com.mirandasidney.pdv.api.domain;
+package com.mirandasidney.pdv.api.entities;
 
 import lombok.Getter;
 import lombok.Setter;
@@ -20,6 +20,7 @@ import java.util.UUID;
 @Table(name = "role")
 public class Role implements GrantedAuthority {
     private static final long serialVersionUID = 1L;
+    private static final String ROLE = "ROLE_";
 
     @Id
     @Getter
@@ -27,7 +28,6 @@ public class Role implements GrantedAuthority {
     @Column(updatable = false, unique = true, nullable = false)
     private UUID uuid;
 
-    @Setter
     @Column(nullable = false)
     private String name;
 
@@ -40,4 +40,7 @@ public class Role implements GrantedAuthority {
         return this.name;
     }
 
+    public void setName(String name) {
+        this.name = ROLE + name;
+    }
 }

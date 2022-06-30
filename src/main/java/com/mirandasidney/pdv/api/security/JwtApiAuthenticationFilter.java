@@ -16,12 +16,11 @@ public class JwtApiAuthenticationFilter extends GenericFilterBean {
     @Override
     public void doFilter(ServletRequest request, ServletResponse response, FilterChain chain)
             throws IOException, ServletException {
+            Authentication authentication = new JWTTokenAuthenticationService()
+                    .getAuthentication((HttpServletRequest) request, (HttpServletResponse) response);
 
-        Authentication authentication = new JWTTokenAuthenticationService()
-                .getAuthentication((HttpServletRequest) request, (HttpServletResponse) response);
+            SecurityContextHolder.getContext().setAuthentication(authentication);
 
-        SecurityContextHolder.getContext().setAuthentication(authentication);
-
-        chain.doFilter(request, response);
+            chain.doFilter(request, response);
     }
 }

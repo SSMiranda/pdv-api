@@ -6,21 +6,22 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import javax.validation.constraints.NotNull;
+import java.util.Set;
 
 @AllArgsConstructor
 @NoArgsConstructor
 @Data
 public class UserPostRequestBody {
-    @NotNull
+    @NotNull(message = "Firstname can not be null")
     private String firstname;
-    @NotNull
+    @NotNull(message = "Lastname can not be null")
     private String lastname;
-    @NotNull
+    @NotNull(message = "Username can not be null")
     private String username;
-    @NotNull
+    @NotNull(message = "Password can not be null")
     private String password;
     @NotNull
-    private RoleRequestById role;
+    private Set<RoleRequestById> roles;
 
     private String phone;
 }

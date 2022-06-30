@@ -3,10 +3,12 @@ package com.mirandasidney.pdv.api.handler;
 import com.mirandasidney.pdv.api.exception.ApiError;
 import com.mirandasidney.pdv.api.exception.ResourceNotFoundException;
 import com.mirandasidney.pdv.api.exception.ValidationException;
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.http.converter.HttpMessageNotReadableException;
+import org.springframework.security.access.AccessDeniedException;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
@@ -15,11 +17,27 @@ import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExcep
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collectors;
 
 @ControllerAdvice
 public class RestExceptionHandler extends ResponseEntityExceptionHandler {
+
+    @ExceptionHandler(DataIntegrityViolationException.class)
+    public ResponseEntity<Object> handleDataIntegrityViolationException(DataIntegrityViolationException ex) {
+        List<String> err = new ArrayList();
+        err.add(ex.getMessage());
+
+        return ResponseEntityBuilder.build(ApiError
+                .builder()
+                .message(ex.getLocalizedMessage())
+                .status(HttpStatus.BAD_REQUEST.value())
+                .className(ex.getClass().getName())
+                .timestamp(LocalDateTime.now())
+                .errors(err)
+                .build());
+    }
 
     @ExceptionHandler(ResourceNotFoundException.class)
     public ResponseEntity<Object> handleResourceNotFoundException(ResourceNotFoundException ex) {
@@ -33,6 +51,18 @@ public class RestExceptionHandler extends ResponseEntityExceptionHandler {
                 .className(ex.getClass().getName())
                 .timestamp(LocalDateTime.now())
                 .errors(err)
+                .build());
+    }
+
+    @ExceptionHandler(AccessDeniedException.class)
+    public ResponseEntity<Object> handleThrowable(AccessDeniedException ex) {
+        return ResponseEntityBuilder.build(ApiError
+                .builder()
+                .message("Unauthorized")
+                .status(HttpStatus.UNAUTHORIZED.value())
+                .className(ex.getClass().getName())
+                .timestamp(LocalDateTime.now())
+                .errors(Arrays.asList(ex.getMessage()))
                 .build());
     }
 

@@ -2,8 +2,8 @@ package com.mirandasidney.pdv.api.service;
 
 import com.mirandasidney.pdv.api.controller.dto.request.product.ProductRequestBody;
 import com.mirandasidney.pdv.api.controller.dto.response.product.ProductResponse;
-import com.mirandasidney.pdv.api.domain.Category;
-import com.mirandasidney.pdv.api.domain.Product;
+import com.mirandasidney.pdv.api.entities.Category;
+import com.mirandasidney.pdv.api.entities.Product;
 import com.mirandasidney.pdv.api.exception.ResourceNotFoundException;
 import com.mirandasidney.pdv.api.mapper.ProductMapper;
 import com.mirandasidney.pdv.api.repository.CategoryRepository;

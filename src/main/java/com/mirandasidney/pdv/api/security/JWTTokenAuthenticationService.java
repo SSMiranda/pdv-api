@@ -1,10 +1,11 @@
 package com.mirandasidney.pdv.api.security;
 
 import com.mirandasidney.pdv.api.ApplicationContextLoad;
-import com.mirandasidney.pdv.api.domain.User;
+import com.mirandasidney.pdv.api.entities.User;
 import com.mirandasidney.pdv.api.repository.UserRepository;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.PropertySource;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
@@ -20,17 +21,18 @@ import java.util.Date;
  * Serviço que adiciona a autenticação e validação do token
  */
 
-@PropertySource("classpath:application.properties")
 @Service
+@PropertySource("classpath:application.properties")
 public class JWTTokenAuthenticationService {
 
-    private static final long EXPIRATION_TIME = 864000000;
     private static final String TOKEN_PREFIX = "Bearer ";
     private static final String HEADER_STRING = "Authorization";
-    private static final String secret = "aoiscnsck3423";
+    private static final long EXPIRATION_TIME = 3600000;
+    private static final String SECRET = "aoiscnsck3423";
 
-//    @Value("${jwt.secret}")
-//    private String secret;
+    @Value("${jwt.secret}")
+    private String palavra;
+
 
     /**
      * Método que efetua a liberação do CORS no navegador
@@ -57,7 +59,7 @@ public class JWTTokenAuthenticationService {
         String JWT = Jwts.builder()
                 .setSubject(username)
                 .setExpiration(new Date(System.currentTimeMillis() + EXPIRATION_TIME))
-                .signWith(SignatureAlgorithm.HS512, secret)
+                .signWith(SignatureAlgorithm.HS512, SECRET)
                 .compact();
 
         String token = TOKEN_PREFIX + JWT;
@@ -76,7 +78,7 @@ public class JWTTokenAuthenticationService {
         String token = request.getHeader(HEADER_STRING);
         if (token != null) {
             String user = Jwts.parser()
-                    .setSigningKey(secret)
+                    .setSigningKey(SECRET)
                     .parseClaimsJws(token.replace(TOKEN_PREFIX, "").trim())
                     .getBody()
                     .getSubject();

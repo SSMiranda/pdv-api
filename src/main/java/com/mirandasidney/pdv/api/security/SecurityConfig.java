@@ -1,7 +1,7 @@
 package com.mirandasidney.pdv.api.security;
 
+import com.mirandasidney.pdv.api.enums.Role;
 import com.mirandasidney.pdv.api.service.UserServiceImpl;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpMethod;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
@@ -24,14 +24,7 @@ import javax.servlet.http.HttpSessionListener;
 public class SecurityConfig extends WebSecurityConfigurerAdapter implements HttpSessionListener {
 
     private final UserServiceImpl userService;
-    private static final String[] AUTH_WHITELIST = {
-            "/",
-            "/auth/login",
-            "/auth/logout",
-            "/swagger-ui/**"
-    };
 
-    @Autowired
     public SecurityConfig(UserServiceImpl userService) {
     this.userService = userService;
     }
@@ -41,7 +34,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter implements Http
      */
     @Override
     protected void configure(AuthenticationManagerBuilder auth) throws Exception {
-        auth.userDetailsService(userService).passwordEncoder(new BCryptPasswordEncoder());
+        auth.userDetailsService(userService).passwordEncoder(new BCryptPasswordEncoder(12));
     }
 
     @Override
@@ -50,33 +43,29 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter implements Http
                 .csrfTokenRepository(CookieCsrfTokenRepository.withHttpOnlyFalse())
                     .disable()
                 .authorizeRequests()
-                    .antMatchers(AUTH_WHITELIST).permitAll()
-                    .antMatchers(HttpMethod.GET, "/h2-console").permitAll()
-                    .antMatchers(HttpMethod.OPTIONS, "/**").permitAll()
-//                    .antMatchers("/api/**").authenticated()
-                    .antMatchers(HttpMethod.POST, "/users").hasRole("ADMIN")
-                // Redireciona para index quando logout
-                .anyRequest().authenticated()
+                    .antMatchers(HttpMethod.POST, "/auth/login").permitAll()
+                    .antMatchers(HttpMethod.POST, "/users").hasAuthority(Role.ADMIN.getName())
+                .anyRequest()
+                .authenticated()
                 .and()
-                .logout().logoutSuccessUrl("/auth/login")
-
-                // Mapeia o logout do sistema
-                .logoutRequestMatcher(new AntPathRequestMatcher("/auth/logout"))
-
-//                Filtra as requisições para login com JWT
-                .and()
-                .addFilterAfter(new JWTFilter("/auth/login", authenticationManager()),
+                    .addFilterAfter(new JWTFilter("/auth/login", authenticationManager()),
                         UsernamePasswordAuthenticationFilter.class)
-                .addFilterBefore(new JwtApiAuthenticationFilter(), UsernamePasswordAuthenticationFilter.class)
-//                .addFilterAfter(new JWTFilter("/swagger-ui/**", authenticationManager()),
-//                        UsernamePasswordAuthenticationFilter.class)
-//                .addFilterBefore(new JwtApiAuthenticationFilter(), UsernamePasswordAuthenticationFilter.class)
-                .httpBasic().and()
-                .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS);
+                    .addFilterBefore(new JwtApiAuthenticationFilter(), UsernamePasswordAuthenticationFilter.class)
+                    .httpBasic()
+                .and()
+                    .sessionManagement()
+                    .sessionCreationPolicy(SessionCreationPolicy.STATELESS)
+//              Filtra as requisições para login com JWT
+                .and()
+                    .logout()
+                    .logoutSuccessUrl("/auth/logout?error=true")
+                    .invalidateHttpSession(true)
+                    // Mapeia o logout do sistema
+                    .logoutRequestMatcher(new AntPathRequestMatcher("/auth/logout"));
     }
 
     @Override
     public void configure(WebSecurity web) throws Exception {
-        web.ignoring().antMatchers("/swagger-ui/**", "/v3/api-docs/**", "/h2-console");
+        web.ignoring().antMatchers("/swagger-ui/**", "/v3/api-docs/**", "/h2-console/**", "*.html");
     }
 }

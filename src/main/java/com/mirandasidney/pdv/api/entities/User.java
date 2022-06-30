@@ -1,4 +1,4 @@
-package com.mirandasidney.pdv.api.domain;
+package com.mirandasidney.pdv.api.entities;
 
 import com.mirandasidney.pdv.api.utils.DateUtils;
 import lombok.AllArgsConstructor;
@@ -22,7 +22,6 @@ import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.persistence.UniqueConstraint;
 import java.util.Collection;
-import java.util.Collections;
 import java.util.HashSet;
 import java.util.Set;
 import java.util.UUID;
@@ -34,7 +33,7 @@ import java.util.UUID;
 @Entity
 @AllArgsConstructor
 @NoArgsConstructor
-@Table(name = "Users")
+@Table(name = "users", uniqueConstraints = @UniqueConstraint(columnNames = "username"))
 public class User implements UserDetails {
 
     private static final long serialVersionUID = 1L;
@@ -57,7 +56,7 @@ public class User implements UserDetails {
     private String lastname;
 
     @Setter
-    @Column(nullable = false)
+    @Column(nullable = false, unique = true)
     private String username;
 
     @Setter
@@ -70,21 +69,19 @@ public class User implements UserDetails {
 
     @OneToMany(fetch = FetchType.EAGER)
     @Getter
+    @Setter
     @JoinTable(name = "users_role",
-            uniqueConstraints = @UniqueConstraint(
-                    columnNames = {"user_id", "role_id"},
-                    name = "unique_role_user"),
-            joinColumns = @JoinColumn(
-                    name = "user_id",
-                    referencedColumnName = "uuid",
-                    table = "user",
-                    foreignKey = @ForeignKey(name = "user_fk", value = ConstraintMode.CONSTRAINT)),
-            inverseJoinColumns = @JoinColumn(
+            uniqueConstraints = @UniqueConstraint(columnNames = {"user_id", "role_id"}, name = "users_role"),
+                joinColumns = @JoinColumn(
+                        name = "user_id",
+                        referencedColumnName = "uuid",
+                        table = "users",
+                        foreignKey = @ForeignKey(name = "user_fk", value = ConstraintMode.CONSTRAINT)),
+                inverseJoinColumns = @JoinColumn(
                     name = "role_id",
                     referencedColumnName = "uuid",
                     table = "role",
-                    foreignKey = @ForeignKey(name = "role_fk", value = ConstraintMode.CONSTRAINT))
-    )
+                    foreignKey = @ForeignKey(name = "role_fk", value = ConstraintMode.CONSTRAINT)))
     private Set<Role> roles = new HashSet<>();
 
     @Getter
@@ -138,7 +135,11 @@ public class User implements UserDetails {
         return true;
     }
 
-    public void addRole(Role... role) {
-        Collections.addAll(this.roles, role);
+    public void addRole(Set<Role> roles) {
+        this.roles.addAll(roles);
+    }
+
+    public void addRole(Role role) {
+        this.roles.add(role);
     }
 }

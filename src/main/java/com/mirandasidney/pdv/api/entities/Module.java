@@ -1,4 +1,4 @@
-package com.mirandasidney.pdv.api.domain;
+package com.mirandasidney.pdv.api.entities;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -11,21 +11,22 @@ import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
 import java.io.Serializable;
+import java.util.HashSet;
+import java.util.Set;
 import java.util.UUID;
 
 @Entity
 @NoArgsConstructor
 @AllArgsConstructor
-public class Functionality implements Serializable {
+public class Module implements Serializable {
     private static final long serialVersionUID = 1L;
 
     @Id
     @Getter
     @GeneratedValue(strategy = GenerationType.AUTO)
-    @Column(name = "FUNCTIONALITY_ID", updatable = false, unique = true, nullable = false)
+    @Column(name = "MODULE_ID", updatable = false, unique = true, nullable = false)
     private UUID uuid;
 
     @Getter
@@ -39,12 +40,10 @@ public class Functionality implements Serializable {
 
     @Getter
     @Setter
-    private boolean visible;
+    private boolean enable;
 
     @Getter
     @Setter
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "MODULE_ID", nullable = false)
-    private Module module;
-
+    @OneToMany(fetch = FetchType.EAGER)
+    private Set<Functionality> functionalities = new HashSet<>();
 }

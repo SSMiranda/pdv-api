@@ -9,7 +9,7 @@ import org.springframework.transaction.annotation.Transactional;
 import java.util.Set;
 import java.util.UUID;
 
-public interface IProfileService {
+public interface IRoleService {
 
     @Transactional
     ResponseEntity<RoleResponse> save(RoleRequest role);

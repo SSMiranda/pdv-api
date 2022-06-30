@@ -3,7 +3,7 @@ package com.mirandasidney.pdv.api.service;
 import com.mirandasidney.pdv.api.controller.dto.request.category.CategoryPostRequest;
 import com.mirandasidney.pdv.api.controller.dto.response.category.CategoryResponse;
 import com.mirandasidney.pdv.api.controller.dto.response.category.CategoryWithListProductResponse;
-import com.mirandasidney.pdv.api.domain.Category;
+import com.mirandasidney.pdv.api.entities.Category;
 import com.mirandasidney.pdv.api.exception.ResourceNotFoundException;
 import com.mirandasidney.pdv.api.mapper.CategoryMapper;
 import com.mirandasidney.pdv.api.repository.CategoryRepository;
