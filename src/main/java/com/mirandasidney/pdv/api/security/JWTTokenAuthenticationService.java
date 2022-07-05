@@ -30,9 +30,6 @@ public class JWTTokenAuthenticationService {
     private static final long EXPIRATION_TIME = 3600000;
     private static final String SECRET = "aoiscnsck3423";
 
-    @Value("${jwt.secret}")
-    private String palavra;
-
 
     /**
      * Método que efetua a liberação do CORS no navegador
@@ -49,6 +46,9 @@ public class JWTTokenAuthenticationService {
         }
         if (response.getHeader("Access-Control-Allow-Methods") == null) {
             response.addHeader("Access-Control-Allow-Methods", "*");
+        }
+        if (response.getHeader("Access-Control-Allow-Credentials") == null) {
+            response.addHeader("Access-Control-Allow-Credentials", "true");
         }
     }
 

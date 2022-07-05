@@ -6,6 +6,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import javax.validation.constraints.NotNull;
+import java.util.HashSet;
 import java.util.Set;
 
 @AllArgsConstructor
@@ -21,7 +22,7 @@ public class UserPostRequestBody {
     @NotNull(message = "Password can not be null")
     private String password;
     @NotNull
-    private Set<RoleRequestById> roles;
+    private Set<RoleRequestById> roles = new HashSet<>();
 
     private String phone;
 }

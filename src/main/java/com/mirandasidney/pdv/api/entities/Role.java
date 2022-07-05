@@ -1,6 +1,8 @@
 package com.mirandasidney.pdv.api.entities;
 
+import lombok.AllArgsConstructor;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 import org.springframework.security.core.GrantedAuthority;
 
@@ -17,6 +19,8 @@ import java.util.UUID;
  */
 
 @Entity
+@AllArgsConstructor
+@NoArgsConstructor
 @Table(name = "role")
 public class Role implements GrantedAuthority {
     private static final long serialVersionUID = 1L;

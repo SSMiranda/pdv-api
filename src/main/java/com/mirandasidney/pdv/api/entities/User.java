@@ -8,6 +8,7 @@ import lombok.Setter;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.ConstraintMode;
 import javax.persistence.Entity;
@@ -67,9 +68,9 @@ public class User implements UserDetails {
     @Setter
     private String phone;
 
-    @OneToMany(fetch = FetchType.EAGER)
     @Getter
     @Setter
+    @OneToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL, orphanRemoval = true)
     @JoinTable(name = "users_role",
             uniqueConstraints = @UniqueConstraint(columnNames = {"user_id", "role_id"}, name = "users_role"),
                 joinColumns = @JoinColumn(
@@ -135,7 +136,7 @@ public class User implements UserDetails {
         return true;
     }
 
-    public void addRole(Set<Role> roles) {
+    public void setRole(Set<Role> roles) {
         this.roles.addAll(roles);
     }
 
