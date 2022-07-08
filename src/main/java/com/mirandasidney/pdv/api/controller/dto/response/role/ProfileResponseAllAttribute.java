@@ -1,12 +1,9 @@
 package com.mirandasidney.pdv.api.controller.dto.response.role;
 
-import com.mirandasidney.pdv.api.controller.dto.response.functionality.FunctionalityResponse;
-import com.mirandasidney.pdv.api.controller.dto.response.module.ModuleResponse;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import java.util.Set;
 import java.util.UUID;
 
 @AllArgsConstructor
@@ -16,6 +13,4 @@ public class ProfileResponseAllAttribute {
     private UUID uuid;
     private String name;
     private String description;
-    private Set<ModuleResponse> modules;
-    private Set<FunctionalityResponse> functionalities;
 }

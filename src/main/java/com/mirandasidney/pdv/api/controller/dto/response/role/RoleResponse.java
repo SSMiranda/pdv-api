@@ -15,7 +15,7 @@ public class RoleResponse {
 
     public RoleResponse(Role role) {
         this.uuid = role.getUuid();
-        this.name = role.getAuthority();
+        this.name = role.getAuthority().replace("ROLE_", "");
         this.description = role.getDescription();
     }
 

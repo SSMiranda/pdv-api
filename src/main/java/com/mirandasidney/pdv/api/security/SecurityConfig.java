@@ -75,7 +75,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter implements Http
     @Override
     public void addCorsMappings(CorsRegistry registry) {
         registry.addMapping("/*")
-                .allowCredentials(true)
+//                .allowCredentials(true)
                 .allowedOrigins("*")
                 .allowedMethods("GET", "POST", "PUT", "DELETE", "OPTIONS", "HEAD", "TRACE", "CONNECT");
     }

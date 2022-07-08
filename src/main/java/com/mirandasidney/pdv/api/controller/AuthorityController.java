@@ -1,7 +1,6 @@
 package com.mirandasidney.pdv.api.controller;
 
 import com.mirandasidney.pdv.api.controller.dto.request.role.RoleRequest;
-import com.mirandasidney.pdv.api.controller.dto.response.role.ProfileResponseAllAttribute;
 import com.mirandasidney.pdv.api.controller.dto.response.role.RoleResponse;
 import com.mirandasidney.pdv.api.service.interfaces.IRoleService;
 import io.swagger.v3.oas.annotations.Operation;
@@ -41,13 +40,13 @@ public class AuthorityController {
 
     @Operation(description = "Busca um perfil pelo ID")
     @GetMapping(value = "/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<ProfileResponseAllAttribute> findProfileById(@PathVariable final String id) {
+    public ResponseEntity<RoleResponse> findProfileById(@PathVariable final String id) {
         return service.findProfileById(UUID.fromString(id));
     }
 
     @Operation(description = "Retorna a lista de perfis cadastrados")
     @GetMapping(produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<Set<ProfileResponseAllAttribute>> findAll() {
+    public ResponseEntity<Set<RoleResponse>> findAll() {
         return service.findAll();
     }
 
@@ -61,7 +60,7 @@ public class AuthorityController {
     @PatchMapping(value = "/{id}",
             consumes = MediaType.APPLICATION_JSON_VALUE,
             produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<ProfileResponseAllAttribute> update(@RequestBody final RoleRequest role, @PathVariable("id") final UUID id)  {
+    public ResponseEntity<RoleResponse> update(@RequestBody final RoleRequest role, @PathVariable("id") final UUID id)  {
         return service.update(role, id);
     }
 

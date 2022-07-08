@@ -33,6 +33,7 @@ public class Role implements GrantedAuthority {
     private UUID uuid;
 
     @Column(nullable = false)
+    @Getter
     private String name;
 
     @Getter
@@ -45,6 +46,6 @@ public class Role implements GrantedAuthority {
     }
 
     public void setName(String name) {
-        this.name = ROLE + name;
+        this.name = ROLE + name.toUpperCase();
     }
 }

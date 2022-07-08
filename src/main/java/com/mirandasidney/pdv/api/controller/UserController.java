@@ -64,6 +64,12 @@ public class UserController {
         return service.findUserById(id);
     }
 
+    @Operation(description = "Busca um usuário pelo nome do usuário")
+    @GetMapping(value = "/{username}", produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<Boolean> findUserByUsername(@PathVariable final String username) {
+        return service.getByUsername(username);
+    }
+
     @Secured("ROLE_ADMIN")
     @Operation(summary = "Lista de usuários", description = "Retorna a lista paginada de usuários cadastrados")
     @ApiResponses(value = {

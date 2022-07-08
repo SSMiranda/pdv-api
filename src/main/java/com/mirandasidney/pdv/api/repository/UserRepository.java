@@ -15,7 +15,7 @@ public interface UserRepository extends PagingAndSortingRepository<User, UUID> {
     @Query(value = "select u from User u where u.username = ?1")
     User findUserByUsername(String username);
 
-    boolean existsByUsername(String username);
+    Boolean existsByUsername(String username);
 
     @Override
     default Set<User> findAll() {

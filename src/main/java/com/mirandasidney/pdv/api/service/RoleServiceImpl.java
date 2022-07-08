@@ -2,7 +2,6 @@ package com.mirandasidney.pdv.api.service;
 
 import com.mirandasidney.pdv.api.controller.dto.request.role.RoleRequest;
 import com.mirandasidney.pdv.api.controller.dto.response.role.RoleResponse;
-import com.mirandasidney.pdv.api.controller.dto.response.role.ProfileResponseAllAttribute;
 import com.mirandasidney.pdv.api.entities.Role;
 import com.mirandasidney.pdv.api.exception.ResourceNotFoundException;
 import com.mirandasidney.pdv.api.exception.ValidationException;
@@ -45,17 +44,17 @@ public class RoleServiceImpl implements IRoleService {
     }
 
     @Override
-    public ResponseEntity<Set<ProfileResponseAllAttribute>> findAll() {
-        Set<Role> role = repository.findAllSet();
-        if(role.isEmpty())
+    public ResponseEntity<Set<RoleResponse>> findAll() {
+        Set<Role> roles = repository.findAllSet();
+        if(roles.isEmpty())
             return ResponseEntity.noContent().build();
-        return ResponseEntity.ok().body(mapper.toProfileListDto(role));
+        return ResponseEntity.ok().body(mapper.toProfileListDto(roles));
     }
 
     @Override
-    public ResponseEntity<ProfileResponseAllAttribute> findProfileById(UUID id) {
+    public ResponseEntity<RoleResponse> findProfileById(UUID id) {
         return repository.findById(id)
-                .map(role -> ResponseEntity.ok().body(mapper.toDtoFull(role)))
+                .map(role -> ResponseEntity.ok().body(mapper.toDto(role)))
                 .orElseThrow(() -> new ResourceNotFoundException("Profile not found with UUID: " + id));
     }
 
@@ -68,14 +67,13 @@ public class RoleServiceImpl implements IRoleService {
     }
 
     @Override
-    public ResponseEntity<ProfileResponseAllAttribute> update(RoleRequest roleRequest, UUID id) {
+    public ResponseEntity<RoleResponse> update(RoleRequest roleRequest, UUID id) {
         final Optional<Role> role = repository.findById(id);
-        return role
-        .map(p -> {
+        return role.map(p -> {
                     if(roleRequest.getName() != null) p.setName(roleRequest.getName());
                     if(roleRequest.getDescription() != null) p.setDescription(roleRequest.getDescription());
                     repository.save(p);
-                    return ResponseEntity.ok().body(mapper.toDtoFull(p));
+                    return ResponseEntity.ok().body(mapper.toDto(p));
                 }).orElseThrow(() -> new ResourceNotFoundException("Profile not found with UUID: " + id));
     }
 

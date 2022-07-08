@@ -58,6 +58,12 @@ public class UserServiceImpl implements IUserService {
 
     @Override
     @Transactional
+    public ResponseEntity<Boolean> getByUsername(String username) {
+        return ResponseEntity.ok(repository.existsByUsername(username));
+    }
+
+    @Override
+    @Transactional
     public ResponseEntity<UserResponse> save(UserPostRequestBody user) {
         final boolean existsByUsername = repository.existsByUsername(user.getUsername());
 
