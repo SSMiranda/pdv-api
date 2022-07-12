@@ -26,5 +26,5 @@ public interface IUserService extends UserDetailsService {
 
     ResponseEntity<UserResponse> userPartlyUpdate(UpdateUserRequest user, UUID id);
 
-    ResponseEntity<Boolean> getByUsername(String username);
+    ResponseEntity<Boolean> checkByUsername(String username);
 }

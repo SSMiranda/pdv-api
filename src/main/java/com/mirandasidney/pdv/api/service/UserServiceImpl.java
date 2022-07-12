@@ -58,7 +58,7 @@ public class UserServiceImpl implements IUserService {
 
     @Override
     @Transactional
-    public ResponseEntity<Boolean> getByUsername(String username) {
+    public ResponseEntity<Boolean> checkByUsername(String username) {
         return ResponseEntity.ok(repository.existsByUsername(username));
     }
 

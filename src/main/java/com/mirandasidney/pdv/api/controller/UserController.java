@@ -65,9 +65,9 @@ public class UserController {
     }
 
     @Operation(description = "Busca um usuário pelo nome do usuário")
-    @GetMapping(value = "/{username}", produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<Boolean> findUserByUsername(@PathVariable final String username) {
-        return service.getByUsername(username);
+    @GetMapping(value = "/params", produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<Boolean> checkByUsername(@RequestParam final String username) {
+        return service.checkByUsername(username);
     }
 
     @Secured("ROLE_ADMIN")
