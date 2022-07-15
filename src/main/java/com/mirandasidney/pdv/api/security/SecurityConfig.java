@@ -46,7 +46,8 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter implements Http
             .csrf()
                 .csrfTokenRepository(CookieCsrfTokenRepository.withHttpOnlyFalse()).disable()
             .authorizeRequests()
-                .antMatchers(HttpMethod.POST, "/auth/**").permitAll()
+                .antMatchers(HttpMethod.POST, "/auth/login").permitAll()
+                .antMatchers( "/auth/**").permitAll()
                 .antMatchers(HttpMethod.POST, "/users").hasRole(Role.ADMIN.getName())
             .anyRequest()
             .authenticated()
@@ -61,22 +62,23 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter implements Http
 //              Filtra as requisições para login com JWT
             .and()
                 .logout()
-                .logoutSuccessUrl("/auth/logout")
+                .logoutSuccessUrl("/auth/login")
                 .invalidateHttpSession(true)
                 // Mapeia o logout do sistema
                 .logoutRequestMatcher(new AntPathRequestMatcher("/auth/logout"));
     }
 
     @Override
-    public void configure(WebSecurity web) throws Exception {
-        web.ignoring().antMatchers("/swagger-ui/**", "/v3/api-docs/**", "/h2-console/**", "*.html");
+    public void configure(WebSecurity web) {
+        web.ignoring().antMatchers("/swagger-ui/**", "/v3/api-docs/**", "/h2-console/**", "*.html", "/actuator/**");
     }
 
     @Override
     public void addCorsMappings(CorsRegistry registry) {
-        registry.addMapping("/*")
-//                .allowCredentials(true)
+        registry.addMapping("/**")
                 .allowedOrigins("*")
-                .allowedMethods("GET", "POST", "PUT", "DELETE", "OPTIONS", "HEAD", "TRACE", "CONNECT");
+                .allowedMethods("*")
+                .maxAge(3600L)
+                .allowedHeaders("*");
     }
 }

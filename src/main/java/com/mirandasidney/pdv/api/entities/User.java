@@ -8,20 +8,7 @@ import lombok.Setter;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
-import javax.persistence.CascadeType;
-import javax.persistence.Column;
-import javax.persistence.ConstraintMode;
-import javax.persistence.Entity;
-import javax.persistence.FetchType;
-import javax.persistence.ForeignKey;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.JoinTable;
-import javax.persistence.OneToMany;
-import javax.persistence.Table;
-import javax.persistence.UniqueConstraint;
+import javax.persistence.*;
 import java.util.Collection;
 import java.util.HashSet;
 import java.util.Set;
@@ -57,7 +44,7 @@ public class User implements UserDetails {
     private String lastname;
 
     @Setter
-    @Column(nullable = false, unique = true)
+    @Column(length = 45, nullable = false, unique = true)
     private String username;
 
     @Setter
@@ -70,21 +57,17 @@ public class User implements UserDetails {
 
     @Getter
     @Setter
-    @OneToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL, orphanRemoval = true)
+    @ManyToMany(fetch = FetchType.EAGER)
     @JoinTable(name = "users_role",
-            uniqueConstraints = @UniqueConstraint(columnNames = {"user_id", "role_id"}, name = "users_role"),
-                joinColumns = @JoinColumn(
-                        name = "user_id",
-                        referencedColumnName = "uuid",
-                        table = "users",
-                        foreignKey = @ForeignKey(name = "user_fk", value = ConstraintMode.CONSTRAINT)),
-                inverseJoinColumns = @JoinColumn(
-                    name = "role_id",
+            joinColumns = @JoinColumn(
+                    name = "user_id",
                     referencedColumnName = "uuid",
-                    table = "role",
+                    foreignKey = @ForeignKey(name = "user_fk", value = ConstraintMode.CONSTRAINT)),
+            inverseJoinColumns = @JoinColumn(
+                name = "role_id",
+                referencedColumnName = "uuid",
                     foreignKey = @ForeignKey(name = "role_fk", value = ConstraintMode.CONSTRAINT)))
     private Set<Role> roles = new HashSet<>();
-
     @Getter
     @Setter
     @Column(name = "CREATED_AT")
@@ -133,7 +116,7 @@ public class User implements UserDetails {
 
     @Override
     public boolean isEnabled() {
-        return true;
+        return this.active;
     }
 
     public void setRole(Set<Role> roles) {
