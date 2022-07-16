@@ -1,15 +1,13 @@
 package com.mirandasidney.pdv.api.entities;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
 import com.mirandasidney.pdv.api.utils.DateUtils;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
-import org.springframework.security.core.GrantedAuthority;
-import org.springframework.security.core.userdetails.UserDetails;
+import lombok.*;
 
 import javax.persistence.*;
-import java.util.Collection;
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.Size;
+import java.io.Serializable;
 import java.util.HashSet;
 import java.util.Set;
 import java.util.UUID;
@@ -19,40 +17,55 @@ import java.util.UUID;
  */
 
 @Entity
+@Builder
 @AllArgsConstructor
 @NoArgsConstructor
-@Table(name = "users", uniqueConstraints = @UniqueConstraint(columnNames = "username"))
-public class User implements UserDetails {
+@EqualsAndHashCode(onlyExplicitlyIncluded = true)
+@Table(name = "users",
+        uniqueConstraints =
+            @UniqueConstraint(columnNames = "username"))
+public class User implements Serializable {
 
     private static final long serialVersionUID = 1L;
-    private static final Boolean STATUS = true;
 
     @Id
     @Getter
+    @EqualsAndHashCode.Include
     @GeneratedValue(strategy = GenerationType.AUTO)
     @Column(updatable = false, unique = true, nullable = false)
     private UUID uuid;
 
     @Getter
     @Setter
+    @NotBlank
     @Column(name = "FIRSTNAME", nullable = false)
     private String firstname;
 
     @Getter
     @Setter
+    @NotBlank
     @Column(nullable = false)
     private String lastname;
 
+    @Getter
     @Setter
-    @Column(length = 45, nullable = false, unique = true)
+    @NotBlank
+    @Size(min = 3, max = 20)
+    @Column(length = 20, nullable = false, unique = true)
     private String username;
 
+    @Getter
     @Setter
+    @NotBlank
+    @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
+    @Size(min = 8, max = 120)
     @Column(nullable = false)
     private String password;
 
     @Getter
     @Setter
+    @Size(max = 12)
+    @Column(length = 12)
     private String phone;
 
     @Getter
@@ -68,10 +81,10 @@ public class User implements UserDetails {
                 referencedColumnName = "uuid",
                     foreignKey = @ForeignKey(name = "role_fk", value = ConstraintMode.CONSTRAINT)))
     private Set<Role> roles = new HashSet<>();
+
     @Getter
-    @Setter
     @Column(name = "CREATED_AT")
-    private String createdAt = DateUtils.formatDate();
+    private String createdAt = DateUtils.getDateTime();
 
     @Getter
     @Setter
@@ -81,49 +94,6 @@ public class User implements UserDetails {
     @Getter
     @Setter
     @Column(name = "STATUS")
-    private Boolean active = STATUS;
+    private Boolean active;
 
-
-    @Override
-    public Collection<? extends GrantedAuthority> getAuthorities() {
-        return this.roles;
-    }
-
-    @Override
-    public String getPassword() {
-        return this.password;
-    }
-
-    @Override
-    public String getUsername() {
-        return this.username;
-    }
-
-    @Override
-    public boolean isAccountNonExpired() {
-        return true;
-    }
-
-    @Override
-    public boolean isAccountNonLocked() {
-        return true;
-    }
-
-    @Override
-    public boolean isCredentialsNonExpired() {
-        return true;
-    }
-
-    @Override
-    public boolean isEnabled() {
-        return this.active;
-    }
-
-    public void setRole(Set<Role> roles) {
-        this.roles.addAll(roles);
-    }
-
-    public void addRole(Role role) {
-        this.roles.add(role);
-    }
 }

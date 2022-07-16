@@ -12,16 +12,21 @@ import java.util.Set;
 @AllArgsConstructor
 @NoArgsConstructor
 @Data
-public class UserPostRequestBody {
-    @NotNull(message = "Firstname can not be null")
+public class SignupRequest {
+
+    @NotNull(message = "Firstname is required")
     private String firstname;
-    @NotNull(message = "Lastname can not be null")
+
+    @NotNull(message = "Lastname is required")
     private String lastname;
-    @NotNull(message = "Username can not be null")
+
+    @NotNull(message = "Username is required")
     private String username;
-    @NotNull(message = "Password can not be null")
+
+    @NotNull(message = "Password is required")
     private String password;
-    @NotNull
+
+    @NotNull(message = "Role is required")
     private Set<RoleRequestById> roles = new HashSet<>();
 
     private String phone;

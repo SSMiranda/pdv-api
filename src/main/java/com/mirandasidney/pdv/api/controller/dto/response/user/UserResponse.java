@@ -30,9 +30,14 @@ public class UserResponse {
         this.lastname = user.getLastname();
         this.username = user.getUsername();
         this.phone = user.getPhone();
-        this.roles = user.getRoles().stream().map(RoleResponse::new).collect(Collectors.toSet());
+        this.roles = streamCollection(user);
         this.createdAt = user.getCreatedAt();
         this.active = user.getActive();
+        this.updated = getUpdated();
+    }
+
+    private Set<RoleResponse> streamCollection(User user) {
+        return user.getRoles().stream().map(RoleResponse::new).collect(Collectors.toSet());
     }
 
 }

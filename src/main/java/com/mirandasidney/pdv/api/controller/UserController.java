@@ -1,7 +1,7 @@
 package com.mirandasidney.pdv.api.controller;
 
+import com.mirandasidney.pdv.api.controller.dto.request.user.SignupRequest;
 import com.mirandasidney.pdv.api.controller.dto.request.user.UpdateUserRequest;
-import com.mirandasidney.pdv.api.controller.dto.request.user.UserPostRequestBody;
 import com.mirandasidney.pdv.api.controller.dto.response.user.UserResponse;
 import com.mirandasidney.pdv.api.service.interfaces.IUserService;
 import io.swagger.v3.oas.annotations.Operation;
@@ -54,7 +54,7 @@ public class UserController {
                     content = {@Content(mediaType = "application/json", schema = @Schema(implementation = UserResponse.class))})
     })
     @PostMapping(consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<UserResponse> save(@Valid @RequestBody final UserPostRequestBody user) {
+    public ResponseEntity<UserResponse> save(@Valid @RequestBody final SignupRequest user) {
         return service.save(user);
     }
 

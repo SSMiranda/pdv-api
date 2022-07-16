@@ -1,6 +1,6 @@
 package com.mirandasidney.pdv.api.mapper;
 
-import com.mirandasidney.pdv.api.controller.dto.request.user.UserPostRequestBody;
+import com.mirandasidney.pdv.api.controller.dto.request.user.SignupRequest;
 import com.mirandasidney.pdv.api.controller.dto.response.user.UserResponse;
 import com.mirandasidney.pdv.api.entities.User;
 import org.mapstruct.Mapper;
@@ -10,7 +10,7 @@ import org.mapstruct.factory.Mappers;
 public interface UserMapper {
     UserMapper INSTANCE = Mappers.getMapper(UserMapper.class);
 
-    User toUser(UserPostRequestBody userPostRequestBody);
+    User toUser(SignupRequest signupRequest);
 
     UserResponse toUserResponse(User user);
 }

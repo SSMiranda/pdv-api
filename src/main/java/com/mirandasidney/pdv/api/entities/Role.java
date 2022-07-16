@@ -1,9 +1,6 @@
 package com.mirandasidney.pdv.api.entities;
 
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 import org.springframework.security.core.GrantedAuthority;
 
 import javax.persistence.Column;
@@ -21,6 +18,7 @@ import java.util.UUID;
 @Entity
 @AllArgsConstructor
 @NoArgsConstructor
+@EqualsAndHashCode(onlyExplicitlyIncluded = true)
 @Table(name = "role")
 public class Role implements GrantedAuthority {
     private static final long serialVersionUID = 1L;
@@ -28,6 +26,7 @@ public class Role implements GrantedAuthority {
 
     @Id
     @Getter
+    @EqualsAndHashCode.Include
     @GeneratedValue(strategy = GenerationType.AUTO)
     @Column(updatable = false, unique = true, nullable = false)
     private UUID uuid;

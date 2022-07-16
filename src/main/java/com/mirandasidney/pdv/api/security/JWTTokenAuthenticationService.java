@@ -93,7 +93,7 @@ public class JWTTokenAuthenticationService {
                     return new UsernamePasswordAuthenticationToken(
                             userFound.getUsername(),
                             userFound.getPassword(),
-                            userFound.getAuthorities());
+                            userFound.getRoles());
                 }
             }
         }

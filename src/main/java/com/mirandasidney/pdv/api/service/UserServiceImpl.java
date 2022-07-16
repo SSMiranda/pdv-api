@@ -1,7 +1,7 @@
 package com.mirandasidney.pdv.api.service;
 
 import com.mirandasidney.pdv.api.controller.dto.request.user.UpdateUserRequest;
-import com.mirandasidney.pdv.api.controller.dto.request.user.UserPostRequestBody;
+import com.mirandasidney.pdv.api.controller.dto.request.user.SignupRequest;
 import com.mirandasidney.pdv.api.controller.dto.response.user.UserResponse;
 import com.mirandasidney.pdv.api.entities.Role;
 import com.mirandasidney.pdv.api.entities.User;
@@ -10,6 +10,7 @@ import com.mirandasidney.pdv.api.exception.ValidationException;
 import com.mirandasidney.pdv.api.mapper.UserMapper;
 import com.mirandasidney.pdv.api.repository.AuthorityRepository;
 import com.mirandasidney.pdv.api.repository.UserRepository;
+import com.mirandasidney.pdv.api.security.services.UserDetailsImpl;
 import com.mirandasidney.pdv.api.service.interfaces.IUserService;
 import com.mirandasidney.pdv.api.utils.DateUtils;
 import lombok.AllArgsConstructor;
@@ -18,8 +19,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.core.GrantedAuthority;
-import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
@@ -28,7 +27,6 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import java.net.URI;
-import java.util.Collection;
 import java.util.Optional;
 import java.util.Set;
 import java.util.UUID;
@@ -43,19 +41,6 @@ public class UserServiceImpl implements IUserService {
     private UserRepository repository;
     private AuthorityRepository authorityRepository;
 
-    private Collection<? extends GrantedAuthority> mapRolesToAuthorities(Collection<Role> roles) {
-        return roles.stream().map(role -> new SimpleGrantedAuthority(role.getAuthority())).collect(Collectors.toSet());
-    }
-
-    @Override
-    @Transactional
-    public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-        final User user =  Optional.ofNullable(repository.findUserByUsername(username))
-                .orElseThrow(() -> new UsernameNotFoundException("User not found."));
-
-        return new org.springframework.security.core.userdetails.User(user.getUsername(), user.getPassword(), mapRolesToAuthorities(user.getRoles()));
-    }
-
     @Override
     @Transactional
     public ResponseEntity<Boolean> checkByUsername(String username) {
@@ -64,7 +49,7 @@ public class UserServiceImpl implements IUserService {
 
     @Override
     @Transactional
-    public ResponseEntity<UserResponse> save(UserPostRequestBody user) {
+    public ResponseEntity<UserResponse> save(SignupRequest user) {
         final boolean existsByUsername = repository.existsByUsername(user.getUsername());
 
         if(existsByUsername) {
@@ -86,6 +71,7 @@ public class UserServiceImpl implements IUserService {
             newUser.setPassword(new BCryptPasswordEncoder().encode(user.getPassword()));
             newUser.setRoles(roles);
             User savedUser = repository.save(newUser);
+
             return ResponseEntity.created(uri).body(mapper.toUserResponse(savedUser));
     }
 
@@ -132,14 +118,14 @@ public class UserServiceImpl implements IUserService {
                         Role p = authorityRepository
                                 .findById(userUpdate.getRole().getUuid())
                                 .orElseThrow(() -> new ResourceNotFoundException("Profile not found with UUID" + userUpdate.getRole().getUuid()));
-                        user.addRole(p);
+//                        user.addRole(p);
                     }
                     if(userUpdate.getUsername() != null) user.setUsername(userUpdate.getUsername());
                     if(userUpdate.getFirstname() != null) user.setFirstname(userUpdate.getFirstname());
                     if(userUpdate.getLastname() != null) user.setLastname(userUpdate.getLastname());
                     if(userUpdate.getPhone() != null) user.setPhone(userUpdate.getPhone());
                     if(userUpdate.getActive() != null) user.setActive((userUpdate.getActive()));
-                    if(userUpdate != null) user.setUpdated(DateUtils.formatDate());
+                    if(userUpdate != null) user.setUpdated(DateUtils.getDateTime());
 
             return ResponseEntity.ok().body(mapper.toUserResponse(repository.save(user)));
         }).orElseThrow(() -> new ResourceNotFoundException("User not found with UUID " + id));

@@ -97,7 +97,7 @@ public class ProductServiceImpl implements IProductService {
                 }
                 if(productUpdate.getCostPrice() != null) p.setCostPrice(new BigDecimal(productUpdate.getCostPrice()));
                 if(productUpdate.getSalePrice() != null) p.setSalePrice(new BigDecimal(productUpdate.getSalePrice()));
-                if(productUpdate != null) p.setUpdate(DateUtils.formatDate());
+                if(productUpdate != null) p.setUpdate(DateUtils.getDateTime());
 
                 repository.save(p);
                 return ResponseEntity.ok().body(mapper.toDto(p));

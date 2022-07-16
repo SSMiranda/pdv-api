@@ -46,7 +46,7 @@ public class Product implements Serializable {
     private BigDecimal salePrice;
 
     @Getter
-    private String createdAt = DateUtils.formatDate();
+    private String createdAt = DateUtils.getDateTime();
 
     @Getter
     @Setter

@@ -1,6 +1,7 @@
 package com.mirandasidney.pdv.api.security;
 
 import com.mirandasidney.pdv.api.enums.Role;
+import com.mirandasidney.pdv.api.security.services.UserDetailsServiceImpl;
 import com.mirandasidney.pdv.api.service.UserServiceImpl;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpMethod;
@@ -26,9 +27,9 @@ import javax.servlet.http.HttpSessionListener;
 @EnableGlobalMethodSecurity(prePostEnabled = true, securedEnabled = true)
 public class SecurityConfig extends WebSecurityConfigurerAdapter implements HttpSessionListener, WebMvcConfigurer {
 
-    private final UserServiceImpl userService;
+    private final UserDetailsServiceImpl userService;
 
-    public SecurityConfig(UserServiceImpl userService) {
+    public SecurityConfig(UserDetailsServiceImpl userService) {
     this.userService = userService;
     }
 
@@ -42,7 +43,8 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter implements Http
 
     @Override
     protected void configure(HttpSecurity http) throws Exception {
-        http.cors().configurationSource(request -> new CorsConfiguration().applyPermitDefaultValues()).and()
+        http.cors().configurationSource(request -> new CorsConfiguration().applyPermitDefaultValues())
+                .and()
             .csrf()
                 .csrfTokenRepository(CookieCsrfTokenRepository.withHttpOnlyFalse()).disable()
             .authorizeRequests()
@@ -73,12 +75,12 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter implements Http
         web.ignoring().antMatchers("/swagger-ui/**", "/v3/api-docs/**", "/h2-console/**", "*.html", "/actuator/**");
     }
 
-    @Override
-    public void addCorsMappings(CorsRegistry registry) {
-        registry.addMapping("/**")
-                .allowedOrigins("*")
-                .allowedMethods("*")
-                .maxAge(3600L)
-                .allowedHeaders("*");
-    }
+//    @Override
+//    public void addCorsMappings(CorsRegistry registry) {
+//        registry.addMapping("/**")
+//                .allowedOrigins("*")
+//                .allowedMethods("*")
+//                .maxAge(3600L)
+//                .allowedHeaders("*");
+//    }
 }
