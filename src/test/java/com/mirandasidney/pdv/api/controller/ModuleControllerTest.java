@@ -1,8 +1,8 @@
 package com.mirandasidney.pdv.api.controller;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.mirandasidney.pdv.api.controller.dto.request.module.ModuleRequest;
-import com.mirandasidney.pdv.api.controller.dto.response.module.ModuleResponse;
+import com.mirandasidney.pdv.api.controller.payload.request.module.ModuleRequest;
+import com.mirandasidney.pdv.api.controller.payload.response.module.ModuleResponse;
 import com.mirandasidney.pdv.api.service.interfaces.IModuleService;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;

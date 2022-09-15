@@ -1,7 +1,7 @@
 package com.mirandasidney.pdv.api.mapper;
 
-import com.mirandasidney.pdv.api.controller.dto.request.user.SignupRequest;
-import com.mirandasidney.pdv.api.controller.dto.response.user.UserResponse;
+import com.mirandasidney.pdv.api.controller.payload.request.user.SignupRequest;
+import com.mirandasidney.pdv.api.controller.payload.response.user.UserResponse;
 import com.mirandasidney.pdv.api.entities.User;
 import org.mapstruct.Mapper;
 import org.mapstruct.factory.Mappers;

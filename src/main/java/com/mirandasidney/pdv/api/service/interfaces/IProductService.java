@@ -1,7 +1,7 @@
 package com.mirandasidney.pdv.api.service.interfaces;
 
-import com.mirandasidney.pdv.api.controller.dto.request.product.ProductRequestBody;
-import com.mirandasidney.pdv.api.controller.dto.response.product.ProductResponse;
+import com.mirandasidney.pdv.api.controller.payload.request.product.ProductRequestBody;
+import com.mirandasidney.pdv.api.controller.payload.response.product.ProductResponse;
 import org.springframework.http.ResponseEntity;
 
 import java.util.Set;

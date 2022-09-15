@@ -1,8 +1,8 @@
 package com.mirandasidney.pdv.api.controller;
 
 
-import com.mirandasidney.pdv.api.controller.dto.request.product.ProductRequestBody;
-import com.mirandasidney.pdv.api.controller.dto.response.product.ProductResponse;
+import com.mirandasidney.pdv.api.controller.payload.request.product.ProductRequestBody;
+import com.mirandasidney.pdv.api.controller.payload.response.product.ProductResponse;
 import com.mirandasidney.pdv.api.service.interfaces.IProductService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;

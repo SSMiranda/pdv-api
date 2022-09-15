@@ -1,7 +1,7 @@
 package com.mirandasidney.pdv.api.controller;
 
-import com.mirandasidney.pdv.api.controller.dto.request.module.ModuleRequest;
-import com.mirandasidney.pdv.api.controller.dto.response.module.ModuleResponse;
+import com.mirandasidney.pdv.api.controller.payload.request.module.ModuleRequest;
+import com.mirandasidney.pdv.api.controller.payload.response.module.ModuleResponse;
 import com.mirandasidney.pdv.api.service.interfaces.IModuleService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;

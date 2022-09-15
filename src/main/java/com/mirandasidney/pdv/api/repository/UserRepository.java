@@ -6,6 +6,7 @@ import org.springframework.data.repository.PagingAndSortingRepository;
 import org.springframework.stereotype.Repository;
 
 import java.util.HashSet;
+import java.util.Optional;
 import java.util.Set;
 import java.util.UUID;
 
@@ -13,7 +14,7 @@ import java.util.UUID;
 public interface UserRepository extends PagingAndSortingRepository<User, UUID> {
 
     @Query(value = "select u from User u where u.username = ?1")
-    User findUserByUsername(String username);
+    Optional<User> findUserByUsername(String username);
 
     Boolean existsByUsername(String username);
 

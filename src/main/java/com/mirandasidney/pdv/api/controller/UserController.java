@@ -1,8 +1,8 @@
 package com.mirandasidney.pdv.api.controller;
 
-import com.mirandasidney.pdv.api.controller.dto.request.user.SignupRequest;
-import com.mirandasidney.pdv.api.controller.dto.request.user.UpdateUserRequest;
-import com.mirandasidney.pdv.api.controller.dto.response.user.UserResponse;
+import com.mirandasidney.pdv.api.controller.payload.request.user.SignupRequest;
+import com.mirandasidney.pdv.api.controller.payload.request.user.UpdateUserRequest;
+import com.mirandasidney.pdv.api.controller.payload.response.user.UserResponse;
 import com.mirandasidney.pdv.api.service.interfaces.IUserService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.Content;
@@ -17,17 +17,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.annotation.Secured;
-import org.springframework.web.bind.annotation.CrossOrigin;
-import org.springframework.web.bind.annotation.DeleteMapping;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PatchMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.PutMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
 import java.util.UUID;
@@ -39,7 +29,6 @@ import java.util.UUID;
 @AllArgsConstructor(onConstructor = @__(@Autowired))
 @RequestMapping("/api/v1/users")
 public class UserController {
-
     private final IUserService service;
 
     @Operation(summary = "Cadastro de usuários", description = "Cadastra um novo usuário no sistema")
@@ -101,11 +90,11 @@ public class UserController {
     }
 
 
-    @Operation(description = "Atualiza parcialmente os dados do usuário")
-    @PatchMapping(value = "/{id}",
-            consumes = MediaType.APPLICATION_JSON_VALUE,
-            produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<UserResponse> userPartlyUpdate(@PathVariable("id") final String id, @RequestBody final UpdateUserRequest userUpdate) {
-        return service.userPartlyUpdate(userUpdate, UUID.fromString(id));
-    }
+//    @Operation(description = "Atualiza parcialmente os dados do usuário")
+//    @PatchMapping(value = "/{id}",
+//            consumes = MediaType.APPLICATION_JSON_VALUE,
+//            produces = MediaType.APPLICATION_JSON_VALUE)
+//    public ResponseEntity<UserResponse> userPartlyUpdate(@PathVariable("id") final String id, @RequestBody final UpdateUserRequest userUpdate) {
+//        return service.userPartlyUpdate(userUpdate, UUID.fromString(id));
+//    }
 }

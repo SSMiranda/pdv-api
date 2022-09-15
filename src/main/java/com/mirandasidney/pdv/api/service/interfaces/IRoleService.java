@@ -1,7 +1,7 @@
 package com.mirandasidney.pdv.api.service.interfaces;
 
-import com.mirandasidney.pdv.api.controller.dto.request.role.RoleRequest;
-import com.mirandasidney.pdv.api.controller.dto.response.role.RoleResponse;
+import com.mirandasidney.pdv.api.controller.payload.request.role.RoleRequest;
+import com.mirandasidney.pdv.api.controller.payload.response.role.RoleResponse;
 import org.springframework.http.ResponseEntity;
 import org.springframework.transaction.annotation.Transactional;
 

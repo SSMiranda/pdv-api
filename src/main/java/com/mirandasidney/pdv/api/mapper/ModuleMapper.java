@@ -1,7 +1,7 @@
 package com.mirandasidney.pdv.api.mapper;
 
-import com.mirandasidney.pdv.api.controller.dto.request.module.ModuleRequest;
-import com.mirandasidney.pdv.api.controller.dto.response.module.ModuleResponse;
+import com.mirandasidney.pdv.api.controller.payload.request.module.ModuleRequest;
+import com.mirandasidney.pdv.api.controller.payload.response.module.ModuleResponse;
 import com.mirandasidney.pdv.api.entities.Module;
 import org.mapstruct.Mapper;
 import org.mapstruct.factory.Mappers;

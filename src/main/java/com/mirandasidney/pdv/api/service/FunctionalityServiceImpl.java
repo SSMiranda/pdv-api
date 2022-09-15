@@ -1,7 +1,7 @@
 package com.mirandasidney.pdv.api.service;
 
-import com.mirandasidney.pdv.api.controller.dto.request.functionality.FunctionalityRequest;
-import com.mirandasidney.pdv.api.controller.dto.response.functionality.FunctionalityResponse;
+import com.mirandasidney.pdv.api.controller.payload.request.functionality.FunctionalityRequest;
+import com.mirandasidney.pdv.api.controller.payload.response.functionality.FunctionalityResponse;
 import com.mirandasidney.pdv.api.entities.Functionality;
 import com.mirandasidney.pdv.api.entities.Module;
 import com.mirandasidney.pdv.api.exception.ResourceNotFoundException;

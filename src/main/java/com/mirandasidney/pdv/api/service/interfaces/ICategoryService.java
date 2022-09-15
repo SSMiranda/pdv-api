@@ -1,8 +1,8 @@
 package com.mirandasidney.pdv.api.service.interfaces;
 
-import com.mirandasidney.pdv.api.controller.dto.request.category.CategoryPostRequest;
-import com.mirandasidney.pdv.api.controller.dto.response.category.CategoryResponse;
-import com.mirandasidney.pdv.api.controller.dto.response.category.CategoryWithListProductResponse;
+import com.mirandasidney.pdv.api.controller.payload.request.category.CategoryPostRequest;
+import com.mirandasidney.pdv.api.controller.payload.response.category.CategoryResponse;
+import com.mirandasidney.pdv.api.controller.payload.response.category.CategoryWithListProductResponse;
 import org.springframework.http.ResponseEntity;
 
 import java.util.Set;
