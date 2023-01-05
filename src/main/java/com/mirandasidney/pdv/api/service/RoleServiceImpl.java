@@ -10,11 +10,8 @@ import com.mirandasidney.pdv.api.repository.AuthorityRepository;
 import com.mirandasidney.pdv.api.service.interfaces.IRoleService;
 import lombok.AllArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
-import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
-import java.net.URI;
 import java.util.Optional;
 import java.util.Set;
 import java.util.UUID;
@@ -27,53 +24,44 @@ public class RoleServiceImpl implements IRoleService {
     private final AuthorityRepository repository;
 
     @Override
-    public ResponseEntity<RoleResponse> save(RoleRequest newProfile) {
+    public RoleResponse save(RoleRequest newProfile) {
         Optional<Role> role = repository.findByName(newProfile.getName());
+
         if(role.isPresent()) {
             throw new ValidationException("Profile already exist with name: " + newProfile.getName());
         }
 
-        URI uri = ServletUriComponentsBuilder
-                .fromCurrentRequest()
-                .path("/api/v1/profiles/{role}")
-                .buildAndExpand(newProfile.getName())
-                .toUri();
-
         Role roleModel = mapper.toModel(newProfile);
-        return ResponseEntity.created(uri).body(mapper.toDto(repository.save(roleModel)));
+        return mapper.toDto(repository.save(roleModel));
     }
 
     @Override
-    public ResponseEntity<Set<RoleResponse>> findAll() {
-        Set<Role> roles = repository.findAllSet();
-        if(roles.isEmpty())
-            return ResponseEntity.noContent().build();
-        return ResponseEntity.ok().body(mapper.toProfileListDto(roles));
+    public Set<RoleResponse> findAll() {
+        return mapper.toProfileListDto(repository.findAllSet());
     }
 
     @Override
-    public ResponseEntity<RoleResponse> findProfileById(UUID id) {
+    public RoleResponse findProfileById(UUID id) {
         return repository.findById(id)
-                .map(role -> ResponseEntity.ok().body(mapper.toDto(role)))
+                .map(role -> mapper.toDto(role))
                 .orElseThrow(() -> new ResourceNotFoundException("Profile not found with UUID: " + id));
     }
 
     @Override
-    public ResponseEntity<Object> removeProfile(UUID id) {
-        return repository.findById(id).map(role -> {
-            repository.delete(role);
-            return ResponseEntity.noContent().build();
-        }).orElseThrow(() -> new ResourceNotFoundException("Category not found with UUID: " + id));
+    public void removeProfile(UUID id) {
+        Role role = repository.findById(id)
+                .orElseThrow(() -> new ResourceNotFoundException("Category not found with UUID: " + id));
+        repository.delete(role);
     }
 
     @Override
-    public ResponseEntity<RoleResponse> update(RoleRequest roleRequest, UUID id) {
+    public RoleResponse update(RoleRequest roleRequest, UUID id) {
         final Optional<Role> role = repository.findById(id);
         return role.map(p -> {
                     if(roleRequest.getName() != null) p.setName(roleRequest.getName());
                     if(roleRequest.getDescription() != null) p.setDescription(roleRequest.getDescription());
                     repository.save(p);
-                    return ResponseEntity.ok().body(mapper.toDto(p));
+                    return mapper.toDto(p);
                 }).orElseThrow(() -> new ResourceNotFoundException("Profile not found with UUID: " + id));
     }
 

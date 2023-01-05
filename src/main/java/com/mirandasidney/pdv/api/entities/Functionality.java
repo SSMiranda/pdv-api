@@ -37,10 +37,4 @@ public class Functionality implements Serializable {
     @Getter
     @Setter
     private boolean visible;
-
-//    @Getter
-//    @Setter
-//    @ManyToOne(fetch = FetchType.LAZY)
-//    private Module module;
-
 }

@@ -10,8 +10,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import javax.validation.Valid;
+import java.net.URI;
 import java.util.Set;
 import java.util.UUID;
 
@@ -27,25 +29,38 @@ public class AuthorityController {
     @Operation(description = "Cadastra um perfil")
     @PostMapping(consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<RoleResponse> save(@Valid @RequestBody final RoleRequest role) {
-        return service.save(role);
+        URI uri = ServletUriComponentsBuilder
+                .fromCurrentRequest()
+                .path("/api/v1/profiles/{role}")
+                .buildAndExpand(role.getName())
+                .toUri();
+        RoleResponse response = service.save(role);
+        return ResponseEntity.created(uri).body(response);
     }
 
     @Operation(description = "Busca um perfil pelo ID")
     @GetMapping(value = "/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<RoleResponse> findProfileById(@PathVariable final String id) {
-        return service.findProfileById(UUID.fromString(id));
+        RoleResponse role = service.findProfileById(UUID.fromString(id));
+
+        return ResponseEntity.ok().body(role);
     }
 
     @Operation(description = "Retorna a lista de perfis cadastrados")
     @GetMapping(produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<Set<RoleResponse>> findAll() {
-        return service.findAll();
+
+        Set<RoleResponse> roles = service.findAll();
+        if(roles.isEmpty())
+            return ResponseEntity.noContent().build();
+        return ResponseEntity.ok().body(roles);
     }
 
     @Operation(description = "Remove um perfil")
     @DeleteMapping("/{id}")
     public ResponseEntity<Object> remove(@PathVariable final UUID id) {
-        return service.removeProfile(id);
+        service.removeProfile(id);
+        return ResponseEntity.noContent().build();
     }
 
     @Operation(description = "Atualiza dados parciais de um perfil")
@@ -53,7 +68,9 @@ public class AuthorityController {
             consumes = MediaType.APPLICATION_JSON_VALUE,
             produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<RoleResponse> update(@RequestBody final RoleRequest role, @PathVariable("id") final UUID id)  {
-        return service.update(role, id);
+        RoleResponse updated = service.update(role, id);
+
+        return ResponseEntity.ok().body(updated);
     }
 
 }

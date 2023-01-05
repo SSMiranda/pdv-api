@@ -11,15 +11,15 @@ import java.util.UUID;
 public interface IRoleService {
 
     @Transactional
-    ResponseEntity<RoleResponse> save(RoleRequest role);
+    RoleResponse save(RoleRequest role);
 
-    ResponseEntity<Set<RoleResponse>> findAll();
+    Set<RoleResponse> findAll();
 
-    ResponseEntity<RoleResponse> findProfileById(UUID id);
-
-    @Transactional
-    ResponseEntity<Object> removeProfile(UUID id);
+    RoleResponse findProfileById(UUID id);
 
     @Transactional
-    ResponseEntity<RoleResponse> update(RoleRequest role, UUID id);
+    void removeProfile(UUID id);
+
+    @Transactional
+    RoleResponse update(RoleRequest role, UUID id);
 }

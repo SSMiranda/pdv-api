@@ -50,10 +50,6 @@ public class Product implements Serializable {
 
     @Getter
     @Setter
-    private String update;
-
-    @Getter
-    @Setter
     @ManyToOne
     @JoinColumn(name = "CATEGORY_ID")
     private Category category;
